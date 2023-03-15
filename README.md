@@ -37,7 +37,7 @@ the equivalent Sunder program (in this case `example.sunder`) would be built wit
 
 ```sh
 $ (cd raylib/src/ && make PLATFORM=PLATFORM_DESKTOP)
-$ sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 example.sunder
+$ SUNDER_BACKEND=C sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 example.sunder
 ```
 
 ## License

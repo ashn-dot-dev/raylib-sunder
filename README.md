@@ -39,3 +39,8 @@ the equivalent Sunder program (in this case `example.sunder`) would be built wit
 $ (cd raylib/src/ && make PLATFORM=PLATFORM_DESKTOP)
 $ sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 example.sunder
 ```
+
+## License
+All content in this repository is licensed under the Zero-Clause BSD license.
+
+See LICENSE for more information.

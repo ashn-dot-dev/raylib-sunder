@@ -21,14 +21,15 @@ $ git clone https://github.com/raysan5/raylib.git raylib
 and run the Sunder code generation script over the raylib API JSON:
 
 ```sh
-$ python3 generate.py raylib/parser/output/raylib_api.json > raylib.sunder
+$ (cd raylib/parser && make clean raylib_api.json FORMAT=JSON EXTENSION=json)
+$ python3 generate.py raylib/parser/raylib_api.json > raylib.sunder
 ```
 
 ## Building the Example Program
 For some C program (in this case `example.c`) built with the commands:
 
 ```sh
-$ (cd raylib/src/ && make PLATFORM=PLATFORM_DESKTOP)
+$ (cd raylib/src && make PLATFORM=PLATFORM_DESKTOP)
 $ clang -Iraylib/src -Lraylib/src -o example example.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 ```
 

@@ -1,6 +1,6 @@
 import "c";
 
-let RAYLIB_VERSION = "4.5-dev";
+let RAYLIB_VERSION = "4.5";
 
 let LIGHTGRAY = (:Color){.r=200, .g=200, .b=200, .a=255}; # Light Gray
 let GRAY = (:Color){.r=130, .g=130, .b=130, .a=255}; # Gray
@@ -204,7 +204,7 @@ let MOUSE_CURSOR_RESIZE_EW: MouseCursor = 5; # Horizontal resize/move arrow shap
 let MOUSE_CURSOR_RESIZE_NS: MouseCursor = 6; # Vertical resize/move arrow shape
 let MOUSE_CURSOR_RESIZE_NWSE: MouseCursor = 7; # Top-left to bottom-right diagonal resize/move arrow shape
 let MOUSE_CURSOR_RESIZE_NESW: MouseCursor = 8; # The top-right to bottom-left diagonal resize/move arrow shape
-let MOUSE_CURSOR_RESIZE_ALL: MouseCursor = 9; # The omni-directional resize/move cursor shape
+let MOUSE_CURSOR_RESIZE_ALL: MouseCursor = 9; # The omnidirectional resize/move cursor shape
 let MOUSE_CURSOR_NOT_ALLOWED: MouseCursor = 10; # The operation-not-allowed shape
 
 alias GamepadButton = s32; # (enum) Gamepad buttons
@@ -333,10 +333,10 @@ let TEXTURE_WRAP_MIRROR_CLAMP: TextureWrap = 3; # Mirrors and clamps to border t
 alias CubemapLayout = s32; # (enum) Cubemap layouts
 let CUBEMAP_LAYOUT_AUTO_DETECT: CubemapLayout = 0; # Automatically detect layout type
 let CUBEMAP_LAYOUT_LINE_VERTICAL: CubemapLayout = 1; # Layout is defined by a vertical line with faces
-let CUBEMAP_LAYOUT_LINE_HORIZONTAL: CubemapLayout = 2; # Layout is defined by an horizontal line with faces
+let CUBEMAP_LAYOUT_LINE_HORIZONTAL: CubemapLayout = 2; # Layout is defined by a horizontal line with faces
 let CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR: CubemapLayout = 3; # Layout is defined by a 3x4 cross with cubemap faces
 let CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE: CubemapLayout = 4; # Layout is defined by a 4x3 cross with cubemap faces
-let CUBEMAP_LAYOUT_PANORAMA: CubemapLayout = 5; # Layout is defined by a panorama image (equirectangular map)
+let CUBEMAP_LAYOUT_PANORAMA: CubemapLayout = 5; # Layout is defined by a panorama image (equirrectangular map)
 
 alias FontType = s32; # (enum) Font type, defines generation method
 let FONT_DEFAULT: FontType = 0; # Default font generation, anti-aliased
@@ -350,8 +350,8 @@ let BLEND_MULTIPLIED: BlendMode = 2; # Blend textures multiplying colors
 let BLEND_ADD_COLORS: BlendMode = 3; # Blend textures adding colors (alternative)
 let BLEND_SUBTRACT_COLORS: BlendMode = 4; # Blend textures subtracting colors (alternative)
 let BLEND_ALPHA_PREMULTIPLY: BlendMode = 5; # Blend premultiplied textures considering alpha
-let BLEND_CUSTOM: BlendMode = 6; # Blend textures using custom src/dst factors (use rlSetBlendMode())
-let BLEND_CUSTOM_SEPARATE: BlendMode = 7; # Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendModeSeparate())
+let BLEND_CUSTOM: BlendMode = 6; # Blend textures using custom src/dst factors (use rlSetBlendFactors())
+let BLEND_CUSTOM_SEPARATE: BlendMode = 7; # Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
 
 alias Gesture = s32; # (enum) Gesture
 let GESTURE_NONE: Gesture = 0; # No gesture
@@ -568,8 +568,8 @@ struct Ray {
 
 struct RayCollision {
     var hit: bool; # Did the ray hit something?
-    var distance: f32; # Distance to nearest hit
-    var point: Vector3; # Point of nearest hit
+    var distance: f32; # Distance to the nearest hit
+    var point: Vector3; # Point of the nearest hit
     var normal: Vector3; # Surface normal of hit
 }
 
@@ -654,7 +654,8 @@ extern func ToggleFullscreen() void; # Toggle window state: fullscreen/windowed 
 extern func MaximizeWindow() void; # Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
 extern func MinimizeWindow() void; # Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
 extern func RestoreWindow() void; # Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
-extern func SetWindowIcon(image: Image) void; # Set icon for window (only PLATFORM_DESKTOP)
+extern func SetWindowIcon(image: Image) void; # Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
+extern func SetWindowIcons(images: *Image, count: sint) void; # Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
 extern func SetWindowTitle(title: *char) void; # Set title for window (only PLATFORM_DESKTOP)
 extern func SetWindowPosition(x: sint, y: sint) void; # Set window position on screen (only PLATFORM_DESKTOP)
 extern func SetWindowMonitor(monitor: sint) void; # Set monitor for the current window (fullscreen mode)
@@ -711,6 +712,7 @@ extern func LoadVrStereoConfig(device: VrDeviceInfo) VrStereoConfig; # Load VR s
 extern func UnloadVrStereoConfig(config: VrStereoConfig) void; # Unload VR stereo config
 extern func LoadShader(vsFileName: *char, fsFileName: *char) Shader; # Load shader from files and bind default locations
 extern func LoadShaderFromMemory(vsCode: *char, fsCode: *char) Shader; # Load shader from code strings and bind default locations
+extern func IsShaderReady(shader: Shader) bool; # Check if a shader is ready
 extern func GetShaderLocation(shader: Shader, uniformName: *char) sint; # Get shader uniform location
 extern func GetShaderLocationAttrib(shader: Shader, attribName: *char) sint; # Get shader attribute location
 extern func SetShaderValue(shader: Shader, locIndex: sint, value: *void, uniformType: sint) void; # Set shader uniform value
@@ -748,7 +750,7 @@ extern func SetSaveFileTextCallback(callback: SaveFileTextCallback) void; # Set 
 extern func LoadFileData(fileName: *char, bytesRead: *uint) *uchar; # Load file data as byte array (read)
 extern func UnloadFileData(data: *uchar) void; # Unload file data allocated by LoadFileData()
 extern func SaveFileData(fileName: *char, data: *void, bytesToWrite: uint) bool; # Save data to file from byte array (write), returns true on success
-extern func ExportDataAsCode(data: *char, size: uint, fileName: *char) bool; # Export data to code (.h), returns true on success
+extern func ExportDataAsCode(data: *uchar, size: uint, fileName: *char) bool; # Export data to code (.h), returns true on success
 extern func LoadFileText(fileName: *char) *char; # Load text data from file (read), returns a '\0' terminated string
 extern func UnloadFileText(text: *char) void; # Unload file text data allocated by LoadFileText()
 extern func SaveFileText(fileName: *char, text: *char) bool; # Save text data to file (write), string must be '\0' terminated, returns true on success
@@ -820,12 +822,8 @@ extern func GetGestureDragVector() Vector2; # Get gesture drag vector
 extern func GetGestureDragAngle() f32; # Get gesture drag angle
 extern func GetGesturePinchVector() Vector2; # Get gesture pinch delta
 extern func GetGesturePinchAngle() f32; # Get gesture pinch angle
-extern func SetCameraMode(camera: Camera, mode: sint) void; # Set camera mode (multiple camera modes available)
-extern func UpdateCamera(camera: *Camera) void; # Update camera position for selected mode
-extern func SetCameraPanControl(keyPan: sint) void; # Set camera pan key to combine with mouse movement (free camera)
-extern func SetCameraAltControl(keyAlt: sint) void; # Set camera alt key to combine with mouse movement (free camera)
-extern func SetCameraSmoothZoomControl(keySmoothZoom: sint) void; # Set camera smooth zoom key to combine with mouse (free camera)
-extern func SetCameraMoveControls(keyFront: sint, keyBack: sint, keyRight: sint, keyLeft: sint, keyUp: sint, keyDown: sint) void; # Set camera move controls (1st person and 3rd person cameras)
+extern func UpdateCamera(camera: *Camera, mode: sint) void; # Update camera position for selected mode
+extern func UpdateCameraPro(camera: *Camera, movement: Vector3, rotation: Vector3, zoom: f32) void; # Update camera movement/rotation
 extern func SetShapesTexture(texture: Texture2D, source: Rectangle) void; # Set texture and rectangle to be used on shapes drawing
 extern func DrawPixel(posX: sint, posY: sint, color: Color) void; # Draw a pixel
 extern func DrawPixelV(position: Vector2, color: Color) void; # Draw a pixel (Vector version)
@@ -880,6 +878,7 @@ extern func LoadImageAnim(fileName: *char, frames: *sint) Image; # Load image se
 extern func LoadImageFromMemory(fileType: *char, fileData: *uchar, dataSize: sint) Image; # Load image from memory buffer, fileType refers to extension: i.e. '.png'
 extern func LoadImageFromTexture(texture: Texture2D) Image; # Load image from GPU texture data
 extern func LoadImageFromScreen() Image; # Load image from screen buffer and (screenshot)
+extern func IsImageReady(image: Image) bool; # Check if an image is ready
 extern func UnloadImage(image: Image) void; # Unload image from CPU memory (RAM)
 extern func ExportImage(image: Image, fileName: *char) bool; # Export image data to file, returns true on success
 extern func ExportImageAsCode(image: Image, fileName: *char) bool; # Export image as code file defining an array of bytes, returns true on success
@@ -891,6 +890,7 @@ extern func GenImageChecked(width: sint, height: sint, checksX: sint, checksY: s
 extern func GenImageWhiteNoise(width: sint, height: sint, factor: f32) Image; # Generate image: white noise
 extern func GenImagePerlinNoise(width: sint, height: sint, offsetX: sint, offsetY: sint, scale: f32) Image; # Generate image: perlin noise
 extern func GenImageCellular(width: sint, height: sint, tileSize: sint) Image; # Generate image: cellular algorithm, bigger tileSize means bigger cells
+extern func GenImageText(width: sint, height: sint, text: *char) Image; # Generate image: grayscale image from text data
 extern func ImageCopy(image: Image) Image; # Create an image duplicate (useful for transformations)
 extern func ImageFromImage(image: Image, rec: Rectangle) Image; # Create an image from another image piece
 extern func ImageText(text: *char, fontSize: sint, color: Color) Image; # Create an image from text (default font)
@@ -902,6 +902,7 @@ extern func ImageAlphaCrop(image: *Image, threshold: f32) void; # Crop image dep
 extern func ImageAlphaClear(image: *Image, color: Color, threshold: f32) void; # Clear alpha channel to desired color
 extern func ImageAlphaMask(image: *Image, alphaMask: Image) void; # Apply alpha mask to image
 extern func ImageAlphaPremultiply(image: *Image) void; # Premultiply alpha channel
+extern func ImageBlurGaussian(image: *Image, blurSize: sint) void; # Apply Gaussian blur using a box blur approximation
 extern func ImageResize(image: *Image, newWidth: sint, newHeight: sint) void; # Resize image (Bicubic scaling algorithm)
 extern func ImageResizeNN(image: *Image, newWidth: sint, newHeight: sint) void; # Resize image (Nearest-Neighbor scaling algorithm)
 extern func ImageResizeCanvas(image: *Image, newWidth: sint, newHeight: sint, offsetX: sint, offsetY: sint, fill: Color) void; # Resize canvas and fill with color
@@ -943,7 +944,9 @@ extern func LoadTexture(fileName: *char) Texture2D; # Load texture from file int
 extern func LoadTextureFromImage(image: Image) Texture2D; # Load texture from image data
 extern func LoadTextureCubemap(image: Image, layout: sint) TextureCubemap; # Load cubemap from image, multiple image cubemap layouts supported
 extern func LoadRenderTexture(width: sint, height: sint) RenderTexture2D; # Load texture for rendering (framebuffer)
+extern func IsTextureReady(texture: Texture2D) bool; # Check if a texture is ready
 extern func UnloadTexture(texture: Texture2D) void; # Unload texture from GPU memory (VRAM)
+extern func IsRenderTextureReady(target: RenderTexture2D) bool; # Check if a render texture is ready
 extern func UnloadRenderTexture(target: RenderTexture2D) void; # Unload render texture from GPU memory (VRAM)
 extern func UpdateTexture(texture: Texture2D, pixels: *void) void; # Update GPU texture with new data
 extern func UpdateTextureRec(texture: Texture2D, rec: Rectangle, pixels: *void) void; # Update GPU texture rectangle with new data
@@ -954,17 +957,17 @@ extern func DrawTexture(texture: Texture2D, posX: sint, posY: sint, tint: Color)
 extern func DrawTextureV(texture: Texture2D, position: Vector2, tint: Color) void; # Draw a Texture2D with position defined as Vector2
 extern func DrawTextureEx(texture: Texture2D, position: Vector2, rotation: f32, scale: f32, tint: Color) void; # Draw a Texture2D with extended parameters
 extern func DrawTextureRec(texture: Texture2D, source: Rectangle, position: Vector2, tint: Color) void; # Draw a part of a texture defined by a rectangle
-extern func DrawTextureQuad(texture: Texture2D, tiling: Vector2, offset: Vector2, quad: Rectangle, tint: Color) void; # Draw texture quad with tiling and offset parameters
-extern func DrawTextureTiled(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: Vector2, rotation: f32, scale: f32, tint: Color) void; # Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
 extern func DrawTexturePro(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void; # Draw a part of a texture defined by a rectangle with 'pro' parameters
 extern func DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void; # Draws a texture (or part of it) that stretches or shrinks nicely
-extern func DrawTexturePoly(texture: Texture2D, center: Vector2, points: *Vector2, texcoords: *Vector2, pointCount: sint, tint: Color) void; # Draw a textured polygon
 extern func Fade(color: Color, alpha: f32) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
 extern func ColorToInt(color: Color) sint; # Get hexadecimal value for a Color
 extern func ColorNormalize(color: Color) Vector4; # Get Color normalized as float [0..1]
 extern func ColorFromNormalized(normalized: Vector4) Color; # Get Color from normalized values [0..1]
 extern func ColorToHSV(color: Color) Vector3; # Get HSV values for a Color, hue [0..360], saturation/value [0..1]
 extern func ColorFromHSV(hue: f32, saturation: f32, value: f32) Color; # Get a Color from HSV values, hue [0..360], saturation/value [0..1]
+extern func ColorTint(color: Color, tint: Color) Color; # Get color multiplied with another color
+extern func ColorBrightness(color: Color, factor: f32) Color; # Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
+extern func ColorContrast(color: Color, contrast: f32) Color; # Get color with contrast correction, contrast values between -1.0f and 1.0f
 extern func ColorAlpha(color: Color, alpha: f32) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
 extern func ColorAlphaBlend(dst: Color, src: Color, tint: Color) Color; # Get src alpha-blended into dst color with tint
 extern func GetColor(hexValue: uint) Color; # Get Color structure from hexadecimal value
@@ -976,6 +979,7 @@ extern func LoadFont(fileName: *char) Font; # Load font from file into GPU memor
 extern func LoadFontEx(fileName: *char, fontSize: sint, fontChars: *sint, glyphCount: sint) Font; # Load font from file with extended parameters, use NULL for fontChars and 0 for glyphCount to load the default character set
 extern func LoadFontFromImage(image: Image, key: Color, firstChar: sint) Font; # Load font from Image (XNA style)
 extern func LoadFontFromMemory(fileType: *char, fileData: *uchar, dataSize: sint, fontSize: sint, fontChars: *sint, glyphCount: sint) Font; # Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
+extern func IsFontReady(font: Font) bool; # Check if a font is ready
 extern func LoadFontData(fileData: *uchar, dataSize: sint, fontSize: sint, fontChars: *sint, glyphCount: sint, type: sint) *GlyphInfo; # Load font data for further use
 extern func GenImageFontAtlas(chars: *GlyphInfo, recs: **Rectangle, glyphCount: sint, fontSize: sint, padding: sint, packMethod: sint) Image; # Generate image font atlas using chars info
 extern func UnloadFontData(chars: *GlyphInfo, glyphCount: sint) void; # Unload font chars info data (RAM)
@@ -1026,8 +1030,6 @@ extern func DrawCube(position: Vector3, width: f32, height: f32, length: f32, co
 extern func DrawCubeV(position: Vector3, size: Vector3, color: Color) void; # Draw cube (Vector version)
 extern func DrawCubeWires(position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube wires
 extern func DrawCubeWiresV(position: Vector3, size: Vector3, color: Color) void; # Draw cube wires (Vector version)
-extern func DrawCubeTexture(texture: Texture2D, position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube textured
-extern func DrawCubeTextureRec(texture: Texture2D, source: Rectangle, position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube with a region of a texture
 extern func DrawSphere(centerPos: Vector3, radius: f32, color: Color) void; # Draw sphere
 extern func DrawSphereEx(centerPos: Vector3, radius: f32, rings: sint, slices: sint, color: Color) void; # Draw sphere with extended parameters
 extern func DrawSphereWires(centerPos: Vector3, radius: f32, rings: sint, slices: sint, color: Color) void; # Draw sphere wires
@@ -1035,13 +1037,15 @@ extern func DrawCylinder(position: Vector3, radiusTop: f32, radiusBottom: f32, h
 extern func DrawCylinderEx(startPos: Vector3, endPos: Vector3, startRadius: f32, endRadius: f32, sides: sint, color: Color) void; # Draw a cylinder with base at startPos and top at endPos
 extern func DrawCylinderWires(position: Vector3, radiusTop: f32, radiusBottom: f32, height: f32, slices: sint, color: Color) void; # Draw a cylinder/cone wires
 extern func DrawCylinderWiresEx(startPos: Vector3, endPos: Vector3, startRadius: f32, endRadius: f32, sides: sint, color: Color) void; # Draw a cylinder wires with base at startPos and top at endPos
+extern func DrawCapsule(startPos: Vector3, endPos: Vector3, radius: f32, slices: sint, rings: sint, color: Color) void; # Draw a capsule with the center of its sphere caps at startPos and endPos
+extern func DrawCapsuleWires(startPos: Vector3, endPos: Vector3, radius: f32, slices: sint, rings: sint, color: Color) void; # Draw capsule wireframe with the center of its sphere caps at startPos and endPos
 extern func DrawPlane(centerPos: Vector3, size: Vector2, color: Color) void; # Draw a plane XZ
 extern func DrawRay(ray: Ray, color: Color) void; # Draw a ray line
 extern func DrawGrid(slices: sint, spacing: f32) void; # Draw a grid (centered at (0, 0, 0))
 extern func LoadModel(fileName: *char) Model; # Load model from files (meshes and materials)
 extern func LoadModelFromMesh(mesh: Mesh) Model; # Load model from generated mesh (default material)
+extern func IsModelReady(model: Model) bool; # Check if a model is ready
 extern func UnloadModel(model: Model) void; # Unload model (including meshes) from memory (RAM and/or VRAM)
-extern func UnloadModelKeepMeshes(model: Model) void; # Unload model (but not meshes) from memory (RAM and/or VRAM)
 extern func GetModelBoundingBox(model: Model) BoundingBox; # Compute model bounding box limits (considers all meshes)
 extern func DrawModel(model: Model, position: Vector3, scale: f32, tint: Color) void; # Draw a model (with texture if set)
 extern func DrawModelEx(model: Model, position: Vector3, rotationAxis: Vector3, rotationAngle: f32, scale: Vector3, tint: Color) void; # Draw a model with extended parameters
@@ -1072,6 +1076,7 @@ extern func GenMeshHeightmap(heightmap: Image, size: Vector3) Mesh; # Generate h
 extern func GenMeshCubicmap(cubicmap: Image, cubeSize: Vector3) Mesh; # Generate cubes-based map mesh from image data
 extern func LoadMaterials(fileName: *char, materialCount: *sint) *Material; # Load materials from model file
 extern func LoadMaterialDefault() Material; # Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
+extern func IsMaterialReady(material: Material) bool; # Check if a material is ready
 extern func UnloadMaterial(material: Material) void; # Unload material from GPU memory (VRAM)
 extern func SetMaterialTexture(material: *Material, mapType: sint, texture: Texture2D) void; # Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)
 extern func SetModelMeshMaterial(model: *Model, meshId: sint, materialId: sint) void; # Set material for a mesh
@@ -1094,8 +1099,10 @@ extern func IsAudioDeviceReady() bool; # Check if audio device has been initiali
 extern func SetMasterVolume(volume: f32) void; # Set master volume (listener)
 extern func LoadWave(fileName: *char) Wave; # Load wave data from file
 extern func LoadWaveFromMemory(fileType: *char, fileData: *uchar, dataSize: sint) Wave; # Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
+extern func IsWaveReady(wave: Wave) bool; # Checks if wave data is ready
 extern func LoadSound(fileName: *char) Sound; # Load sound from file
 extern func LoadSoundFromWave(wave: Wave) Sound; # Load sound from wave data
+extern func IsSoundReady(sound: Sound) bool; # Checks if a sound is ready
 extern func UpdateSound(sound: Sound, data: *void, sampleCount: sint) void; # Update sound buffer with new data
 extern func UnloadWave(wave: Wave) void; # Unload wave data
 extern func UnloadSound(sound: Sound) void; # Unload sound
@@ -1105,9 +1112,6 @@ extern func PlaySound(sound: Sound) void; # Play a sound
 extern func StopSound(sound: Sound) void; # Stop playing a sound
 extern func PauseSound(sound: Sound) void; # Pause a sound
 extern func ResumeSound(sound: Sound) void; # Resume a paused sound
-extern func PlaySoundMulti(sound: Sound) void; # Play a sound (using multichannel buffer pool)
-extern func StopSoundMulti() void; # Stop any sound playing (using multichannel buffer pool)
-extern func GetSoundsPlaying() sint; # Get number of sounds playing in the multichannel
 extern func IsSoundPlaying(sound: Sound) bool; # Check if a sound is currently playing
 extern func SetSoundVolume(sound: Sound, volume: f32) void; # Set volume for a sound (1.0 is max level)
 extern func SetSoundPitch(sound: Sound, pitch: f32) void; # Set pitch for a sound (1.0 is base level)
@@ -1119,6 +1123,7 @@ extern func LoadWaveSamples(wave: Wave) *f32; # Load samples data from wave as a
 extern func UnloadWaveSamples(samples: *f32) void; # Unload samples data loaded with LoadWaveSamples()
 extern func LoadMusicStream(fileName: *char) Music; # Load music stream from file
 extern func LoadMusicStreamFromMemory(fileType: *char, data: *uchar, dataSize: sint) Music; # Load music stream from data
+extern func IsMusicReady(music: Music) bool; # Checks if a music stream is ready
 extern func UnloadMusicStream(music: Music) void; # Unload music stream
 extern func PlayMusicStream(music: Music) void; # Start music playing
 extern func IsMusicStreamPlaying(music: Music) bool; # Check if music is playing
@@ -1133,6 +1138,7 @@ extern func SetMusicPan(music: Music, pan: f32) void; # Set pan for a music (0.5
 extern func GetMusicTimeLength(music: Music) f32; # Get music time length (in seconds)
 extern func GetMusicTimePlayed(music: Music) f32; # Get current music time played (in seconds)
 extern func LoadAudioStream(sampleRate: uint, sampleSize: uint, channels: uint) AudioStream; # Load audio stream (to stream raw audio pcm data)
+extern func IsAudioStreamReady(stream: AudioStream) bool; # Checks if an audio stream is ready
 extern func UnloadAudioStream(stream: AudioStream) void; # Unload audio stream and free memory
 extern func UpdateAudioStream(stream: AudioStream, data: *void, frameCount: sint) void; # Update audio stream buffers with data
 extern func IsAudioStreamProcessed(stream: AudioStream) bool; # Check if any audio stream buffers requires refill
@@ -1148,3 +1154,5 @@ extern func SetAudioStreamBufferSizeDefault(size: sint) void; # Default size for
 extern func SetAudioStreamCallback(stream: AudioStream, callback: AudioCallback) void; # Audio thread callback to request new data
 extern func AttachAudioStreamProcessor(stream: AudioStream, processor: AudioCallback) void; # Attach audio stream processor to stream
 extern func DetachAudioStreamProcessor(stream: AudioStream, processor: AudioCallback) void; # Detach audio stream processor from stream
+extern func AttachAudioMixedProcessor(processor: AudioCallback) void; # Attach audio stream processor to the entire audio pipeline
+extern func DetachAudioMixedProcessor(processor: AudioCallback) void; # Detach audio stream processor from the entire audio pipeline

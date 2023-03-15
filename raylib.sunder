@@ -1,0 +1,1150 @@
+import "c";
+
+let RAYLIB_VERSION = "4.5-dev";
+
+let LIGHTGRAY = (:Color){.r=200, .g=200, .b=200, .a=255}; # Light Gray
+let GRAY = (:Color){.r=130, .g=130, .b=130, .a=255}; # Gray
+let DARKGRAY = (:Color){.r=80, .g=80, .b=80, .a=255}; # Dark Gray
+let YELLOW = (:Color){.r=253, .g=249, .b=0, .a=255}; # Yellow
+let GOLD = (:Color){.r=255, .g=203, .b=0, .a=255}; # Gold
+let ORANGE = (:Color){.r=255, .g=161, .b=0, .a=255}; # Orange
+let PINK = (:Color){.r=255, .g=109, .b=194, .a=255}; # Pink
+let RED = (:Color){.r=230, .g=41, .b=55, .a=255}; # Red
+let MAROON = (:Color){.r=190, .g=33, .b=55, .a=255}; # Maroon
+let GREEN = (:Color){.r=0, .g=228, .b=48, .a=255}; # Green
+let LIME = (:Color){.r=0, .g=158, .b=47, .a=255}; # Lime
+let DARKGREEN = (:Color){.r=0, .g=117, .b=44, .a=255}; # Dark Green
+let SKYBLUE = (:Color){.r=102, .g=191, .b=255, .a=255}; # Sky Blue
+let BLUE = (:Color){.r=0, .g=121, .b=241, .a=255}; # Blue
+let DARKBLUE = (:Color){.r=0, .g=82, .b=172, .a=255}; # Dark Blue
+let PURPLE = (:Color){.r=200, .g=122, .b=255, .a=255}; # Purple
+let VIOLET = (:Color){.r=135, .g=60, .b=190, .a=255}; # Violet
+let DARKPURPLE = (:Color){.r=112, .g=31, .b=126, .a=255}; # Dark Purple
+let BEIGE = (:Color){.r=211, .g=176, .b=131, .a=255}; # Beige
+let BROWN = (:Color){.r=127, .g=106, .b=79, .a=255}; # Brown
+let DARKBROWN = (:Color){.r=76, .g=63, .b=47, .a=255}; # Dark Brown
+let WHITE = (:Color){.r=255, .g=255, .b=255, .a=255}; # White
+let BLACK = (:Color){.r=0, .g=0, .b=0, .a=255}; # Black
+let BLANK = (:Color){.r=0, .g=0, .b=0, .a=0}; # Blank (Transparent)
+let MAGENTA = (:Color){.r=255, .g=0, .b=255, .a=255}; # Magenta
+let RAYWHITE = (:Color){.r=245, .g=245, .b=245, .a=255}; # My own White (raylib logo)
+
+alias Quaternion = Vector4; # Quaternion, 4 components (Vector4 alias)
+alias Texture2D = Texture; # Texture2D, same as Texture
+alias TextureCubemap = Texture; # TextureCubemap, same as Texture
+alias RenderTexture2D = RenderTexture; # RenderTexture2D, same as RenderTexture
+alias Camera = Camera3D; # Camera type fallback, defaults to Camera3D
+
+alias rAudioBuffer = any; # opaque struct
+alias rAudioProcessor = any; # opaque struct
+
+# [SKIPPED] TraceLogCallback: Callback of type `func(sint, *char, va_list) void` is variadic.
+alias TraceLogCallback = *any; # Logging: Redirect trace log messages
+alias LoadFileDataCallback = func(*char, *uint) *uchar; # FileIO: Load binary data
+alias SaveFileDataCallback = func(*char, *void, uint) bool; # FileIO: Save binary data
+alias LoadFileTextCallback = func(*char) *char; # FileIO: Load text data
+alias SaveFileTextCallback = func(*char, *char) bool; # FileIO: Save text data
+alias AudioCallback = func(*void, uint) void;
+
+alias ConfigFlags = s32; # (enum) System/Window config flags
+let FLAG_VSYNC_HINT: ConfigFlags = 64; # Set to try enabling V-Sync on GPU
+let FLAG_FULLSCREEN_MODE: ConfigFlags = 2; # Set to run program in fullscreen
+let FLAG_WINDOW_RESIZABLE: ConfigFlags = 4; # Set to allow resizable window
+let FLAG_WINDOW_UNDECORATED: ConfigFlags = 8; # Set to disable window decoration (frame and buttons)
+let FLAG_WINDOW_HIDDEN: ConfigFlags = 128; # Set to hide window
+let FLAG_WINDOW_MINIMIZED: ConfigFlags = 512; # Set to minimize window (iconify)
+let FLAG_WINDOW_MAXIMIZED: ConfigFlags = 1024; # Set to maximize window (expanded to monitor)
+let FLAG_WINDOW_UNFOCUSED: ConfigFlags = 2048; # Set to window non focused
+let FLAG_WINDOW_TOPMOST: ConfigFlags = 4096; # Set to window always on top
+let FLAG_WINDOW_ALWAYS_RUN: ConfigFlags = 256; # Set to allow windows running while minimized
+let FLAG_WINDOW_TRANSPARENT: ConfigFlags = 16; # Set to allow transparent framebuffer
+let FLAG_WINDOW_HIGHDPI: ConfigFlags = 8192; # Set to support HighDPI
+let FLAG_WINDOW_MOUSE_PASSTHROUGH: ConfigFlags = 16384; # Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+let FLAG_MSAA_4X_HINT: ConfigFlags = 32; # Set to try enabling MSAA 4X
+let FLAG_INTERLACED_HINT: ConfigFlags = 65536; # Set to try enabling interlaced video format (for V3D)
+
+alias TraceLogLevel = s32; # (enum) Trace log level
+let LOG_ALL: TraceLogLevel = 0; # Display all logs
+let LOG_TRACE: TraceLogLevel = 1; # Trace logging, intended for internal use only
+let LOG_DEBUG: TraceLogLevel = 2; # Debug logging, used for internal debugging, it should be disabled on release builds
+let LOG_INFO: TraceLogLevel = 3; # Info logging, used for program execution info
+let LOG_WARNING: TraceLogLevel = 4; # Warning logging, used on recoverable failures
+let LOG_ERROR: TraceLogLevel = 5; # Error logging, used on unrecoverable failures
+let LOG_FATAL: TraceLogLevel = 6; # Fatal logging, used to abort program: exit(EXIT_FAILURE)
+let LOG_NONE: TraceLogLevel = 7; # Disable logging
+
+alias KeyboardKey = s32; # (enum) Keyboard keys (US keyboard layout)
+let KEY_NULL: KeyboardKey = 0; # Key: NULL, used for no key pressed
+let KEY_APOSTROPHE: KeyboardKey = 39; # Key: '
+let KEY_COMMA: KeyboardKey = 44; # Key: ,
+let KEY_MINUS: KeyboardKey = 45; # Key: -
+let KEY_PERIOD: KeyboardKey = 46; # Key: .
+let KEY_SLASH: KeyboardKey = 47; # Key: /
+let KEY_ZERO: KeyboardKey = 48; # Key: 0
+let KEY_ONE: KeyboardKey = 49; # Key: 1
+let KEY_TWO: KeyboardKey = 50; # Key: 2
+let KEY_THREE: KeyboardKey = 51; # Key: 3
+let KEY_FOUR: KeyboardKey = 52; # Key: 4
+let KEY_FIVE: KeyboardKey = 53; # Key: 5
+let KEY_SIX: KeyboardKey = 54; # Key: 6
+let KEY_SEVEN: KeyboardKey = 55; # Key: 7
+let KEY_EIGHT: KeyboardKey = 56; # Key: 8
+let KEY_NINE: KeyboardKey = 57; # Key: 9
+let KEY_SEMICOLON: KeyboardKey = 59; # Key: ;
+let KEY_EQUAL: KeyboardKey = 61; # Key: =
+let KEY_A: KeyboardKey = 65; # Key: A | a
+let KEY_B: KeyboardKey = 66; # Key: B | b
+let KEY_C: KeyboardKey = 67; # Key: C | c
+let KEY_D: KeyboardKey = 68; # Key: D | d
+let KEY_E: KeyboardKey = 69; # Key: E | e
+let KEY_F: KeyboardKey = 70; # Key: F | f
+let KEY_G: KeyboardKey = 71; # Key: G | g
+let KEY_H: KeyboardKey = 72; # Key: H | h
+let KEY_I: KeyboardKey = 73; # Key: I | i
+let KEY_J: KeyboardKey = 74; # Key: J | j
+let KEY_K: KeyboardKey = 75; # Key: K | k
+let KEY_L: KeyboardKey = 76; # Key: L | l
+let KEY_M: KeyboardKey = 77; # Key: M | m
+let KEY_N: KeyboardKey = 78; # Key: N | n
+let KEY_O: KeyboardKey = 79; # Key: O | o
+let KEY_P: KeyboardKey = 80; # Key: P | p
+let KEY_Q: KeyboardKey = 81; # Key: Q | q
+let KEY_R: KeyboardKey = 82; # Key: R | r
+let KEY_S: KeyboardKey = 83; # Key: S | s
+let KEY_T: KeyboardKey = 84; # Key: T | t
+let KEY_U: KeyboardKey = 85; # Key: U | u
+let KEY_V: KeyboardKey = 86; # Key: V | v
+let KEY_W: KeyboardKey = 87; # Key: W | w
+let KEY_X: KeyboardKey = 88; # Key: X | x
+let KEY_Y: KeyboardKey = 89; # Key: Y | y
+let KEY_Z: KeyboardKey = 90; # Key: Z | z
+let KEY_LEFT_BRACKET: KeyboardKey = 91; # Key: [
+let KEY_BACKSLASH: KeyboardKey = 92; # Key: '\'
+let KEY_RIGHT_BRACKET: KeyboardKey = 93; # Key: ]
+let KEY_GRAVE: KeyboardKey = 96; # Key: `
+let KEY_SPACE: KeyboardKey = 32; # Key: Space
+let KEY_ESCAPE: KeyboardKey = 256; # Key: Esc
+let KEY_ENTER: KeyboardKey = 257; # Key: Enter
+let KEY_TAB: KeyboardKey = 258; # Key: Tab
+let KEY_BACKSPACE: KeyboardKey = 259; # Key: Backspace
+let KEY_INSERT: KeyboardKey = 260; # Key: Ins
+let KEY_DELETE: KeyboardKey = 261; # Key: Del
+let KEY_RIGHT: KeyboardKey = 262; # Key: Cursor right
+let KEY_LEFT: KeyboardKey = 263; # Key: Cursor left
+let KEY_DOWN: KeyboardKey = 264; # Key: Cursor down
+let KEY_UP: KeyboardKey = 265; # Key: Cursor up
+let KEY_PAGE_UP: KeyboardKey = 266; # Key: Page up
+let KEY_PAGE_DOWN: KeyboardKey = 267; # Key: Page down
+let KEY_HOME: KeyboardKey = 268; # Key: Home
+let KEY_END: KeyboardKey = 269; # Key: End
+let KEY_CAPS_LOCK: KeyboardKey = 280; # Key: Caps lock
+let KEY_SCROLL_LOCK: KeyboardKey = 281; # Key: Scroll down
+let KEY_NUM_LOCK: KeyboardKey = 282; # Key: Num lock
+let KEY_PRINT_SCREEN: KeyboardKey = 283; # Key: Print screen
+let KEY_PAUSE: KeyboardKey = 284; # Key: Pause
+let KEY_F1: KeyboardKey = 290; # Key: F1
+let KEY_F2: KeyboardKey = 291; # Key: F2
+let KEY_F3: KeyboardKey = 292; # Key: F3
+let KEY_F4: KeyboardKey = 293; # Key: F4
+let KEY_F5: KeyboardKey = 294; # Key: F5
+let KEY_F6: KeyboardKey = 295; # Key: F6
+let KEY_F7: KeyboardKey = 296; # Key: F7
+let KEY_F8: KeyboardKey = 297; # Key: F8
+let KEY_F9: KeyboardKey = 298; # Key: F9
+let KEY_F10: KeyboardKey = 299; # Key: F10
+let KEY_F11: KeyboardKey = 300; # Key: F11
+let KEY_F12: KeyboardKey = 301; # Key: F12
+let KEY_LEFT_SHIFT: KeyboardKey = 340; # Key: Shift left
+let KEY_LEFT_CONTROL: KeyboardKey = 341; # Key: Control left
+let KEY_LEFT_ALT: KeyboardKey = 342; # Key: Alt left
+let KEY_LEFT_SUPER: KeyboardKey = 343; # Key: Super left
+let KEY_RIGHT_SHIFT: KeyboardKey = 344; # Key: Shift right
+let KEY_RIGHT_CONTROL: KeyboardKey = 345; # Key: Control right
+let KEY_RIGHT_ALT: KeyboardKey = 346; # Key: Alt right
+let KEY_RIGHT_SUPER: KeyboardKey = 347; # Key: Super right
+let KEY_KB_MENU: KeyboardKey = 348; # Key: KB menu
+let KEY_KP_0: KeyboardKey = 320; # Key: Keypad 0
+let KEY_KP_1: KeyboardKey = 321; # Key: Keypad 1
+let KEY_KP_2: KeyboardKey = 322; # Key: Keypad 2
+let KEY_KP_3: KeyboardKey = 323; # Key: Keypad 3
+let KEY_KP_4: KeyboardKey = 324; # Key: Keypad 4
+let KEY_KP_5: KeyboardKey = 325; # Key: Keypad 5
+let KEY_KP_6: KeyboardKey = 326; # Key: Keypad 6
+let KEY_KP_7: KeyboardKey = 327; # Key: Keypad 7
+let KEY_KP_8: KeyboardKey = 328; # Key: Keypad 8
+let KEY_KP_9: KeyboardKey = 329; # Key: Keypad 9
+let KEY_KP_DECIMAL: KeyboardKey = 330; # Key: Keypad .
+let KEY_KP_DIVIDE: KeyboardKey = 331; # Key: Keypad /
+let KEY_KP_MULTIPLY: KeyboardKey = 332; # Key: Keypad *
+let KEY_KP_SUBTRACT: KeyboardKey = 333; # Key: Keypad -
+let KEY_KP_ADD: KeyboardKey = 334; # Key: Keypad +
+let KEY_KP_ENTER: KeyboardKey = 335; # Key: Keypad Enter
+let KEY_KP_EQUAL: KeyboardKey = 336; # Key: Keypad =
+let KEY_BACK: KeyboardKey = 4; # Key: Android back button
+let KEY_MENU: KeyboardKey = 82; # Key: Android menu button
+let KEY_VOLUME_UP: KeyboardKey = 24; # Key: Android volume up button
+let KEY_VOLUME_DOWN: KeyboardKey = 25; # Key: Android volume down button
+
+alias MouseButton = s32; # (enum) Mouse buttons
+let MOUSE_BUTTON_LEFT: MouseButton = 0; # Mouse button left
+let MOUSE_BUTTON_RIGHT: MouseButton = 1; # Mouse button right
+let MOUSE_BUTTON_MIDDLE: MouseButton = 2; # Mouse button middle (pressed wheel)
+let MOUSE_BUTTON_SIDE: MouseButton = 3; # Mouse button side (advanced mouse device)
+let MOUSE_BUTTON_EXTRA: MouseButton = 4; # Mouse button extra (advanced mouse device)
+let MOUSE_BUTTON_FORWARD: MouseButton = 5; # Mouse button forward (advanced mouse device)
+let MOUSE_BUTTON_BACK: MouseButton = 6; # Mouse button back (advanced mouse device)
+
+alias MouseCursor = s32; # (enum) Mouse cursor
+let MOUSE_CURSOR_DEFAULT: MouseCursor = 0; # Default pointer shape
+let MOUSE_CURSOR_ARROW: MouseCursor = 1; # Arrow shape
+let MOUSE_CURSOR_IBEAM: MouseCursor = 2; # Text writing cursor shape
+let MOUSE_CURSOR_CROSSHAIR: MouseCursor = 3; # Cross shape
+let MOUSE_CURSOR_POINTING_HAND: MouseCursor = 4; # Pointing hand cursor
+let MOUSE_CURSOR_RESIZE_EW: MouseCursor = 5; # Horizontal resize/move arrow shape
+let MOUSE_CURSOR_RESIZE_NS: MouseCursor = 6; # Vertical resize/move arrow shape
+let MOUSE_CURSOR_RESIZE_NWSE: MouseCursor = 7; # Top-left to bottom-right diagonal resize/move arrow shape
+let MOUSE_CURSOR_RESIZE_NESW: MouseCursor = 8; # The top-right to bottom-left diagonal resize/move arrow shape
+let MOUSE_CURSOR_RESIZE_ALL: MouseCursor = 9; # The omni-directional resize/move cursor shape
+let MOUSE_CURSOR_NOT_ALLOWED: MouseCursor = 10; # The operation-not-allowed shape
+
+alias GamepadButton = s32; # (enum) Gamepad buttons
+let GAMEPAD_BUTTON_UNKNOWN: GamepadButton = 0; # Unknown button, just for error checking
+let GAMEPAD_BUTTON_LEFT_FACE_UP: GamepadButton = 1; # Gamepad left DPAD up button
+let GAMEPAD_BUTTON_LEFT_FACE_RIGHT: GamepadButton = 2; # Gamepad left DPAD right button
+let GAMEPAD_BUTTON_LEFT_FACE_DOWN: GamepadButton = 3; # Gamepad left DPAD down button
+let GAMEPAD_BUTTON_LEFT_FACE_LEFT: GamepadButton = 4; # Gamepad left DPAD left button
+let GAMEPAD_BUTTON_RIGHT_FACE_UP: GamepadButton = 5; # Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
+let GAMEPAD_BUTTON_RIGHT_FACE_RIGHT: GamepadButton = 6; # Gamepad right button right (i.e. PS3: Square, Xbox: X)
+let GAMEPAD_BUTTON_RIGHT_FACE_DOWN: GamepadButton = 7; # Gamepad right button down (i.e. PS3: Cross, Xbox: A)
+let GAMEPAD_BUTTON_RIGHT_FACE_LEFT: GamepadButton = 8; # Gamepad right button left (i.e. PS3: Circle, Xbox: B)
+let GAMEPAD_BUTTON_LEFT_TRIGGER_1: GamepadButton = 9; # Gamepad top/back trigger left (first), it could be a trailing button
+let GAMEPAD_BUTTON_LEFT_TRIGGER_2: GamepadButton = 10; # Gamepad top/back trigger left (second), it could be a trailing button
+let GAMEPAD_BUTTON_RIGHT_TRIGGER_1: GamepadButton = 11; # Gamepad top/back trigger right (one), it could be a trailing button
+let GAMEPAD_BUTTON_RIGHT_TRIGGER_2: GamepadButton = 12; # Gamepad top/back trigger right (second), it could be a trailing button
+let GAMEPAD_BUTTON_MIDDLE_LEFT: GamepadButton = 13; # Gamepad center buttons, left one (i.e. PS3: Select)
+let GAMEPAD_BUTTON_MIDDLE: GamepadButton = 14; # Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
+let GAMEPAD_BUTTON_MIDDLE_RIGHT: GamepadButton = 15; # Gamepad center buttons, right one (i.e. PS3: Start)
+let GAMEPAD_BUTTON_LEFT_THUMB: GamepadButton = 16; # Gamepad joystick pressed button left
+let GAMEPAD_BUTTON_RIGHT_THUMB: GamepadButton = 17; # Gamepad joystick pressed button right
+
+alias GamepadAxis = s32; # (enum) Gamepad axis
+let GAMEPAD_AXIS_LEFT_X: GamepadAxis = 0; # Gamepad left stick X axis
+let GAMEPAD_AXIS_LEFT_Y: GamepadAxis = 1; # Gamepad left stick Y axis
+let GAMEPAD_AXIS_RIGHT_X: GamepadAxis = 2; # Gamepad right stick X axis
+let GAMEPAD_AXIS_RIGHT_Y: GamepadAxis = 3; # Gamepad right stick Y axis
+let GAMEPAD_AXIS_LEFT_TRIGGER: GamepadAxis = 4; # Gamepad back trigger left, pressure level: [1..-1]
+let GAMEPAD_AXIS_RIGHT_TRIGGER: GamepadAxis = 5; # Gamepad back trigger right, pressure level: [1..-1]
+
+alias MaterialMapIndex = s32; # (enum) Material map index
+let MATERIAL_MAP_ALBEDO: MaterialMapIndex = 0; # Albedo material (same as: MATERIAL_MAP_DIFFUSE)
+let MATERIAL_MAP_METALNESS: MaterialMapIndex = 1; # Metalness material (same as: MATERIAL_MAP_SPECULAR)
+let MATERIAL_MAP_NORMAL: MaterialMapIndex = 2; # Normal material
+let MATERIAL_MAP_ROUGHNESS: MaterialMapIndex = 3; # Roughness material
+let MATERIAL_MAP_OCCLUSION: MaterialMapIndex = 4; # Ambient occlusion material
+let MATERIAL_MAP_EMISSION: MaterialMapIndex = 5; # Emission material
+let MATERIAL_MAP_HEIGHT: MaterialMapIndex = 6; # Heightmap material
+let MATERIAL_MAP_CUBEMAP: MaterialMapIndex = 7; # Cubemap material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+let MATERIAL_MAP_IRRADIANCE: MaterialMapIndex = 8; # Irradiance material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+let MATERIAL_MAP_PREFILTER: MaterialMapIndex = 9; # Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+let MATERIAL_MAP_BRDF: MaterialMapIndex = 10; # Brdf material
+
+alias ShaderLocationIndex = s32; # (enum) Shader location index
+let SHADER_LOC_VERTEX_POSITION: ShaderLocationIndex = 0; # Shader location: vertex attribute: position
+let SHADER_LOC_VERTEX_TEXCOORD01: ShaderLocationIndex = 1; # Shader location: vertex attribute: texcoord01
+let SHADER_LOC_VERTEX_TEXCOORD02: ShaderLocationIndex = 2; # Shader location: vertex attribute: texcoord02
+let SHADER_LOC_VERTEX_NORMAL: ShaderLocationIndex = 3; # Shader location: vertex attribute: normal
+let SHADER_LOC_VERTEX_TANGENT: ShaderLocationIndex = 4; # Shader location: vertex attribute: tangent
+let SHADER_LOC_VERTEX_COLOR: ShaderLocationIndex = 5; # Shader location: vertex attribute: color
+let SHADER_LOC_MATRIX_MVP: ShaderLocationIndex = 6; # Shader location: matrix uniform: model-view-projection
+let SHADER_LOC_MATRIX_VIEW: ShaderLocationIndex = 7; # Shader location: matrix uniform: view (camera transform)
+let SHADER_LOC_MATRIX_PROJECTION: ShaderLocationIndex = 8; # Shader location: matrix uniform: projection
+let SHADER_LOC_MATRIX_MODEL: ShaderLocationIndex = 9; # Shader location: matrix uniform: model (transform)
+let SHADER_LOC_MATRIX_NORMAL: ShaderLocationIndex = 10; # Shader location: matrix uniform: normal
+let SHADER_LOC_VECTOR_VIEW: ShaderLocationIndex = 11; # Shader location: vector uniform: view
+let SHADER_LOC_COLOR_DIFFUSE: ShaderLocationIndex = 12; # Shader location: vector uniform: diffuse color
+let SHADER_LOC_COLOR_SPECULAR: ShaderLocationIndex = 13; # Shader location: vector uniform: specular color
+let SHADER_LOC_COLOR_AMBIENT: ShaderLocationIndex = 14; # Shader location: vector uniform: ambient color
+let SHADER_LOC_MAP_ALBEDO: ShaderLocationIndex = 15; # Shader location: sampler2d texture: albedo (same as: SHADER_LOC_MAP_DIFFUSE)
+let SHADER_LOC_MAP_METALNESS: ShaderLocationIndex = 16; # Shader location: sampler2d texture: metalness (same as: SHADER_LOC_MAP_SPECULAR)
+let SHADER_LOC_MAP_NORMAL: ShaderLocationIndex = 17; # Shader location: sampler2d texture: normal
+let SHADER_LOC_MAP_ROUGHNESS: ShaderLocationIndex = 18; # Shader location: sampler2d texture: roughness
+let SHADER_LOC_MAP_OCCLUSION: ShaderLocationIndex = 19; # Shader location: sampler2d texture: occlusion
+let SHADER_LOC_MAP_EMISSION: ShaderLocationIndex = 20; # Shader location: sampler2d texture: emission
+let SHADER_LOC_MAP_HEIGHT: ShaderLocationIndex = 21; # Shader location: sampler2d texture: height
+let SHADER_LOC_MAP_CUBEMAP: ShaderLocationIndex = 22; # Shader location: samplerCube texture: cubemap
+let SHADER_LOC_MAP_IRRADIANCE: ShaderLocationIndex = 23; # Shader location: samplerCube texture: irradiance
+let SHADER_LOC_MAP_PREFILTER: ShaderLocationIndex = 24; # Shader location: samplerCube texture: prefilter
+let SHADER_LOC_MAP_BRDF: ShaderLocationIndex = 25; # Shader location: sampler2d texture: brdf
+
+alias ShaderUniformDataType = s32; # (enum) Shader uniform data type
+let SHADER_UNIFORM_FLOAT: ShaderUniformDataType = 0; # Shader uniform type: float
+let SHADER_UNIFORM_VEC2: ShaderUniformDataType = 1; # Shader uniform type: vec2 (2 float)
+let SHADER_UNIFORM_VEC3: ShaderUniformDataType = 2; # Shader uniform type: vec3 (3 float)
+let SHADER_UNIFORM_VEC4: ShaderUniformDataType = 3; # Shader uniform type: vec4 (4 float)
+let SHADER_UNIFORM_INT: ShaderUniformDataType = 4; # Shader uniform type: int
+let SHADER_UNIFORM_IVEC2: ShaderUniformDataType = 5; # Shader uniform type: ivec2 (2 int)
+let SHADER_UNIFORM_IVEC3: ShaderUniformDataType = 6; # Shader uniform type: ivec3 (3 int)
+let SHADER_UNIFORM_IVEC4: ShaderUniformDataType = 7; # Shader uniform type: ivec4 (4 int)
+let SHADER_UNIFORM_SAMPLER2D: ShaderUniformDataType = 8; # Shader uniform type: sampler2d
+
+alias ShaderAttributeDataType = s32; # (enum) Shader attribute data types
+let SHADER_ATTRIB_FLOAT: ShaderAttributeDataType = 0; # Shader attribute type: float
+let SHADER_ATTRIB_VEC2: ShaderAttributeDataType = 1; # Shader attribute type: vec2 (2 float)
+let SHADER_ATTRIB_VEC3: ShaderAttributeDataType = 2; # Shader attribute type: vec3 (3 float)
+let SHADER_ATTRIB_VEC4: ShaderAttributeDataType = 3; # Shader attribute type: vec4 (4 float)
+
+alias PixelFormat = s32; # (enum) Pixel formats
+let PIXELFORMAT_UNCOMPRESSED_GRAYSCALE: PixelFormat = 1; # 8 bit per pixel (no alpha)
+let PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA: PixelFormat = 2; # 8*2 bpp (2 channels)
+let PIXELFORMAT_UNCOMPRESSED_R5G6B5: PixelFormat = 3; # 16 bpp
+let PIXELFORMAT_UNCOMPRESSED_R8G8B8: PixelFormat = 4; # 24 bpp
+let PIXELFORMAT_UNCOMPRESSED_R5G5B5A1: PixelFormat = 5; # 16 bpp (1 bit alpha)
+let PIXELFORMAT_UNCOMPRESSED_R4G4B4A4: PixelFormat = 6; # 16 bpp (4 bit alpha)
+let PIXELFORMAT_UNCOMPRESSED_R8G8B8A8: PixelFormat = 7; # 32 bpp
+let PIXELFORMAT_UNCOMPRESSED_R32: PixelFormat = 8; # 32 bpp (1 channel - float)
+let PIXELFORMAT_UNCOMPRESSED_R32G32B32: PixelFormat = 9; # 32*3 bpp (3 channels - float)
+let PIXELFORMAT_UNCOMPRESSED_R32G32B32A32: PixelFormat = 10; # 32*4 bpp (4 channels - float)
+let PIXELFORMAT_COMPRESSED_DXT1_RGB: PixelFormat = 11; # 4 bpp (no alpha)
+let PIXELFORMAT_COMPRESSED_DXT1_RGBA: PixelFormat = 12; # 4 bpp (1 bit alpha)
+let PIXELFORMAT_COMPRESSED_DXT3_RGBA: PixelFormat = 13; # 8 bpp
+let PIXELFORMAT_COMPRESSED_DXT5_RGBA: PixelFormat = 14; # 8 bpp
+let PIXELFORMAT_COMPRESSED_ETC1_RGB: PixelFormat = 15; # 4 bpp
+let PIXELFORMAT_COMPRESSED_ETC2_RGB: PixelFormat = 16; # 4 bpp
+let PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA: PixelFormat = 17; # 8 bpp
+let PIXELFORMAT_COMPRESSED_PVRT_RGB: PixelFormat = 18; # 4 bpp
+let PIXELFORMAT_COMPRESSED_PVRT_RGBA: PixelFormat = 19; # 4 bpp
+let PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA: PixelFormat = 20; # 8 bpp
+let PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA: PixelFormat = 21; # 2 bpp
+
+alias TextureFilter = s32; # (enum) Texture parameters: filter mode
+let TEXTURE_FILTER_POINT: TextureFilter = 0; # No filter, just pixel approximation
+let TEXTURE_FILTER_BILINEAR: TextureFilter = 1; # Linear filtering
+let TEXTURE_FILTER_TRILINEAR: TextureFilter = 2; # Trilinear filtering (linear with mipmaps)
+let TEXTURE_FILTER_ANISOTROPIC_4X: TextureFilter = 3; # Anisotropic filtering 4x
+let TEXTURE_FILTER_ANISOTROPIC_8X: TextureFilter = 4; # Anisotropic filtering 8x
+let TEXTURE_FILTER_ANISOTROPIC_16X: TextureFilter = 5; # Anisotropic filtering 16x
+
+alias TextureWrap = s32; # (enum) Texture parameters: wrap mode
+let TEXTURE_WRAP_REPEAT: TextureWrap = 0; # Repeats texture in tiled mode
+let TEXTURE_WRAP_CLAMP: TextureWrap = 1; # Clamps texture to edge pixel in tiled mode
+let TEXTURE_WRAP_MIRROR_REPEAT: TextureWrap = 2; # Mirrors and repeats the texture in tiled mode
+let TEXTURE_WRAP_MIRROR_CLAMP: TextureWrap = 3; # Mirrors and clamps to border the texture in tiled mode
+
+alias CubemapLayout = s32; # (enum) Cubemap layouts
+let CUBEMAP_LAYOUT_AUTO_DETECT: CubemapLayout = 0; # Automatically detect layout type
+let CUBEMAP_LAYOUT_LINE_VERTICAL: CubemapLayout = 1; # Layout is defined by a vertical line with faces
+let CUBEMAP_LAYOUT_LINE_HORIZONTAL: CubemapLayout = 2; # Layout is defined by an horizontal line with faces
+let CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR: CubemapLayout = 3; # Layout is defined by a 3x4 cross with cubemap faces
+let CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE: CubemapLayout = 4; # Layout is defined by a 4x3 cross with cubemap faces
+let CUBEMAP_LAYOUT_PANORAMA: CubemapLayout = 5; # Layout is defined by a panorama image (equirectangular map)
+
+alias FontType = s32; # (enum) Font type, defines generation method
+let FONT_DEFAULT: FontType = 0; # Default font generation, anti-aliased
+let FONT_BITMAP: FontType = 1; # Bitmap font generation, no anti-aliasing
+let FONT_SDF: FontType = 2; # SDF font generation, requires external shader
+
+alias BlendMode = s32; # (enum) Color blending modes (pre-defined)
+let BLEND_ALPHA: BlendMode = 0; # Blend textures considering alpha (default)
+let BLEND_ADDITIVE: BlendMode = 1; # Blend textures adding colors
+let BLEND_MULTIPLIED: BlendMode = 2; # Blend textures multiplying colors
+let BLEND_ADD_COLORS: BlendMode = 3; # Blend textures adding colors (alternative)
+let BLEND_SUBTRACT_COLORS: BlendMode = 4; # Blend textures subtracting colors (alternative)
+let BLEND_ALPHA_PREMULTIPLY: BlendMode = 5; # Blend premultiplied textures considering alpha
+let BLEND_CUSTOM: BlendMode = 6; # Blend textures using custom src/dst factors (use rlSetBlendMode())
+let BLEND_CUSTOM_SEPARATE: BlendMode = 7; # Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendModeSeparate())
+
+alias Gesture = s32; # (enum) Gesture
+let GESTURE_NONE: Gesture = 0; # No gesture
+let GESTURE_TAP: Gesture = 1; # Tap gesture
+let GESTURE_DOUBLETAP: Gesture = 2; # Double tap gesture
+let GESTURE_HOLD: Gesture = 4; # Hold gesture
+let GESTURE_DRAG: Gesture = 8; # Drag gesture
+let GESTURE_SWIPE_RIGHT: Gesture = 16; # Swipe right gesture
+let GESTURE_SWIPE_LEFT: Gesture = 32; # Swipe left gesture
+let GESTURE_SWIPE_UP: Gesture = 64; # Swipe up gesture
+let GESTURE_SWIPE_DOWN: Gesture = 128; # Swipe down gesture
+let GESTURE_PINCH_IN: Gesture = 256; # Pinch in gesture
+let GESTURE_PINCH_OUT: Gesture = 512; # Pinch out gesture
+
+alias CameraMode = s32; # (enum) Camera system modes
+let CAMERA_CUSTOM: CameraMode = 0; # Custom camera
+let CAMERA_FREE: CameraMode = 1; # Free camera
+let CAMERA_ORBITAL: CameraMode = 2; # Orbital camera
+let CAMERA_FIRST_PERSON: CameraMode = 3; # First person camera
+let CAMERA_THIRD_PERSON: CameraMode = 4; # Third person camera
+
+alias CameraProjection = s32; # (enum) Camera projection
+let CAMERA_PERSPECTIVE: CameraProjection = 0; # Perspective projection
+let CAMERA_ORTHOGRAPHIC: CameraProjection = 1; # Orthographic projection
+
+alias NPatchLayout = s32; # (enum) N-patch layout
+let NPATCH_NINE_PATCH: NPatchLayout = 0; # Npatch layout: 3x3 tiles
+let NPATCH_THREE_PATCH_VERTICAL: NPatchLayout = 1; # Npatch layout: 1x3 tiles
+let NPATCH_THREE_PATCH_HORIZONTAL: NPatchLayout = 2; # Npatch layout: 3x1 tiles
+
+struct Vector2 {
+    var x: f32; # Vector x component
+    var y: f32; # Vector y component
+}
+
+struct Vector3 {
+    var x: f32; # Vector x component
+    var y: f32; # Vector y component
+    var z: f32; # Vector z component
+}
+
+struct Vector4 {
+    var x: f32; # Vector x component
+    var y: f32; # Vector y component
+    var z: f32; # Vector z component
+    var w: f32; # Vector w component
+}
+
+struct Matrix {
+    var m0: f32; # Matrix first row (4 components)
+    var m4: f32; # Matrix first row (4 components)
+    var m8: f32; # Matrix first row (4 components)
+    var m12: f32; # Matrix first row (4 components)
+    var m1: f32; # Matrix second row (4 components)
+    var m5: f32; # Matrix second row (4 components)
+    var m9: f32; # Matrix second row (4 components)
+    var m13: f32; # Matrix second row (4 components)
+    var m2: f32; # Matrix third row (4 components)
+    var m6: f32; # Matrix third row (4 components)
+    var m10: f32; # Matrix third row (4 components)
+    var m14: f32; # Matrix third row (4 components)
+    var m3: f32; # Matrix fourth row (4 components)
+    var m7: f32; # Matrix fourth row (4 components)
+    var m11: f32; # Matrix fourth row (4 components)
+    var m15: f32; # Matrix fourth row (4 components)
+}
+
+struct Color {
+    var r: uchar; # Color red value
+    var g: uchar; # Color green value
+    var b: uchar; # Color blue value
+    var a: uchar; # Color alpha value
+}
+
+struct Rectangle {
+    var x: f32; # Rectangle top-left corner position x
+    var y: f32; # Rectangle top-left corner position y
+    var width: f32; # Rectangle width
+    var height: f32; # Rectangle height
+}
+
+struct Image {
+    var data: *void; # Image raw data
+    var width: sint; # Image base width
+    var height: sint; # Image base height
+    var mipmaps: sint; # Mipmap levels, 1 by default
+    var format: sint; # Data format (PixelFormat type)
+}
+
+struct Texture {
+    var id: uint; # OpenGL texture id
+    var width: sint; # Texture base width
+    var height: sint; # Texture base height
+    var mipmaps: sint; # Mipmap levels, 1 by default
+    var format: sint; # Data format (PixelFormat type)
+}
+
+struct RenderTexture {
+    var id: uint; # OpenGL framebuffer object id
+    var texture: Texture; # Color buffer attachment texture
+    var depth: Texture; # Depth buffer attachment texture
+}
+
+struct NPatchInfo {
+    var source: Rectangle; # Texture source rectangle
+    var left: sint; # Left border offset
+    var top: sint; # Top border offset
+    var right: sint; # Right border offset
+    var bottom: sint; # Bottom border offset
+    var layout: sint; # Layout of the n-patch: 3x3, 1x3 or 3x1
+}
+
+struct GlyphInfo {
+    var value: sint; # Character value (Unicode)
+    var offsetX: sint; # Character offset X when drawing
+    var offsetY: sint; # Character offset Y when drawing
+    var advanceX: sint; # Character advance position X
+    var image: Image; # Character image data
+}
+
+struct Font {
+    var baseSize: sint; # Base size (default chars height)
+    var glyphCount: sint; # Number of glyph characters
+    var glyphPadding: sint; # Padding around the glyph characters
+    var texture: Texture2D; # Texture atlas containing the glyphs
+    var recs: *Rectangle; # Rectangles in texture for the glyphs
+    var glyphs: *GlyphInfo; # Glyphs info data
+}
+
+struct Camera3D {
+    var position: Vector3; # Camera position
+    var target: Vector3; # Camera target it looks-at
+    var up: Vector3; # Camera up vector (rotation over its axis)
+    var fovy: f32; # Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
+    var projection: sint; # Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
+}
+
+struct Camera2D {
+    var offset: Vector2; # Camera offset (displacement from target)
+    var target: Vector2; # Camera target (rotation and zoom origin)
+    var rotation: f32; # Camera rotation in degrees
+    var zoom: f32; # Camera zoom (scaling), should be 1.0f by default
+}
+
+struct Mesh {
+    var vertexCount: sint; # Number of vertices stored in arrays
+    var triangleCount: sint; # Number of triangles stored (indexed or not)
+    var vertices: *f32; # Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+    var texcoords: *f32; # Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+    var texcoords2: *f32; # Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+    var normals: *f32; # Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+    var tangents: *f32; # Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+    var colors: *uchar; # Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+    var indices: *ushort; # Vertex indices (in case vertex data comes indexed)
+    var animVertices: *f32; # Animated vertex positions (after bones transformations)
+    var animNormals: *f32; # Animated normals (after bones transformations)
+    var boneIds: *uchar; # Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning)
+    var boneWeights: *f32; # Vertex bone weight, up to 4 bones influence by vertex (skinning)
+    var vaoId: uint; # OpenGL Vertex Array Object id
+    var vboId: *uint; # OpenGL Vertex Buffer Objects id (default vertex data)
+}
+
+struct Shader {
+    var id: uint; # Shader program id
+    var locs: *sint; # Shader locations array (RL_MAX_SHADER_LOCATIONS)
+}
+
+struct MaterialMap {
+    var texture: Texture2D; # Material map texture
+    var color: Color; # Material map color
+    var value: f32; # Material map value
+}
+
+struct Material {
+    var shader: Shader; # Material shader
+    var maps: *MaterialMap; # Material maps array (MAX_MATERIAL_MAPS)
+    var params: [4]f32; # Material generic parameters (if required)
+}
+
+struct Transform {
+    var translation: Vector3; # Translation
+    var rotation: Quaternion; # Rotation
+    var scale: Vector3; # Scale
+}
+
+struct BoneInfo {
+    var name: [32]char; # Bone name
+    var parent: sint; # Bone parent
+}
+
+struct Model {
+    var transform: Matrix; # Local transform matrix
+    var meshCount: sint; # Number of meshes
+    var materialCount: sint; # Number of materials
+    var meshes: *Mesh; # Meshes array
+    var materials: *Material; # Materials array
+    var meshMaterial: *sint; # Mesh material number
+    var boneCount: sint; # Number of bones
+    var bones: *BoneInfo; # Bones information (skeleton)
+    var bindPose: *Transform; # Bones base transformation (pose)
+}
+
+struct ModelAnimation {
+    var boneCount: sint; # Number of bones
+    var frameCount: sint; # Number of animation frames
+    var bones: *BoneInfo; # Bones information (skeleton)
+    var framePoses: **Transform; # Poses array by frame
+}
+
+struct Ray {
+    var position: Vector3; # Ray position (origin)
+    var direction: Vector3; # Ray direction
+}
+
+struct RayCollision {
+    var hit: bool; # Did the ray hit something?
+    var distance: f32; # Distance to nearest hit
+    var point: Vector3; # Point of nearest hit
+    var normal: Vector3; # Surface normal of hit
+}
+
+struct BoundingBox {
+    var min: Vector3; # Minimum vertex box-corner
+    var max: Vector3; # Maximum vertex box-corner
+}
+
+struct Wave {
+    var frameCount: uint; # Total number of frames (considering channels)
+    var sampleRate: uint; # Frequency (samples per second)
+    var sampleSize: uint; # Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+    var channels: uint; # Number of channels (1-mono, 2-stereo, ...)
+    var data: *void; # Buffer data pointer
+}
+
+struct AudioStream {
+    var buffer: *rAudioBuffer; # Pointer to internal data used by the audio system
+    var processor: *rAudioProcessor; # Pointer to internal data processor, useful for audio effects
+    var sampleRate: uint; # Frequency (samples per second)
+    var sampleSize: uint; # Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+    var channels: uint; # Number of channels (1-mono, 2-stereo, ...)
+}
+
+struct Sound {
+    var stream: AudioStream; # Audio stream
+    var frameCount: uint; # Total number of frames (considering channels)
+}
+
+struct Music {
+    var stream: AudioStream; # Audio stream
+    var frameCount: uint; # Total number of frames (considering channels)
+    var looping: bool; # Music looping enable
+    var ctxType: sint; # Type of music context (audio filetype)
+    var ctxData: *void; # Audio context data, depends on type
+}
+
+struct VrDeviceInfo {
+    var hResolution: sint; # Horizontal resolution in pixels
+    var vResolution: sint; # Vertical resolution in pixels
+    var hScreenSize: f32; # Horizontal size in meters
+    var vScreenSize: f32; # Vertical size in meters
+    var vScreenCenter: f32; # Screen center in meters
+    var eyeToScreenDistance: f32; # Distance between eye and display in meters
+    var lensSeparationDistance: f32; # Lens separation distance in meters
+    var interpupillaryDistance: f32; # IPD (distance between pupils) in meters
+    var lensDistortionValues: [4]f32; # Lens distortion constant parameters
+    var chromaAbCorrection: [4]f32; # Chromatic aberration correction parameters
+}
+
+struct VrStereoConfig {
+    var projection: [2]Matrix; # VR projection matrices (per eye)
+    var viewOffset: [2]Matrix; # VR view offset matrices (per eye)
+    var leftLensCenter: [2]f32; # VR left lens center
+    var rightLensCenter: [2]f32; # VR right lens center
+    var leftScreenCenter: [2]f32; # VR left screen center
+    var rightScreenCenter: [2]f32; # VR right screen center
+    var scale: [2]f32; # VR distortion scale
+    var scaleIn: [2]f32; # VR distortion scale in
+}
+
+struct FilePathList {
+    var capacity: uint; # Filepaths max entries
+    var count: uint; # Filepaths entries count
+    var paths: **char; # Filepaths entries
+}
+
+extern func InitWindow(width: sint, height: sint, title: *char) void; # Initialize window and OpenGL context
+extern func WindowShouldClose() bool; # Check if KEY_ESCAPE pressed or Close icon pressed
+extern func CloseWindow() void; # Close window and unload OpenGL context
+extern func IsWindowReady() bool; # Check if window has been initialized successfully
+extern func IsWindowFullscreen() bool; # Check if window is currently fullscreen
+extern func IsWindowHidden() bool; # Check if window is currently hidden (only PLATFORM_DESKTOP)
+extern func IsWindowMinimized() bool; # Check if window is currently minimized (only PLATFORM_DESKTOP)
+extern func IsWindowMaximized() bool; # Check if window is currently maximized (only PLATFORM_DESKTOP)
+extern func IsWindowFocused() bool; # Check if window is currently focused (only PLATFORM_DESKTOP)
+extern func IsWindowResized() bool; # Check if window has been resized last frame
+extern func IsWindowState(flag: uint) bool; # Check if one specific window flag is enabled
+extern func SetWindowState(flags: uint) void; # Set window configuration state using flags (only PLATFORM_DESKTOP)
+extern func ClearWindowState(flags: uint) void; # Clear window configuration state flags
+extern func ToggleFullscreen() void; # Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+extern func MaximizeWindow() void; # Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+extern func MinimizeWindow() void; # Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+extern func RestoreWindow() void; # Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+extern func SetWindowIcon(image: Image) void; # Set icon for window (only PLATFORM_DESKTOP)
+extern func SetWindowTitle(title: *char) void; # Set title for window (only PLATFORM_DESKTOP)
+extern func SetWindowPosition(x: sint, y: sint) void; # Set window position on screen (only PLATFORM_DESKTOP)
+extern func SetWindowMonitor(monitor: sint) void; # Set monitor for the current window (fullscreen mode)
+extern func SetWindowMinSize(width: sint, height: sint) void; # Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+extern func SetWindowSize(width: sint, height: sint) void; # Set window dimensions
+extern func SetWindowOpacity(opacity: f32) void; # Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+extern func GetWindowHandle() *void; # Get native window handle
+extern func GetScreenWidth() sint; # Get current screen width
+extern func GetScreenHeight() sint; # Get current screen height
+extern func GetRenderWidth() sint; # Get current render width (it considers HiDPI)
+extern func GetRenderHeight() sint; # Get current render height (it considers HiDPI)
+extern func GetMonitorCount() sint; # Get number of connected monitors
+extern func GetCurrentMonitor() sint; # Get current connected monitor
+extern func GetMonitorPosition(monitor: sint) Vector2; # Get specified monitor position
+extern func GetMonitorWidth(monitor: sint) sint; # Get specified monitor width (current video mode used by monitor)
+extern func GetMonitorHeight(monitor: sint) sint; # Get specified monitor height (current video mode used by monitor)
+extern func GetMonitorPhysicalWidth(monitor: sint) sint; # Get specified monitor physical width in millimetres
+extern func GetMonitorPhysicalHeight(monitor: sint) sint; # Get specified monitor physical height in millimetres
+extern func GetMonitorRefreshRate(monitor: sint) sint; # Get specified monitor refresh rate
+extern func GetWindowPosition() Vector2; # Get window position XY on monitor
+extern func GetWindowScaleDPI() Vector2; # Get window scale DPI factor
+extern func GetMonitorName(monitor: sint) *char; # Get the human-readable, UTF-8 encoded name of the primary monitor
+extern func SetClipboardText(text: *char) void; # Set clipboard text content
+extern func GetClipboardText() *char; # Get clipboard text content
+extern func EnableEventWaiting() void; # Enable waiting for events on EndDrawing(), no automatic event polling
+extern func DisableEventWaiting() void; # Disable waiting for events on EndDrawing(), automatic events polling
+extern func SwapScreenBuffer() void; # Swap back buffer with front buffer (screen drawing)
+extern func PollInputEvents() void; # Register all input events
+extern func WaitTime(seconds: f64) void; # Wait for some time (halt program execution)
+extern func ShowCursor() void; # Shows cursor
+extern func HideCursor() void; # Hides cursor
+extern func IsCursorHidden() bool; # Check if cursor is not visible
+extern func EnableCursor() void; # Enables cursor (unlock cursor)
+extern func DisableCursor() void; # Disables cursor (lock cursor)
+extern func IsCursorOnScreen() bool; # Check if cursor is on the screen
+extern func ClearBackground(color: Color) void; # Set background color (framebuffer clear color)
+extern func BeginDrawing() void; # Setup canvas (framebuffer) to start drawing
+extern func EndDrawing() void; # End canvas drawing and swap buffers (double buffering)
+extern func BeginMode2D(camera: Camera2D) void; # Begin 2D mode with custom camera (2D)
+extern func EndMode2D() void; # Ends 2D mode with custom camera
+extern func BeginMode3D(camera: Camera3D) void; # Begin 3D mode with custom camera (3D)
+extern func EndMode3D() void; # Ends 3D mode and returns to default 2D orthographic mode
+extern func BeginTextureMode(target: RenderTexture2D) void; # Begin drawing to render texture
+extern func EndTextureMode() void; # Ends drawing to render texture
+extern func BeginShaderMode(shader: Shader) void; # Begin custom shader drawing
+extern func EndShaderMode() void; # End custom shader drawing (use default shader)
+extern func BeginBlendMode(mode: sint) void; # Begin blending mode (alpha, additive, multiplied, subtract, custom)
+extern func EndBlendMode() void; # End blending mode (reset to default: alpha blending)
+extern func BeginScissorMode(x: sint, y: sint, width: sint, height: sint) void; # Begin scissor mode (define screen area for following drawing)
+extern func EndScissorMode() void; # End scissor mode
+extern func BeginVrStereoMode(config: VrStereoConfig) void; # Begin stereo rendering (requires VR simulator)
+extern func EndVrStereoMode() void; # End stereo rendering (requires VR simulator)
+extern func LoadVrStereoConfig(device: VrDeviceInfo) VrStereoConfig; # Load VR stereo config for VR simulator device parameters
+extern func UnloadVrStereoConfig(config: VrStereoConfig) void; # Unload VR stereo config
+extern func LoadShader(vsFileName: *char, fsFileName: *char) Shader; # Load shader from files and bind default locations
+extern func LoadShaderFromMemory(vsCode: *char, fsCode: *char) Shader; # Load shader from code strings and bind default locations
+extern func GetShaderLocation(shader: Shader, uniformName: *char) sint; # Get shader uniform location
+extern func GetShaderLocationAttrib(shader: Shader, attribName: *char) sint; # Get shader attribute location
+extern func SetShaderValue(shader: Shader, locIndex: sint, value: *void, uniformType: sint) void; # Set shader uniform value
+extern func SetShaderValueV(shader: Shader, locIndex: sint, value: *void, uniformType: sint, count: sint) void; # Set shader uniform value vector
+extern func SetShaderValueMatrix(shader: Shader, locIndex: sint, mat: Matrix) void; # Set shader uniform value (matrix 4x4)
+extern func SetShaderValueTexture(shader: Shader, locIndex: sint, texture: Texture2D) void; # Set shader uniform value for texture (sampler2d)
+extern func UnloadShader(shader: Shader) void; # Unload shader from GPU memory (VRAM)
+extern func GetMouseRay(mousePosition: Vector2, camera: Camera) Ray; # Get a ray trace from mouse position
+extern func GetCameraMatrix(camera: Camera) Matrix; # Get camera transform matrix (view matrix)
+extern func GetCameraMatrix2D(camera: Camera2D) Matrix; # Get camera 2d transform matrix
+extern func GetWorldToScreen(position: Vector3, camera: Camera) Vector2; # Get the screen space position for a 3d world space position
+extern func GetScreenToWorld2D(position: Vector2, camera: Camera2D) Vector2; # Get the world space position for a 2d camera screen space position
+extern func GetWorldToScreenEx(position: Vector3, camera: Camera, width: sint, height: sint) Vector2; # Get size position for a 3d world space position
+extern func GetWorldToScreen2D(position: Vector2, camera: Camera2D) Vector2; # Get the screen space position for a 2d camera world space position
+extern func SetTargetFPS(fps: sint) void; # Set target FPS (maximum)
+extern func GetFPS() sint; # Get current FPS
+extern func GetFrameTime() f32; # Get time in seconds for last frame drawn (delta time)
+extern func GetTime() f64; # Get elapsed time in seconds since InitWindow()
+extern func GetRandomValue(min: sint, max: sint) sint; # Get a random value between min and max (both included)
+extern func SetRandomSeed(seed: uint) void; # Set the seed for the random number generator
+extern func TakeScreenshot(fileName: *char) void; # Takes a screenshot of current screen (filename extension defines format)
+extern func SetConfigFlags(flags: uint) void; # Setup init configuration flags (view FLAGS)
+# [SKIPPED] TraceLog: Function of type `func(logLevel: sint, text: *char, args: ...) void` is variadic.
+alias TraceLog = *any; # Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)
+extern func SetTraceLogLevel(logLevel: sint) void; # Set the current threshold (minimum) log level
+extern func MemAlloc(size: uint) *void; # Internal memory allocator
+extern func MemRealloc(ptr: *void, size: uint) *void; # Internal memory reallocator
+extern func MemFree(ptr: *void) void; # Internal memory free
+extern func OpenURL(url: *char) void; # Open URL with default system browser (if available)
+extern func SetTraceLogCallback(callback: TraceLogCallback) void; # Set custom trace log
+extern func SetLoadFileDataCallback(callback: LoadFileDataCallback) void; # Set custom file binary data loader
+extern func SetSaveFileDataCallback(callback: SaveFileDataCallback) void; # Set custom file binary data saver
+extern func SetLoadFileTextCallback(callback: LoadFileTextCallback) void; # Set custom file text data loader
+extern func SetSaveFileTextCallback(callback: SaveFileTextCallback) void; # Set custom file text data saver
+extern func LoadFileData(fileName: *char, bytesRead: *uint) *uchar; # Load file data as byte array (read)
+extern func UnloadFileData(data: *uchar) void; # Unload file data allocated by LoadFileData()
+extern func SaveFileData(fileName: *char, data: *void, bytesToWrite: uint) bool; # Save data to file from byte array (write), returns true on success
+extern func ExportDataAsCode(data: *char, size: uint, fileName: *char) bool; # Export data to code (.h), returns true on success
+extern func LoadFileText(fileName: *char) *char; # Load text data from file (read), returns a '\0' terminated string
+extern func UnloadFileText(text: *char) void; # Unload file text data allocated by LoadFileText()
+extern func SaveFileText(fileName: *char, text: *char) bool; # Save text data to file (write), string must be '\0' terminated, returns true on success
+extern func FileExists(fileName: *char) bool; # Check if file exists
+extern func DirectoryExists(dirPath: *char) bool; # Check if a directory path exists
+extern func IsFileExtension(fileName: *char, ext: *char) bool; # Check file extension (including point: .png, .wav)
+extern func GetFileLength(fileName: *char) sint; # Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
+extern func GetFileExtension(fileName: *char) *char; # Get pointer to extension for a filename string (includes dot: '.png')
+extern func GetFileName(filePath: *char) *char; # Get pointer to filename for a path string
+extern func GetFileNameWithoutExt(filePath: *char) *char; # Get filename string without extension (uses static string)
+extern func GetDirectoryPath(filePath: *char) *char; # Get full path for a given fileName with path (uses static string)
+extern func GetPrevDirectoryPath(dirPath: *char) *char; # Get previous directory path for a given path (uses static string)
+extern func GetWorkingDirectory() *char; # Get current working directory (uses static string)
+extern func GetApplicationDirectory() *char; # Get the directory if the running application (uses static string)
+extern func ChangeDirectory(dir: *char) bool; # Change working directory, return true on success
+extern func IsPathFile(path: *char) bool; # Check if a given path is a file or a directory
+extern func LoadDirectoryFiles(dirPath: *char) FilePathList; # Load directory filepaths
+extern func LoadDirectoryFilesEx(basePath: *char, filter: *char, scanSubdirs: bool) FilePathList; # Load directory filepaths with extension filtering and recursive directory scan
+extern func UnloadDirectoryFiles(files: FilePathList) void; # Unload filepaths
+extern func IsFileDropped() bool; # Check if a file has been dropped into window
+extern func LoadDroppedFiles() FilePathList; # Load dropped filepaths
+extern func UnloadDroppedFiles(files: FilePathList) void; # Unload dropped filepaths
+extern func GetFileModTime(fileName: *char) slong; # Get file modification time (last write time)
+extern func CompressData(data: *uchar, dataSize: sint, compDataSize: *sint) *uchar; # Compress data (DEFLATE algorithm), memory must be MemFree()
+extern func DecompressData(compData: *uchar, compDataSize: sint, dataSize: *sint) *uchar; # Decompress data (DEFLATE algorithm), memory must be MemFree()
+extern func EncodeDataBase64(data: *uchar, dataSize: sint, outputSize: *sint) *char; # Encode data to Base64 string, memory must be MemFree()
+extern func DecodeDataBase64(data: *uchar, outputSize: *sint) *uchar; # Decode Base64 string data, memory must be MemFree()
+extern func IsKeyPressed(key: sint) bool; # Check if a key has been pressed once
+extern func IsKeyDown(key: sint) bool; # Check if a key is being pressed
+extern func IsKeyReleased(key: sint) bool; # Check if a key has been released once
+extern func IsKeyUp(key: sint) bool; # Check if a key is NOT being pressed
+extern func SetExitKey(key: sint) void; # Set a custom key to exit program (default is ESC)
+extern func GetKeyPressed() sint; # Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
+extern func GetCharPressed() sint; # Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
+extern func IsGamepadAvailable(gamepad: sint) bool; # Check if a gamepad is available
+extern func GetGamepadName(gamepad: sint) *char; # Get gamepad internal name id
+extern func IsGamepadButtonPressed(gamepad: sint, button: sint) bool; # Check if a gamepad button has been pressed once
+extern func IsGamepadButtonDown(gamepad: sint, button: sint) bool; # Check if a gamepad button is being pressed
+extern func IsGamepadButtonReleased(gamepad: sint, button: sint) bool; # Check if a gamepad button has been released once
+extern func IsGamepadButtonUp(gamepad: sint, button: sint) bool; # Check if a gamepad button is NOT being pressed
+extern func GetGamepadButtonPressed() sint; # Get the last gamepad button pressed
+extern func GetGamepadAxisCount(gamepad: sint) sint; # Get gamepad axis count for a gamepad
+extern func GetGamepadAxisMovement(gamepad: sint, axis: sint) f32; # Get axis movement value for a gamepad axis
+extern func SetGamepadMappings(mappings: *char) sint; # Set internal gamepad mappings (SDL_GameControllerDB)
+extern func IsMouseButtonPressed(button: sint) bool; # Check if a mouse button has been pressed once
+extern func IsMouseButtonDown(button: sint) bool; # Check if a mouse button is being pressed
+extern func IsMouseButtonReleased(button: sint) bool; # Check if a mouse button has been released once
+extern func IsMouseButtonUp(button: sint) bool; # Check if a mouse button is NOT being pressed
+extern func GetMouseX() sint; # Get mouse position X
+extern func GetMouseY() sint; # Get mouse position Y
+extern func GetMousePosition() Vector2; # Get mouse position XY
+extern func GetMouseDelta() Vector2; # Get mouse delta between frames
+extern func SetMousePosition(x: sint, y: sint) void; # Set mouse position XY
+extern func SetMouseOffset(offsetX: sint, offsetY: sint) void; # Set mouse offset
+extern func SetMouseScale(scaleX: f32, scaleY: f32) void; # Set mouse scaling
+extern func GetMouseWheelMove() f32; # Get mouse wheel movement for X or Y, whichever is larger
+extern func GetMouseWheelMoveV() Vector2; # Get mouse wheel movement for both X and Y
+extern func SetMouseCursor(cursor: sint) void; # Set mouse cursor
+extern func GetTouchX() sint; # Get touch position X for touch point 0 (relative to screen size)
+extern func GetTouchY() sint; # Get touch position Y for touch point 0 (relative to screen size)
+extern func GetTouchPosition(index: sint) Vector2; # Get touch position XY for a touch point index (relative to screen size)
+extern func GetTouchPointId(index: sint) sint; # Get touch point identifier for given index
+extern func GetTouchPointCount() sint; # Get number of touch points
+extern func SetGesturesEnabled(flags: uint) void; # Enable a set of gestures using flags
+extern func IsGestureDetected(gesture: sint) bool; # Check if a gesture have been detected
+extern func GetGestureDetected() sint; # Get latest detected gesture
+extern func GetGestureHoldDuration() f32; # Get gesture hold time in milliseconds
+extern func GetGestureDragVector() Vector2; # Get gesture drag vector
+extern func GetGestureDragAngle() f32; # Get gesture drag angle
+extern func GetGesturePinchVector() Vector2; # Get gesture pinch delta
+extern func GetGesturePinchAngle() f32; # Get gesture pinch angle
+extern func SetCameraMode(camera: Camera, mode: sint) void; # Set camera mode (multiple camera modes available)
+extern func UpdateCamera(camera: *Camera) void; # Update camera position for selected mode
+extern func SetCameraPanControl(keyPan: sint) void; # Set camera pan key to combine with mouse movement (free camera)
+extern func SetCameraAltControl(keyAlt: sint) void; # Set camera alt key to combine with mouse movement (free camera)
+extern func SetCameraSmoothZoomControl(keySmoothZoom: sint) void; # Set camera smooth zoom key to combine with mouse (free camera)
+extern func SetCameraMoveControls(keyFront: sint, keyBack: sint, keyRight: sint, keyLeft: sint, keyUp: sint, keyDown: sint) void; # Set camera move controls (1st person and 3rd person cameras)
+extern func SetShapesTexture(texture: Texture2D, source: Rectangle) void; # Set texture and rectangle to be used on shapes drawing
+extern func DrawPixel(posX: sint, posY: sint, color: Color) void; # Draw a pixel
+extern func DrawPixelV(position: Vector2, color: Color) void; # Draw a pixel (Vector version)
+extern func DrawLine(startPosX: sint, startPosY: sint, endPosX: sint, endPosY: sint, color: Color) void; # Draw a line
+extern func DrawLineV(startPos: Vector2, endPos: Vector2, color: Color) void; # Draw a line (Vector version)
+extern func DrawLineEx(startPos: Vector2, endPos: Vector2, thick: f32, color: Color) void; # Draw a line defining thickness
+extern func DrawLineBezier(startPos: Vector2, endPos: Vector2, thick: f32, color: Color) void; # Draw a line using cubic-bezier curves in-out
+extern func DrawLineBezierQuad(startPos: Vector2, endPos: Vector2, controlPos: Vector2, thick: f32, color: Color) void; # Draw line using quadratic bezier curves with a control point
+extern func DrawLineBezierCubic(startPos: Vector2, endPos: Vector2, startControlPos: Vector2, endControlPos: Vector2, thick: f32, color: Color) void; # Draw line using cubic bezier curves with 2 control points
+extern func DrawLineStrip(points: *Vector2, pointCount: sint, color: Color) void; # Draw lines sequence
+extern func DrawCircle(centerX: sint, centerY: sint, radius: f32, color: Color) void; # Draw a color-filled circle
+extern func DrawCircleSector(center: Vector2, radius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw a piece of a circle
+extern func DrawCircleSectorLines(center: Vector2, radius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw circle sector outline
+extern func DrawCircleGradient(centerX: sint, centerY: sint, radius: f32, color1: Color, color2: Color) void; # Draw a gradient-filled circle
+extern func DrawCircleV(center: Vector2, radius: f32, color: Color) void; # Draw a color-filled circle (Vector version)
+extern func DrawCircleLines(centerX: sint, centerY: sint, radius: f32, color: Color) void; # Draw circle outline
+extern func DrawEllipse(centerX: sint, centerY: sint, radiusH: f32, radiusV: f32, color: Color) void; # Draw ellipse
+extern func DrawEllipseLines(centerX: sint, centerY: sint, radiusH: f32, radiusV: f32, color: Color) void; # Draw ellipse outline
+extern func DrawRing(center: Vector2, innerRadius: f32, outerRadius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw ring
+extern func DrawRingLines(center: Vector2, innerRadius: f32, outerRadius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw ring outline
+extern func DrawRectangle(posX: sint, posY: sint, width: sint, height: sint, color: Color) void; # Draw a color-filled rectangle
+extern func DrawRectangleV(position: Vector2, size: Vector2, color: Color) void; # Draw a color-filled rectangle (Vector version)
+extern func DrawRectangleRec(rec: Rectangle, color: Color) void; # Draw a color-filled rectangle
+extern func DrawRectanglePro(rec: Rectangle, origin: Vector2, rotation: f32, color: Color) void; # Draw a color-filled rectangle with pro parameters
+extern func DrawRectangleGradientV(posX: sint, posY: sint, width: sint, height: sint, color1: Color, color2: Color) void; # Draw a vertical-gradient-filled rectangle
+extern func DrawRectangleGradientH(posX: sint, posY: sint, width: sint, height: sint, color1: Color, color2: Color) void; # Draw a horizontal-gradient-filled rectangle
+extern func DrawRectangleGradientEx(rec: Rectangle, col1: Color, col2: Color, col3: Color, col4: Color) void; # Draw a gradient-filled rectangle with custom vertex colors
+extern func DrawRectangleLines(posX: sint, posY: sint, width: sint, height: sint, color: Color) void; # Draw rectangle outline
+extern func DrawRectangleLinesEx(rec: Rectangle, lineThick: f32, color: Color) void; # Draw rectangle outline with extended parameters
+extern func DrawRectangleRounded(rec: Rectangle, roundness: f32, segments: sint, color: Color) void; # Draw rectangle with rounded edges
+extern func DrawRectangleRoundedLines(rec: Rectangle, roundness: f32, segments: sint, lineThick: f32, color: Color) void; # Draw rectangle with rounded edges outline
+extern func DrawTriangle(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void; # Draw a color-filled triangle (vertex in counter-clockwise order!)
+extern func DrawTriangleLines(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void; # Draw triangle outline (vertex in counter-clockwise order!)
+extern func DrawTriangleFan(points: *Vector2, pointCount: sint, color: Color) void; # Draw a triangle fan defined by points (first vertex is the center)
+extern func DrawTriangleStrip(points: *Vector2, pointCount: sint, color: Color) void; # Draw a triangle strip defined by points
+extern func DrawPoly(center: Vector2, sides: sint, radius: f32, rotation: f32, color: Color) void; # Draw a regular polygon (Vector version)
+extern func DrawPolyLines(center: Vector2, sides: sint, radius: f32, rotation: f32, color: Color) void; # Draw a polygon outline of n sides
+extern func DrawPolyLinesEx(center: Vector2, sides: sint, radius: f32, rotation: f32, lineThick: f32, color: Color) void; # Draw a polygon outline of n sides with extended parameters
+extern func CheckCollisionRecs(rec1: Rectangle, rec2: Rectangle) bool; # Check collision between two rectangles
+extern func CheckCollisionCircles(center1: Vector2, radius1: f32, center2: Vector2, radius2: f32) bool; # Check collision between two circles
+extern func CheckCollisionCircleRec(center: Vector2, radius: f32, rec: Rectangle) bool; # Check collision between circle and rectangle
+extern func CheckCollisionPointRec(point: Vector2, rec: Rectangle) bool; # Check if point is inside rectangle
+extern func CheckCollisionPointCircle(point: Vector2, center: Vector2, radius: f32) bool; # Check if point is inside circle
+extern func CheckCollisionPointTriangle(point: Vector2, p1: Vector2, p2: Vector2, p3: Vector2) bool; # Check if point is inside a triangle
+extern func CheckCollisionPointPoly(point: Vector2, points: *Vector2, pointCount: sint) bool; # Check if point is within a polygon described by array of vertices
+extern func CheckCollisionLines(startPos1: Vector2, endPos1: Vector2, startPos2: Vector2, endPos2: Vector2, collisionPoint: *Vector2) bool; # Check the collision between two lines defined by two points each, returns collision point by reference
+extern func CheckCollisionPointLine(point: Vector2, p1: Vector2, p2: Vector2, threshold: sint) bool; # Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
+extern func GetCollisionRec(rec1: Rectangle, rec2: Rectangle) Rectangle; # Get collision rectangle for two rectangles collision
+extern func LoadImage(fileName: *char) Image; # Load image from file into CPU memory (RAM)
+extern func LoadImageRaw(fileName: *char, width: sint, height: sint, format: sint, headerSize: sint) Image; # Load image from RAW file data
+extern func LoadImageAnim(fileName: *char, frames: *sint) Image; # Load image sequence from file (frames appended to image.data)
+extern func LoadImageFromMemory(fileType: *char, fileData: *uchar, dataSize: sint) Image; # Load image from memory buffer, fileType refers to extension: i.e. '.png'
+extern func LoadImageFromTexture(texture: Texture2D) Image; # Load image from GPU texture data
+extern func LoadImageFromScreen() Image; # Load image from screen buffer and (screenshot)
+extern func UnloadImage(image: Image) void; # Unload image from CPU memory (RAM)
+extern func ExportImage(image: Image, fileName: *char) bool; # Export image data to file, returns true on success
+extern func ExportImageAsCode(image: Image, fileName: *char) bool; # Export image as code file defining an array of bytes, returns true on success
+extern func GenImageColor(width: sint, height: sint, color: Color) Image; # Generate image: plain color
+extern func GenImageGradientV(width: sint, height: sint, top: Color, bottom: Color) Image; # Generate image: vertical gradient
+extern func GenImageGradientH(width: sint, height: sint, left: Color, right: Color) Image; # Generate image: horizontal gradient
+extern func GenImageGradientRadial(width: sint, height: sint, density: f32, inner: Color, outer: Color) Image; # Generate image: radial gradient
+extern func GenImageChecked(width: sint, height: sint, checksX: sint, checksY: sint, col1: Color, col2: Color) Image; # Generate image: checked
+extern func GenImageWhiteNoise(width: sint, height: sint, factor: f32) Image; # Generate image: white noise
+extern func GenImagePerlinNoise(width: sint, height: sint, offsetX: sint, offsetY: sint, scale: f32) Image; # Generate image: perlin noise
+extern func GenImageCellular(width: sint, height: sint, tileSize: sint) Image; # Generate image: cellular algorithm, bigger tileSize means bigger cells
+extern func ImageCopy(image: Image) Image; # Create an image duplicate (useful for transformations)
+extern func ImageFromImage(image: Image, rec: Rectangle) Image; # Create an image from another image piece
+extern func ImageText(text: *char, fontSize: sint, color: Color) Image; # Create an image from text (default font)
+extern func ImageTextEx(font: Font, text: *char, fontSize: f32, spacing: f32, tint: Color) Image; # Create an image from text (custom sprite font)
+extern func ImageFormat(image: *Image, newFormat: sint) void; # Convert image data to desired format
+extern func ImageToPOT(image: *Image, fill: Color) void; # Convert image to POT (power-of-two)
+extern func ImageCrop(image: *Image, crop: Rectangle) void; # Crop an image to a defined rectangle
+extern func ImageAlphaCrop(image: *Image, threshold: f32) void; # Crop image depending on alpha value
+extern func ImageAlphaClear(image: *Image, color: Color, threshold: f32) void; # Clear alpha channel to desired color
+extern func ImageAlphaMask(image: *Image, alphaMask: Image) void; # Apply alpha mask to image
+extern func ImageAlphaPremultiply(image: *Image) void; # Premultiply alpha channel
+extern func ImageResize(image: *Image, newWidth: sint, newHeight: sint) void; # Resize image (Bicubic scaling algorithm)
+extern func ImageResizeNN(image: *Image, newWidth: sint, newHeight: sint) void; # Resize image (Nearest-Neighbor scaling algorithm)
+extern func ImageResizeCanvas(image: *Image, newWidth: sint, newHeight: sint, offsetX: sint, offsetY: sint, fill: Color) void; # Resize canvas and fill with color
+extern func ImageMipmaps(image: *Image) void; # Compute all mipmap levels for a provided image
+extern func ImageDither(image: *Image, rBpp: sint, gBpp: sint, bBpp: sint, aBpp: sint) void; # Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
+extern func ImageFlipVertical(image: *Image) void; # Flip image vertically
+extern func ImageFlipHorizontal(image: *Image) void; # Flip image horizontally
+extern func ImageRotateCW(image: *Image) void; # Rotate image clockwise 90deg
+extern func ImageRotateCCW(image: *Image) void; # Rotate image counter-clockwise 90deg
+extern func ImageColorTint(image: *Image, color: Color) void; # Modify image color: tint
+extern func ImageColorInvert(image: *Image) void; # Modify image color: invert
+extern func ImageColorGrayscale(image: *Image) void; # Modify image color: grayscale
+extern func ImageColorContrast(image: *Image, contrast: f32) void; # Modify image color: contrast (-100 to 100)
+extern func ImageColorBrightness(image: *Image, brightness: sint) void; # Modify image color: brightness (-255 to 255)
+extern func ImageColorReplace(image: *Image, color: Color, replace: Color) void; # Modify image color: replace color
+extern func LoadImageColors(image: Image) *Color; # Load color data from image as a Color array (RGBA - 32bit)
+extern func LoadImagePalette(image: Image, maxPaletteSize: sint, colorCount: *sint) *Color; # Load colors palette from image as a Color array (RGBA - 32bit)
+extern func UnloadImageColors(colors: *Color) void; # Unload color data loaded with LoadImageColors()
+extern func UnloadImagePalette(colors: *Color) void; # Unload colors palette loaded with LoadImagePalette()
+extern func GetImageAlphaBorder(image: Image, threshold: f32) Rectangle; # Get image alpha border rectangle
+extern func GetImageColor(image: Image, x: sint, y: sint) Color; # Get image pixel color at (x, y) position
+extern func ImageClearBackground(dst: *Image, color: Color) void; # Clear image background with given color
+extern func ImageDrawPixel(dst: *Image, posX: sint, posY: sint, color: Color) void; # Draw pixel within an image
+extern func ImageDrawPixelV(dst: *Image, position: Vector2, color: Color) void; # Draw pixel within an image (Vector version)
+extern func ImageDrawLine(dst: *Image, startPosX: sint, startPosY: sint, endPosX: sint, endPosY: sint, color: Color) void; # Draw line within an image
+extern func ImageDrawLineV(dst: *Image, start: Vector2, end: Vector2, color: Color) void; # Draw line within an image (Vector version)
+extern func ImageDrawCircle(dst: *Image, centerX: sint, centerY: sint, radius: sint, color: Color) void; # Draw a filled circle within an image
+extern func ImageDrawCircleV(dst: *Image, center: Vector2, radius: sint, color: Color) void; # Draw a filled circle within an image (Vector version)
+extern func ImageDrawCircleLines(dst: *Image, centerX: sint, centerY: sint, radius: sint, color: Color) void; # Draw circle outline within an image
+extern func ImageDrawCircleLinesV(dst: *Image, center: Vector2, radius: sint, color: Color) void; # Draw circle outline within an image (Vector version)
+extern func ImageDrawRectangle(dst: *Image, posX: sint, posY: sint, width: sint, height: sint, color: Color) void; # Draw rectangle within an image
+extern func ImageDrawRectangleV(dst: *Image, position: Vector2, size: Vector2, color: Color) void; # Draw rectangle within an image (Vector version)
+extern func ImageDrawRectangleRec(dst: *Image, rec: Rectangle, color: Color) void; # Draw rectangle within an image
+extern func ImageDrawRectangleLines(dst: *Image, rec: Rectangle, thick: sint, color: Color) void; # Draw rectangle lines within an image
+extern func ImageDraw(dst: *Image, src: Image, srcRec: Rectangle, dstRec: Rectangle, tint: Color) void; # Draw a source image within a destination image (tint applied to source)
+extern func ImageDrawText(dst: *Image, text: *char, posX: sint, posY: sint, fontSize: sint, color: Color) void; # Draw text (using default font) within an image (destination)
+extern func ImageDrawTextEx(dst: *Image, font: Font, text: *char, position: Vector2, fontSize: f32, spacing: f32, tint: Color) void; # Draw text (custom sprite font) within an image (destination)
+extern func LoadTexture(fileName: *char) Texture2D; # Load texture from file into GPU memory (VRAM)
+extern func LoadTextureFromImage(image: Image) Texture2D; # Load texture from image data
+extern func LoadTextureCubemap(image: Image, layout: sint) TextureCubemap; # Load cubemap from image, multiple image cubemap layouts supported
+extern func LoadRenderTexture(width: sint, height: sint) RenderTexture2D; # Load texture for rendering (framebuffer)
+extern func UnloadTexture(texture: Texture2D) void; # Unload texture from GPU memory (VRAM)
+extern func UnloadRenderTexture(target: RenderTexture2D) void; # Unload render texture from GPU memory (VRAM)
+extern func UpdateTexture(texture: Texture2D, pixels: *void) void; # Update GPU texture with new data
+extern func UpdateTextureRec(texture: Texture2D, rec: Rectangle, pixels: *void) void; # Update GPU texture rectangle with new data
+extern func GenTextureMipmaps(texture: *Texture2D) void; # Generate GPU mipmaps for a texture
+extern func SetTextureFilter(texture: Texture2D, filter: sint) void; # Set texture scaling filter mode
+extern func SetTextureWrap(texture: Texture2D, wrap: sint) void; # Set texture wrapping mode
+extern func DrawTexture(texture: Texture2D, posX: sint, posY: sint, tint: Color) void; # Draw a Texture2D
+extern func DrawTextureV(texture: Texture2D, position: Vector2, tint: Color) void; # Draw a Texture2D with position defined as Vector2
+extern func DrawTextureEx(texture: Texture2D, position: Vector2, rotation: f32, scale: f32, tint: Color) void; # Draw a Texture2D with extended parameters
+extern func DrawTextureRec(texture: Texture2D, source: Rectangle, position: Vector2, tint: Color) void; # Draw a part of a texture defined by a rectangle
+extern func DrawTextureQuad(texture: Texture2D, tiling: Vector2, offset: Vector2, quad: Rectangle, tint: Color) void; # Draw texture quad with tiling and offset parameters
+extern func DrawTextureTiled(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: Vector2, rotation: f32, scale: f32, tint: Color) void; # Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
+extern func DrawTexturePro(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void; # Draw a part of a texture defined by a rectangle with 'pro' parameters
+extern func DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void; # Draws a texture (or part of it) that stretches or shrinks nicely
+extern func DrawTexturePoly(texture: Texture2D, center: Vector2, points: *Vector2, texcoords: *Vector2, pointCount: sint, tint: Color) void; # Draw a textured polygon
+extern func Fade(color: Color, alpha: f32) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
+extern func ColorToInt(color: Color) sint; # Get hexadecimal value for a Color
+extern func ColorNormalize(color: Color) Vector4; # Get Color normalized as float [0..1]
+extern func ColorFromNormalized(normalized: Vector4) Color; # Get Color from normalized values [0..1]
+extern func ColorToHSV(color: Color) Vector3; # Get HSV values for a Color, hue [0..360], saturation/value [0..1]
+extern func ColorFromHSV(hue: f32, saturation: f32, value: f32) Color; # Get a Color from HSV values, hue [0..360], saturation/value [0..1]
+extern func ColorAlpha(color: Color, alpha: f32) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
+extern func ColorAlphaBlend(dst: Color, src: Color, tint: Color) Color; # Get src alpha-blended into dst color with tint
+extern func GetColor(hexValue: uint) Color; # Get Color structure from hexadecimal value
+extern func GetPixelColor(srcPtr: *void, format: sint) Color; # Get Color from a source pixel pointer of certain format
+extern func SetPixelColor(dstPtr: *void, color: Color, format: sint) void; # Set color formatted into destination pixel pointer
+extern func GetPixelDataSize(width: sint, height: sint, format: sint) sint; # Get pixel data size in bytes for certain format
+extern func GetFontDefault() Font; # Get the default Font
+extern func LoadFont(fileName: *char) Font; # Load font from file into GPU memory (VRAM)
+extern func LoadFontEx(fileName: *char, fontSize: sint, fontChars: *sint, glyphCount: sint) Font; # Load font from file with extended parameters, use NULL for fontChars and 0 for glyphCount to load the default character set
+extern func LoadFontFromImage(image: Image, key: Color, firstChar: sint) Font; # Load font from Image (XNA style)
+extern func LoadFontFromMemory(fileType: *char, fileData: *uchar, dataSize: sint, fontSize: sint, fontChars: *sint, glyphCount: sint) Font; # Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
+extern func LoadFontData(fileData: *uchar, dataSize: sint, fontSize: sint, fontChars: *sint, glyphCount: sint, type: sint) *GlyphInfo; # Load font data for further use
+extern func GenImageFontAtlas(chars: *GlyphInfo, recs: **Rectangle, glyphCount: sint, fontSize: sint, padding: sint, packMethod: sint) Image; # Generate image font atlas using chars info
+extern func UnloadFontData(chars: *GlyphInfo, glyphCount: sint) void; # Unload font chars info data (RAM)
+extern func UnloadFont(font: Font) void; # Unload font from GPU memory (VRAM)
+extern func ExportFontAsCode(font: Font, fileName: *char) bool; # Export font as code file, returns true on success
+extern func DrawFPS(posX: sint, posY: sint) void; # Draw current FPS
+extern func DrawText(text: *char, posX: sint, posY: sint, fontSize: sint, color: Color) void; # Draw text (using default font)
+extern func DrawTextEx(font: Font, text: *char, position: Vector2, fontSize: f32, spacing: f32, tint: Color) void; # Draw text using font and additional parameters
+extern func DrawTextPro(font: Font, text: *char, position: Vector2, origin: Vector2, rotation: f32, fontSize: f32, spacing: f32, tint: Color) void; # Draw text using Font and pro parameters (rotation)
+extern func DrawTextCodepoint(font: Font, codepoint: sint, position: Vector2, fontSize: f32, tint: Color) void; # Draw one character (codepoint)
+extern func DrawTextCodepoints(font: Font, codepoints: *sint, count: sint, position: Vector2, fontSize: f32, spacing: f32, tint: Color) void; # Draw multiple character (codepoint)
+extern func MeasureText(text: *char, fontSize: sint) sint; # Measure string width for default font
+extern func MeasureTextEx(font: Font, text: *char, fontSize: f32, spacing: f32) Vector2; # Measure string size for Font
+extern func GetGlyphIndex(font: Font, codepoint: sint) sint; # Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
+extern func GetGlyphInfo(font: Font, codepoint: sint) GlyphInfo; # Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
+extern func GetGlyphAtlasRec(font: Font, codepoint: sint) Rectangle; # Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
+extern func LoadUTF8(codepoints: *sint, length: sint) *char; # Load UTF-8 text encoded from codepoints array
+extern func UnloadUTF8(text: *char) void; # Unload UTF-8 text encoded from codepoints array
+extern func LoadCodepoints(text: *char, count: *sint) *sint; # Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
+extern func UnloadCodepoints(codepoints: *sint) void; # Unload codepoints data from memory
+extern func GetCodepointCount(text: *char) sint; # Get total number of codepoints in a UTF-8 encoded string
+extern func GetCodepoint(text: *char, codepointSize: *sint) sint; # Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+extern func GetCodepointNext(text: *char, codepointSize: *sint) sint; # Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+extern func GetCodepointPrevious(text: *char, codepointSize: *sint) sint; # Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+extern func CodepointToUTF8(codepoint: sint, utf8Size: *sint) *char; # Encode one codepoint into UTF-8 byte array (array length returned as parameter)
+extern func TextCopy(dst: *char, src: *char) sint; # Copy one string to another, returns bytes copied
+extern func TextIsEqual(text1: *char, text2: *char) bool; # Check if two text string are equal
+extern func TextLength(text: *char) uint; # Get text length, checks for '\0' ending
+# [SKIPPED] TextFormat: Function of type `func(text: *char, args: ...) *char` is variadic.
+alias TextFormat = *any; # Text formatting with variables (sprintf() style)
+extern func TextSubtext(text: *char, position: sint, length: sint) *char; # Get a piece of a text string
+extern func TextReplace(text: *char, replace: *char, by: *char) *char; # Replace text string (WARNING: memory must be freed!)
+extern func TextInsert(text: *char, insert: *char, position: sint) *char; # Insert text in a position (WARNING: memory must be freed!)
+extern func TextJoin(textList: **char, count: sint, delimiter: *char) *char; # Join text strings with delimiter
+extern func TextSplit(text: *char, delimiter: char, count: *sint) **char; # Split text into multiple strings
+extern func TextAppend(text: *char, append: *char, position: *sint) void; # Append text at specific position and move cursor!
+extern func TextFindIndex(text: *char, find: *char) sint; # Find first text occurrence within a string
+extern func TextToUpper(text: *char) *char; # Get upper case version of provided string
+extern func TextToLower(text: *char) *char; # Get lower case version of provided string
+extern func TextToPascal(text: *char) *char; # Get Pascal case notation version of provided string
+extern func TextToInteger(text: *char) sint; # Get integer value from text (negative values not supported)
+extern func DrawLine3D(startPos: Vector3, endPos: Vector3, color: Color) void; # Draw a line in 3D world space
+extern func DrawPoint3D(position: Vector3, color: Color) void; # Draw a point in 3D space, actually a small line
+extern func DrawCircle3D(center: Vector3, radius: f32, rotationAxis: Vector3, rotationAngle: f32, color: Color) void; # Draw a circle in 3D world space
+extern func DrawTriangle3D(v1: Vector3, v2: Vector3, v3: Vector3, color: Color) void; # Draw a color-filled triangle (vertex in counter-clockwise order!)
+extern func DrawTriangleStrip3D(points: *Vector3, pointCount: sint, color: Color) void; # Draw a triangle strip defined by points
+extern func DrawCube(position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube
+extern func DrawCubeV(position: Vector3, size: Vector3, color: Color) void; # Draw cube (Vector version)
+extern func DrawCubeWires(position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube wires
+extern func DrawCubeWiresV(position: Vector3, size: Vector3, color: Color) void; # Draw cube wires (Vector version)
+extern func DrawCubeTexture(texture: Texture2D, position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube textured
+extern func DrawCubeTextureRec(texture: Texture2D, source: Rectangle, position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube with a region of a texture
+extern func DrawSphere(centerPos: Vector3, radius: f32, color: Color) void; # Draw sphere
+extern func DrawSphereEx(centerPos: Vector3, radius: f32, rings: sint, slices: sint, color: Color) void; # Draw sphere with extended parameters
+extern func DrawSphereWires(centerPos: Vector3, radius: f32, rings: sint, slices: sint, color: Color) void; # Draw sphere wires
+extern func DrawCylinder(position: Vector3, radiusTop: f32, radiusBottom: f32, height: f32, slices: sint, color: Color) void; # Draw a cylinder/cone
+extern func DrawCylinderEx(startPos: Vector3, endPos: Vector3, startRadius: f32, endRadius: f32, sides: sint, color: Color) void; # Draw a cylinder with base at startPos and top at endPos
+extern func DrawCylinderWires(position: Vector3, radiusTop: f32, radiusBottom: f32, height: f32, slices: sint, color: Color) void; # Draw a cylinder/cone wires
+extern func DrawCylinderWiresEx(startPos: Vector3, endPos: Vector3, startRadius: f32, endRadius: f32, sides: sint, color: Color) void; # Draw a cylinder wires with base at startPos and top at endPos
+extern func DrawPlane(centerPos: Vector3, size: Vector2, color: Color) void; # Draw a plane XZ
+extern func DrawRay(ray: Ray, color: Color) void; # Draw a ray line
+extern func DrawGrid(slices: sint, spacing: f32) void; # Draw a grid (centered at (0, 0, 0))
+extern func LoadModel(fileName: *char) Model; # Load model from files (meshes and materials)
+extern func LoadModelFromMesh(mesh: Mesh) Model; # Load model from generated mesh (default material)
+extern func UnloadModel(model: Model) void; # Unload model (including meshes) from memory (RAM and/or VRAM)
+extern func UnloadModelKeepMeshes(model: Model) void; # Unload model (but not meshes) from memory (RAM and/or VRAM)
+extern func GetModelBoundingBox(model: Model) BoundingBox; # Compute model bounding box limits (considers all meshes)
+extern func DrawModel(model: Model, position: Vector3, scale: f32, tint: Color) void; # Draw a model (with texture if set)
+extern func DrawModelEx(model: Model, position: Vector3, rotationAxis: Vector3, rotationAngle: f32, scale: Vector3, tint: Color) void; # Draw a model with extended parameters
+extern func DrawModelWires(model: Model, position: Vector3, scale: f32, tint: Color) void; # Draw a model wires (with texture if set)
+extern func DrawModelWiresEx(model: Model, position: Vector3, rotationAxis: Vector3, rotationAngle: f32, scale: Vector3, tint: Color) void; # Draw a model wires (with texture if set) with extended parameters
+extern func DrawBoundingBox(box: BoundingBox, color: Color) void; # Draw bounding box (wires)
+extern func DrawBillboard(camera: Camera, texture: Texture2D, position: Vector3, size: f32, tint: Color) void; # Draw a billboard texture
+extern func DrawBillboardRec(camera: Camera, texture: Texture2D, source: Rectangle, position: Vector3, size: Vector2, tint: Color) void; # Draw a billboard texture defined by source
+extern func DrawBillboardPro(camera: Camera, texture: Texture2D, source: Rectangle, position: Vector3, up: Vector3, size: Vector2, origin: Vector2, rotation: f32, tint: Color) void; # Draw a billboard texture defined by source and rotation
+extern func UploadMesh(mesh: *Mesh, dynamic: bool) void; # Upload mesh vertex data in GPU and provide VAO/VBO ids
+extern func UpdateMeshBuffer(mesh: Mesh, index: sint, data: *void, dataSize: sint, offset: sint) void; # Update mesh vertex data in GPU for a specific buffer index
+extern func UnloadMesh(mesh: Mesh) void; # Unload mesh data from CPU and GPU
+extern func DrawMesh(mesh: Mesh, material: Material, transform: Matrix) void; # Draw a 3d mesh with material and transform
+extern func DrawMeshInstanced(mesh: Mesh, material: Material, transforms: *Matrix, instances: sint) void; # Draw multiple mesh instances with material and different transforms
+extern func ExportMesh(mesh: Mesh, fileName: *char) bool; # Export mesh data to file, returns true on success
+extern func GetMeshBoundingBox(mesh: Mesh) BoundingBox; # Compute mesh bounding box limits
+extern func GenMeshTangents(mesh: *Mesh) void; # Compute mesh tangents
+extern func GenMeshPoly(sides: sint, radius: f32) Mesh; # Generate polygonal mesh
+extern func GenMeshPlane(width: f32, length: f32, resX: sint, resZ: sint) Mesh; # Generate plane mesh (with subdivisions)
+extern func GenMeshCube(width: f32, height: f32, length: f32) Mesh; # Generate cuboid mesh
+extern func GenMeshSphere(radius: f32, rings: sint, slices: sint) Mesh; # Generate sphere mesh (standard sphere)
+extern func GenMeshHemiSphere(radius: f32, rings: sint, slices: sint) Mesh; # Generate half-sphere mesh (no bottom cap)
+extern func GenMeshCylinder(radius: f32, height: f32, slices: sint) Mesh; # Generate cylinder mesh
+extern func GenMeshCone(radius: f32, height: f32, slices: sint) Mesh; # Generate cone/pyramid mesh
+extern func GenMeshTorus(radius: f32, size: f32, radSeg: sint, sides: sint) Mesh; # Generate torus mesh
+extern func GenMeshKnot(radius: f32, size: f32, radSeg: sint, sides: sint) Mesh; # Generate trefoil knot mesh
+extern func GenMeshHeightmap(heightmap: Image, size: Vector3) Mesh; # Generate heightmap mesh from image data
+extern func GenMeshCubicmap(cubicmap: Image, cubeSize: Vector3) Mesh; # Generate cubes-based map mesh from image data
+extern func LoadMaterials(fileName: *char, materialCount: *sint) *Material; # Load materials from model file
+extern func LoadMaterialDefault() Material; # Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
+extern func UnloadMaterial(material: Material) void; # Unload material from GPU memory (VRAM)
+extern func SetMaterialTexture(material: *Material, mapType: sint, texture: Texture2D) void; # Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)
+extern func SetModelMeshMaterial(model: *Model, meshId: sint, materialId: sint) void; # Set material for a mesh
+extern func LoadModelAnimations(fileName: *char, animCount: *uint) *ModelAnimation; # Load model animations from file
+extern func UpdateModelAnimation(model: Model, anim: ModelAnimation, frame: sint) void; # Update model animation pose
+extern func UnloadModelAnimation(anim: ModelAnimation) void; # Unload animation data
+extern func UnloadModelAnimations(animations: *ModelAnimation, count: uint) void; # Unload animation array data
+extern func IsModelAnimationValid(model: Model, anim: ModelAnimation) bool; # Check model animation skeleton match
+extern func CheckCollisionSpheres(center1: Vector3, radius1: f32, center2: Vector3, radius2: f32) bool; # Check collision between two spheres
+extern func CheckCollisionBoxes(box1: BoundingBox, box2: BoundingBox) bool; # Check collision between two bounding boxes
+extern func CheckCollisionBoxSphere(box: BoundingBox, center: Vector3, radius: f32) bool; # Check collision between box and sphere
+extern func GetRayCollisionSphere(ray: Ray, center: Vector3, radius: f32) RayCollision; # Get collision info between ray and sphere
+extern func GetRayCollisionBox(ray: Ray, box: BoundingBox) RayCollision; # Get collision info between ray and box
+extern func GetRayCollisionMesh(ray: Ray, mesh: Mesh, transform: Matrix) RayCollision; # Get collision info between ray and mesh
+extern func GetRayCollisionTriangle(ray: Ray, p1: Vector3, p2: Vector3, p3: Vector3) RayCollision; # Get collision info between ray and triangle
+extern func GetRayCollisionQuad(ray: Ray, p1: Vector3, p2: Vector3, p3: Vector3, p4: Vector3) RayCollision; # Get collision info between ray and quad
+extern func InitAudioDevice() void; # Initialize audio device and context
+extern func CloseAudioDevice() void; # Close the audio device and context
+extern func IsAudioDeviceReady() bool; # Check if audio device has been initialized successfully
+extern func SetMasterVolume(volume: f32) void; # Set master volume (listener)
+extern func LoadWave(fileName: *char) Wave; # Load wave data from file
+extern func LoadWaveFromMemory(fileType: *char, fileData: *uchar, dataSize: sint) Wave; # Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
+extern func LoadSound(fileName: *char) Sound; # Load sound from file
+extern func LoadSoundFromWave(wave: Wave) Sound; # Load sound from wave data
+extern func UpdateSound(sound: Sound, data: *void, sampleCount: sint) void; # Update sound buffer with new data
+extern func UnloadWave(wave: Wave) void; # Unload wave data
+extern func UnloadSound(sound: Sound) void; # Unload sound
+extern func ExportWave(wave: Wave, fileName: *char) bool; # Export wave data to file, returns true on success
+extern func ExportWaveAsCode(wave: Wave, fileName: *char) bool; # Export wave sample data to code (.h), returns true on success
+extern func PlaySound(sound: Sound) void; # Play a sound
+extern func StopSound(sound: Sound) void; # Stop playing a sound
+extern func PauseSound(sound: Sound) void; # Pause a sound
+extern func ResumeSound(sound: Sound) void; # Resume a paused sound
+extern func PlaySoundMulti(sound: Sound) void; # Play a sound (using multichannel buffer pool)
+extern func StopSoundMulti() void; # Stop any sound playing (using multichannel buffer pool)
+extern func GetSoundsPlaying() sint; # Get number of sounds playing in the multichannel
+extern func IsSoundPlaying(sound: Sound) bool; # Check if a sound is currently playing
+extern func SetSoundVolume(sound: Sound, volume: f32) void; # Set volume for a sound (1.0 is max level)
+extern func SetSoundPitch(sound: Sound, pitch: f32) void; # Set pitch for a sound (1.0 is base level)
+extern func SetSoundPan(sound: Sound, pan: f32) void; # Set pan for a sound (0.5 is center)
+extern func WaveCopy(wave: Wave) Wave; # Copy a wave to a new wave
+extern func WaveCrop(wave: *Wave, initSample: sint, finalSample: sint) void; # Crop a wave to defined samples range
+extern func WaveFormat(wave: *Wave, sampleRate: sint, sampleSize: sint, channels: sint) void; # Convert wave data to desired format
+extern func LoadWaveSamples(wave: Wave) *f32; # Load samples data from wave as a 32bit float data array
+extern func UnloadWaveSamples(samples: *f32) void; # Unload samples data loaded with LoadWaveSamples()
+extern func LoadMusicStream(fileName: *char) Music; # Load music stream from file
+extern func LoadMusicStreamFromMemory(fileType: *char, data: *uchar, dataSize: sint) Music; # Load music stream from data
+extern func UnloadMusicStream(music: Music) void; # Unload music stream
+extern func PlayMusicStream(music: Music) void; # Start music playing
+extern func IsMusicStreamPlaying(music: Music) bool; # Check if music is playing
+extern func UpdateMusicStream(music: Music) void; # Updates buffers for music streaming
+extern func StopMusicStream(music: Music) void; # Stop music playing
+extern func PauseMusicStream(music: Music) void; # Pause music playing
+extern func ResumeMusicStream(music: Music) void; # Resume playing paused music
+extern func SeekMusicStream(music: Music, position: f32) void; # Seek music to a position (in seconds)
+extern func SetMusicVolume(music: Music, volume: f32) void; # Set volume for music (1.0 is max level)
+extern func SetMusicPitch(music: Music, pitch: f32) void; # Set pitch for a music (1.0 is base level)
+extern func SetMusicPan(music: Music, pan: f32) void; # Set pan for a music (0.5 is center)
+extern func GetMusicTimeLength(music: Music) f32; # Get music time length (in seconds)
+extern func GetMusicTimePlayed(music: Music) f32; # Get current music time played (in seconds)
+extern func LoadAudioStream(sampleRate: uint, sampleSize: uint, channels: uint) AudioStream; # Load audio stream (to stream raw audio pcm data)
+extern func UnloadAudioStream(stream: AudioStream) void; # Unload audio stream and free memory
+extern func UpdateAudioStream(stream: AudioStream, data: *void, frameCount: sint) void; # Update audio stream buffers with data
+extern func IsAudioStreamProcessed(stream: AudioStream) bool; # Check if any audio stream buffers requires refill
+extern func PlayAudioStream(stream: AudioStream) void; # Play audio stream
+extern func PauseAudioStream(stream: AudioStream) void; # Pause audio stream
+extern func ResumeAudioStream(stream: AudioStream) void; # Resume audio stream
+extern func IsAudioStreamPlaying(stream: AudioStream) bool; # Check if audio stream is playing
+extern func StopAudioStream(stream: AudioStream) void; # Stop audio stream
+extern func SetAudioStreamVolume(stream: AudioStream, volume: f32) void; # Set volume for audio stream (1.0 is max level)
+extern func SetAudioStreamPitch(stream: AudioStream, pitch: f32) void; # Set pitch for audio stream (1.0 is base level)
+extern func SetAudioStreamPan(stream: AudioStream, pan: f32) void; # Set pan for audio stream (0.5 is centered)
+extern func SetAudioStreamBufferSizeDefault(size: sint) void; # Default size for new audio streams
+extern func SetAudioStreamCallback(stream: AudioStream, callback: AudioCallback) void; # Audio thread callback to request new data
+extern func AttachAudioStreamProcessor(stream: AudioStream, processor: AudioCallback) void; # Attach audio stream processor to stream
+extern func DetachAudioStreamProcessor(stream: AudioStream, processor: AudioCallback) void; # Detach audio stream processor from stream

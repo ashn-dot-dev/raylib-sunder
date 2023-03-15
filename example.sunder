@@ -1,0 +1,24 @@
+import "c";
+import "raylib.sunder";
+
+func main() void {
+    InitWindow(640, 480, startof("EXAMPLE"));
+    defer CloseWindow();
+    SetTargetFPS(60);
+
+    for not WindowShouldClose() {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        let text = startof("RAYLIB WINDOW IN SUNDER");
+        let font_size: sint = 20;
+        var text_width = MeasureText(text, font_size);
+        var text_height = GetFontDefault().baseSize;
+        var text_x = GetScreenWidth() / 2 - text_width / 2;
+        var text_y = GetScreenHeight() / 2 - text_height;
+        DrawText(text, text_x, text_y, font_size, LIGHTGRAY);
+
+        EndDrawing();
+    }
+}
+

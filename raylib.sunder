@@ -383,40 +383,40 @@ let NPATCH_THREE_PATCH_VERTICAL: NPatchLayout = 1; # Npatch layout: 1x3 tiles
 let NPATCH_THREE_PATCH_HORIZONTAL: NPatchLayout = 2; # Npatch layout: 3x1 tiles
 
 struct Vector2 {
-    var x: f32; # Vector x component
-    var y: f32; # Vector y component
+    var x: float; # Vector x component
+    var y: float; # Vector y component
 }
 
 struct Vector3 {
-    var x: f32; # Vector x component
-    var y: f32; # Vector y component
-    var z: f32; # Vector z component
+    var x: float; # Vector x component
+    var y: float; # Vector y component
+    var z: float; # Vector z component
 }
 
 struct Vector4 {
-    var x: f32; # Vector x component
-    var y: f32; # Vector y component
-    var z: f32; # Vector z component
-    var w: f32; # Vector w component
+    var x: float; # Vector x component
+    var y: float; # Vector y component
+    var z: float; # Vector z component
+    var w: float; # Vector w component
 }
 
 struct Matrix {
-    var m0: f32; # Matrix first row (4 components)
-    var m4: f32; # Matrix first row (4 components)
-    var m8: f32; # Matrix first row (4 components)
-    var m12: f32; # Matrix first row (4 components)
-    var m1: f32; # Matrix second row (4 components)
-    var m5: f32; # Matrix second row (4 components)
-    var m9: f32; # Matrix second row (4 components)
-    var m13: f32; # Matrix second row (4 components)
-    var m2: f32; # Matrix third row (4 components)
-    var m6: f32; # Matrix third row (4 components)
-    var m10: f32; # Matrix third row (4 components)
-    var m14: f32; # Matrix third row (4 components)
-    var m3: f32; # Matrix fourth row (4 components)
-    var m7: f32; # Matrix fourth row (4 components)
-    var m11: f32; # Matrix fourth row (4 components)
-    var m15: f32; # Matrix fourth row (4 components)
+    var m0: float; # Matrix first row (4 components)
+    var m4: float; # Matrix first row (4 components)
+    var m8: float; # Matrix first row (4 components)
+    var m12: float; # Matrix first row (4 components)
+    var m1: float; # Matrix second row (4 components)
+    var m5: float; # Matrix second row (4 components)
+    var m9: float; # Matrix second row (4 components)
+    var m13: float; # Matrix second row (4 components)
+    var m2: float; # Matrix third row (4 components)
+    var m6: float; # Matrix third row (4 components)
+    var m10: float; # Matrix third row (4 components)
+    var m14: float; # Matrix third row (4 components)
+    var m3: float; # Matrix fourth row (4 components)
+    var m7: float; # Matrix fourth row (4 components)
+    var m11: float; # Matrix fourth row (4 components)
+    var m15: float; # Matrix fourth row (4 components)
 }
 
 struct Color {
@@ -427,10 +427,10 @@ struct Color {
 }
 
 struct Rectangle {
-    var x: f32; # Rectangle top-left corner position x
-    var y: f32; # Rectangle top-left corner position y
-    var width: f32; # Rectangle width
-    var height: f32; # Rectangle height
+    var x: float; # Rectangle top-left corner position x
+    var y: float; # Rectangle top-left corner position y
+    var width: float; # Rectangle width
+    var height: float; # Rectangle height
 }
 
 struct Image {
@@ -485,31 +485,31 @@ struct Camera3D {
     var position: Vector3; # Camera position
     var target: Vector3; # Camera target it looks-at
     var up: Vector3; # Camera up vector (rotation over its axis)
-    var fovy: f32; # Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
+    var fovy: float; # Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
     var projection: sint; # Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
 }
 
 struct Camera2D {
     var offset: Vector2; # Camera offset (displacement from target)
     var target: Vector2; # Camera target (rotation and zoom origin)
-    var rotation: f32; # Camera rotation in degrees
-    var zoom: f32; # Camera zoom (scaling), should be 1.0f by default
+    var rotation: float; # Camera rotation in degrees
+    var zoom: float; # Camera zoom (scaling), should be 1.0f by default
 }
 
 struct Mesh {
     var vertexCount: sint; # Number of vertices stored in arrays
     var triangleCount: sint; # Number of triangles stored (indexed or not)
-    var vertices: *f32; # Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-    var texcoords: *f32; # Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-    var texcoords2: *f32; # Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
-    var normals: *f32; # Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
-    var tangents: *f32; # Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+    var vertices: *float; # Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+    var texcoords: *float; # Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+    var texcoords2: *float; # Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+    var normals: *float; # Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+    var tangents: *float; # Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
     var colors: *uchar; # Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
     var indices: *ushort; # Vertex indices (in case vertex data comes indexed)
-    var animVertices: *f32; # Animated vertex positions (after bones transformations)
-    var animNormals: *f32; # Animated normals (after bones transformations)
+    var animVertices: *float; # Animated vertex positions (after bones transformations)
+    var animNormals: *float; # Animated normals (after bones transformations)
     var boneIds: *uchar; # Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning)
-    var boneWeights: *f32; # Vertex bone weight, up to 4 bones influence by vertex (skinning)
+    var boneWeights: *float; # Vertex bone weight, up to 4 bones influence by vertex (skinning)
     var vaoId: uint; # OpenGL Vertex Array Object id
     var vboId: *uint; # OpenGL Vertex Buffer Objects id (default vertex data)
 }
@@ -522,13 +522,13 @@ struct Shader {
 struct MaterialMap {
     var texture: Texture2D; # Material map texture
     var color: Color; # Material map color
-    var value: f32; # Material map value
+    var value: float; # Material map value
 }
 
 struct Material {
     var shader: Shader; # Material shader
     var maps: *MaterialMap; # Material maps array (MAX_MATERIAL_MAPS)
-    var params: [4]f32; # Material generic parameters (if required)
+    var params: [4]float; # Material generic parameters (if required)
 }
 
 struct Transform {
@@ -568,7 +568,7 @@ struct Ray {
 
 struct RayCollision {
     var hit: bool; # Did the ray hit something?
-    var distance: f32; # Distance to the nearest hit
+    var distance: float; # Distance to the nearest hit
     var point: Vector3; # Point of the nearest hit
     var normal: Vector3; # Surface normal of hit
 }
@@ -610,25 +610,25 @@ struct Music {
 struct VrDeviceInfo {
     var hResolution: sint; # Horizontal resolution in pixels
     var vResolution: sint; # Vertical resolution in pixels
-    var hScreenSize: f32; # Horizontal size in meters
-    var vScreenSize: f32; # Vertical size in meters
-    var vScreenCenter: f32; # Screen center in meters
-    var eyeToScreenDistance: f32; # Distance between eye and display in meters
-    var lensSeparationDistance: f32; # Lens separation distance in meters
-    var interpupillaryDistance: f32; # IPD (distance between pupils) in meters
-    var lensDistortionValues: [4]f32; # Lens distortion constant parameters
-    var chromaAbCorrection: [4]f32; # Chromatic aberration correction parameters
+    var hScreenSize: float; # Horizontal size in meters
+    var vScreenSize: float; # Vertical size in meters
+    var vScreenCenter: float; # Screen center in meters
+    var eyeToScreenDistance: float; # Distance between eye and display in meters
+    var lensSeparationDistance: float; # Lens separation distance in meters
+    var interpupillaryDistance: float; # IPD (distance between pupils) in meters
+    var lensDistortionValues: [4]float; # Lens distortion constant parameters
+    var chromaAbCorrection: [4]float; # Chromatic aberration correction parameters
 }
 
 struct VrStereoConfig {
     var projection: [2]Matrix; # VR projection matrices (per eye)
     var viewOffset: [2]Matrix; # VR view offset matrices (per eye)
-    var leftLensCenter: [2]f32; # VR left lens center
-    var rightLensCenter: [2]f32; # VR right lens center
-    var leftScreenCenter: [2]f32; # VR left screen center
-    var rightScreenCenter: [2]f32; # VR right screen center
-    var scale: [2]f32; # VR distortion scale
-    var scaleIn: [2]f32; # VR distortion scale in
+    var leftLensCenter: [2]float; # VR left lens center
+    var rightLensCenter: [2]float; # VR right lens center
+    var leftScreenCenter: [2]float; # VR left screen center
+    var rightScreenCenter: [2]float; # VR right screen center
+    var scale: [2]float; # VR distortion scale
+    var scaleIn: [2]float; # VR distortion scale in
 }
 
 struct FilePathList {
@@ -661,7 +661,7 @@ extern func SetWindowPosition(x: sint, y: sint) void; # Set window position on s
 extern func SetWindowMonitor(monitor: sint) void; # Set monitor for the current window (fullscreen mode)
 extern func SetWindowMinSize(width: sint, height: sint) void; # Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 extern func SetWindowSize(width: sint, height: sint) void; # Set window dimensions
-extern func SetWindowOpacity(opacity: f32) void; # Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+extern func SetWindowOpacity(opacity: float) void; # Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
 extern func GetWindowHandle() *void; # Get native window handle
 extern func GetScreenWidth() sint; # Get current screen width
 extern func GetScreenHeight() sint; # Get current screen height
@@ -684,7 +684,7 @@ extern func EnableEventWaiting() void; # Enable waiting for events on EndDrawing
 extern func DisableEventWaiting() void; # Disable waiting for events on EndDrawing(), automatic events polling
 extern func SwapScreenBuffer() void; # Swap back buffer with front buffer (screen drawing)
 extern func PollInputEvents() void; # Register all input events
-extern func WaitTime(seconds: f64) void; # Wait for some time (halt program execution)
+extern func WaitTime(seconds: double) void; # Wait for some time (halt program execution)
 extern func ShowCursor() void; # Shows cursor
 extern func HideCursor() void; # Hides cursor
 extern func IsCursorHidden() bool; # Check if cursor is not visible
@@ -729,8 +729,8 @@ extern func GetWorldToScreenEx(position: Vector3, camera: Camera, width: sint, h
 extern func GetWorldToScreen2D(position: Vector2, camera: Camera2D) Vector2; # Get the screen space position for a 2d camera world space position
 extern func SetTargetFPS(fps: sint) void; # Set target FPS (maximum)
 extern func GetFPS() sint; # Get current FPS
-extern func GetFrameTime() f32; # Get time in seconds for last frame drawn (delta time)
-extern func GetTime() f64; # Get elapsed time in seconds since InitWindow()
+extern func GetFrameTime() float; # Get time in seconds for last frame drawn (delta time)
+extern func GetTime() double; # Get elapsed time in seconds since InitWindow()
 extern func GetRandomValue(min: sint, max: sint) sint; # Get a random value between min and max (both included)
 extern func SetRandomSeed(seed: uint) void; # Set the seed for the random number generator
 extern func TakeScreenshot(fileName: *char) void; # Takes a screenshot of current screen (filename extension defines format)
@@ -793,7 +793,7 @@ extern func IsGamepadButtonReleased(gamepad: sint, button: sint) bool; # Check i
 extern func IsGamepadButtonUp(gamepad: sint, button: sint) bool; # Check if a gamepad button is NOT being pressed
 extern func GetGamepadButtonPressed() sint; # Get the last gamepad button pressed
 extern func GetGamepadAxisCount(gamepad: sint) sint; # Get gamepad axis count for a gamepad
-extern func GetGamepadAxisMovement(gamepad: sint, axis: sint) f32; # Get axis movement value for a gamepad axis
+extern func GetGamepadAxisMovement(gamepad: sint, axis: sint) float; # Get axis movement value for a gamepad axis
 extern func SetGamepadMappings(mappings: *char) sint; # Set internal gamepad mappings (SDL_GameControllerDB)
 extern func IsMouseButtonPressed(button: sint) bool; # Check if a mouse button has been pressed once
 extern func IsMouseButtonDown(button: sint) bool; # Check if a mouse button is being pressed
@@ -805,8 +805,8 @@ extern func GetMousePosition() Vector2; # Get mouse position XY
 extern func GetMouseDelta() Vector2; # Get mouse delta between frames
 extern func SetMousePosition(x: sint, y: sint) void; # Set mouse position XY
 extern func SetMouseOffset(offsetX: sint, offsetY: sint) void; # Set mouse offset
-extern func SetMouseScale(scaleX: f32, scaleY: f32) void; # Set mouse scaling
-extern func GetMouseWheelMove() f32; # Get mouse wheel movement for X or Y, whichever is larger
+extern func SetMouseScale(scaleX: float, scaleY: float) void; # Set mouse scaling
+extern func GetMouseWheelMove() float; # Get mouse wheel movement for X or Y, whichever is larger
 extern func GetMouseWheelMoveV() Vector2; # Get mouse wheel movement for both X and Y
 extern func SetMouseCursor(cursor: sint) void; # Set mouse cursor
 extern func GetTouchX() sint; # Get touch position X for touch point 0 (relative to screen size)
@@ -817,56 +817,56 @@ extern func GetTouchPointCount() sint; # Get number of touch points
 extern func SetGesturesEnabled(flags: uint) void; # Enable a set of gestures using flags
 extern func IsGestureDetected(gesture: sint) bool; # Check if a gesture have been detected
 extern func GetGestureDetected() sint; # Get latest detected gesture
-extern func GetGestureHoldDuration() f32; # Get gesture hold time in milliseconds
+extern func GetGestureHoldDuration() float; # Get gesture hold time in milliseconds
 extern func GetGestureDragVector() Vector2; # Get gesture drag vector
-extern func GetGestureDragAngle() f32; # Get gesture drag angle
+extern func GetGestureDragAngle() float; # Get gesture drag angle
 extern func GetGesturePinchVector() Vector2; # Get gesture pinch delta
-extern func GetGesturePinchAngle() f32; # Get gesture pinch angle
+extern func GetGesturePinchAngle() float; # Get gesture pinch angle
 extern func UpdateCamera(camera: *Camera, mode: sint) void; # Update camera position for selected mode
-extern func UpdateCameraPro(camera: *Camera, movement: Vector3, rotation: Vector3, zoom: f32) void; # Update camera movement/rotation
+extern func UpdateCameraPro(camera: *Camera, movement: Vector3, rotation: Vector3, zoom: float) void; # Update camera movement/rotation
 extern func SetShapesTexture(texture: Texture2D, source: Rectangle) void; # Set texture and rectangle to be used on shapes drawing
 extern func DrawPixel(posX: sint, posY: sint, color: Color) void; # Draw a pixel
 extern func DrawPixelV(position: Vector2, color: Color) void; # Draw a pixel (Vector version)
 extern func DrawLine(startPosX: sint, startPosY: sint, endPosX: sint, endPosY: sint, color: Color) void; # Draw a line
 extern func DrawLineV(startPos: Vector2, endPos: Vector2, color: Color) void; # Draw a line (Vector version)
-extern func DrawLineEx(startPos: Vector2, endPos: Vector2, thick: f32, color: Color) void; # Draw a line defining thickness
-extern func DrawLineBezier(startPos: Vector2, endPos: Vector2, thick: f32, color: Color) void; # Draw a line using cubic-bezier curves in-out
-extern func DrawLineBezierQuad(startPos: Vector2, endPos: Vector2, controlPos: Vector2, thick: f32, color: Color) void; # Draw line using quadratic bezier curves with a control point
-extern func DrawLineBezierCubic(startPos: Vector2, endPos: Vector2, startControlPos: Vector2, endControlPos: Vector2, thick: f32, color: Color) void; # Draw line using cubic bezier curves with 2 control points
+extern func DrawLineEx(startPos: Vector2, endPos: Vector2, thick: float, color: Color) void; # Draw a line defining thickness
+extern func DrawLineBezier(startPos: Vector2, endPos: Vector2, thick: float, color: Color) void; # Draw a line using cubic-bezier curves in-out
+extern func DrawLineBezierQuad(startPos: Vector2, endPos: Vector2, controlPos: Vector2, thick: float, color: Color) void; # Draw line using quadratic bezier curves with a control point
+extern func DrawLineBezierCubic(startPos: Vector2, endPos: Vector2, startControlPos: Vector2, endControlPos: Vector2, thick: float, color: Color) void; # Draw line using cubic bezier curves with 2 control points
 extern func DrawLineStrip(points: *Vector2, pointCount: sint, color: Color) void; # Draw lines sequence
-extern func DrawCircle(centerX: sint, centerY: sint, radius: f32, color: Color) void; # Draw a color-filled circle
-extern func DrawCircleSector(center: Vector2, radius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw a piece of a circle
-extern func DrawCircleSectorLines(center: Vector2, radius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw circle sector outline
-extern func DrawCircleGradient(centerX: sint, centerY: sint, radius: f32, color1: Color, color2: Color) void; # Draw a gradient-filled circle
-extern func DrawCircleV(center: Vector2, radius: f32, color: Color) void; # Draw a color-filled circle (Vector version)
-extern func DrawCircleLines(centerX: sint, centerY: sint, radius: f32, color: Color) void; # Draw circle outline
-extern func DrawEllipse(centerX: sint, centerY: sint, radiusH: f32, radiusV: f32, color: Color) void; # Draw ellipse
-extern func DrawEllipseLines(centerX: sint, centerY: sint, radiusH: f32, radiusV: f32, color: Color) void; # Draw ellipse outline
-extern func DrawRing(center: Vector2, innerRadius: f32, outerRadius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw ring
-extern func DrawRingLines(center: Vector2, innerRadius: f32, outerRadius: f32, startAngle: f32, endAngle: f32, segments: sint, color: Color) void; # Draw ring outline
+extern func DrawCircle(centerX: sint, centerY: sint, radius: float, color: Color) void; # Draw a color-filled circle
+extern func DrawCircleSector(center: Vector2, radius: float, startAngle: float, endAngle: float, segments: sint, color: Color) void; # Draw a piece of a circle
+extern func DrawCircleSectorLines(center: Vector2, radius: float, startAngle: float, endAngle: float, segments: sint, color: Color) void; # Draw circle sector outline
+extern func DrawCircleGradient(centerX: sint, centerY: sint, radius: float, color1: Color, color2: Color) void; # Draw a gradient-filled circle
+extern func DrawCircleV(center: Vector2, radius: float, color: Color) void; # Draw a color-filled circle (Vector version)
+extern func DrawCircleLines(centerX: sint, centerY: sint, radius: float, color: Color) void; # Draw circle outline
+extern func DrawEllipse(centerX: sint, centerY: sint, radiusH: float, radiusV: float, color: Color) void; # Draw ellipse
+extern func DrawEllipseLines(centerX: sint, centerY: sint, radiusH: float, radiusV: float, color: Color) void; # Draw ellipse outline
+extern func DrawRing(center: Vector2, innerRadius: float, outerRadius: float, startAngle: float, endAngle: float, segments: sint, color: Color) void; # Draw ring
+extern func DrawRingLines(center: Vector2, innerRadius: float, outerRadius: float, startAngle: float, endAngle: float, segments: sint, color: Color) void; # Draw ring outline
 extern func DrawRectangle(posX: sint, posY: sint, width: sint, height: sint, color: Color) void; # Draw a color-filled rectangle
 extern func DrawRectangleV(position: Vector2, size: Vector2, color: Color) void; # Draw a color-filled rectangle (Vector version)
 extern func DrawRectangleRec(rec: Rectangle, color: Color) void; # Draw a color-filled rectangle
-extern func DrawRectanglePro(rec: Rectangle, origin: Vector2, rotation: f32, color: Color) void; # Draw a color-filled rectangle with pro parameters
+extern func DrawRectanglePro(rec: Rectangle, origin: Vector2, rotation: float, color: Color) void; # Draw a color-filled rectangle with pro parameters
 extern func DrawRectangleGradientV(posX: sint, posY: sint, width: sint, height: sint, color1: Color, color2: Color) void; # Draw a vertical-gradient-filled rectangle
 extern func DrawRectangleGradientH(posX: sint, posY: sint, width: sint, height: sint, color1: Color, color2: Color) void; # Draw a horizontal-gradient-filled rectangle
 extern func DrawRectangleGradientEx(rec: Rectangle, col1: Color, col2: Color, col3: Color, col4: Color) void; # Draw a gradient-filled rectangle with custom vertex colors
 extern func DrawRectangleLines(posX: sint, posY: sint, width: sint, height: sint, color: Color) void; # Draw rectangle outline
-extern func DrawRectangleLinesEx(rec: Rectangle, lineThick: f32, color: Color) void; # Draw rectangle outline with extended parameters
-extern func DrawRectangleRounded(rec: Rectangle, roundness: f32, segments: sint, color: Color) void; # Draw rectangle with rounded edges
-extern func DrawRectangleRoundedLines(rec: Rectangle, roundness: f32, segments: sint, lineThick: f32, color: Color) void; # Draw rectangle with rounded edges outline
+extern func DrawRectangleLinesEx(rec: Rectangle, lineThick: float, color: Color) void; # Draw rectangle outline with extended parameters
+extern func DrawRectangleRounded(rec: Rectangle, roundness: float, segments: sint, color: Color) void; # Draw rectangle with rounded edges
+extern func DrawRectangleRoundedLines(rec: Rectangle, roundness: float, segments: sint, lineThick: float, color: Color) void; # Draw rectangle with rounded edges outline
 extern func DrawTriangle(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void; # Draw a color-filled triangle (vertex in counter-clockwise order!)
 extern func DrawTriangleLines(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void; # Draw triangle outline (vertex in counter-clockwise order!)
 extern func DrawTriangleFan(points: *Vector2, pointCount: sint, color: Color) void; # Draw a triangle fan defined by points (first vertex is the center)
 extern func DrawTriangleStrip(points: *Vector2, pointCount: sint, color: Color) void; # Draw a triangle strip defined by points
-extern func DrawPoly(center: Vector2, sides: sint, radius: f32, rotation: f32, color: Color) void; # Draw a regular polygon (Vector version)
-extern func DrawPolyLines(center: Vector2, sides: sint, radius: f32, rotation: f32, color: Color) void; # Draw a polygon outline of n sides
-extern func DrawPolyLinesEx(center: Vector2, sides: sint, radius: f32, rotation: f32, lineThick: f32, color: Color) void; # Draw a polygon outline of n sides with extended parameters
+extern func DrawPoly(center: Vector2, sides: sint, radius: float, rotation: float, color: Color) void; # Draw a regular polygon (Vector version)
+extern func DrawPolyLines(center: Vector2, sides: sint, radius: float, rotation: float, color: Color) void; # Draw a polygon outline of n sides
+extern func DrawPolyLinesEx(center: Vector2, sides: sint, radius: float, rotation: float, lineThick: float, color: Color) void; # Draw a polygon outline of n sides with extended parameters
 extern func CheckCollisionRecs(rec1: Rectangle, rec2: Rectangle) bool; # Check collision between two rectangles
-extern func CheckCollisionCircles(center1: Vector2, radius1: f32, center2: Vector2, radius2: f32) bool; # Check collision between two circles
-extern func CheckCollisionCircleRec(center: Vector2, radius: f32, rec: Rectangle) bool; # Check collision between circle and rectangle
+extern func CheckCollisionCircles(center1: Vector2, radius1: float, center2: Vector2, radius2: float) bool; # Check collision between two circles
+extern func CheckCollisionCircleRec(center: Vector2, radius: float, rec: Rectangle) bool; # Check collision between circle and rectangle
 extern func CheckCollisionPointRec(point: Vector2, rec: Rectangle) bool; # Check if point is inside rectangle
-extern func CheckCollisionPointCircle(point: Vector2, center: Vector2, radius: f32) bool; # Check if point is inside circle
+extern func CheckCollisionPointCircle(point: Vector2, center: Vector2, radius: float) bool; # Check if point is inside circle
 extern func CheckCollisionPointTriangle(point: Vector2, p1: Vector2, p2: Vector2, p3: Vector2) bool; # Check if point is inside a triangle
 extern func CheckCollisionPointPoly(point: Vector2, points: *Vector2, pointCount: sint) bool; # Check if point is within a polygon described by array of vertices
 extern func CheckCollisionLines(startPos1: Vector2, endPos1: Vector2, startPos2: Vector2, endPos2: Vector2, collisionPoint: *Vector2) bool; # Check the collision between two lines defined by two points each, returns collision point by reference
@@ -885,21 +885,21 @@ extern func ExportImageAsCode(image: Image, fileName: *char) bool; # Export imag
 extern func GenImageColor(width: sint, height: sint, color: Color) Image; # Generate image: plain color
 extern func GenImageGradientV(width: sint, height: sint, top: Color, bottom: Color) Image; # Generate image: vertical gradient
 extern func GenImageGradientH(width: sint, height: sint, left: Color, right: Color) Image; # Generate image: horizontal gradient
-extern func GenImageGradientRadial(width: sint, height: sint, density: f32, inner: Color, outer: Color) Image; # Generate image: radial gradient
+extern func GenImageGradientRadial(width: sint, height: sint, density: float, inner: Color, outer: Color) Image; # Generate image: radial gradient
 extern func GenImageChecked(width: sint, height: sint, checksX: sint, checksY: sint, col1: Color, col2: Color) Image; # Generate image: checked
-extern func GenImageWhiteNoise(width: sint, height: sint, factor: f32) Image; # Generate image: white noise
-extern func GenImagePerlinNoise(width: sint, height: sint, offsetX: sint, offsetY: sint, scale: f32) Image; # Generate image: perlin noise
+extern func GenImageWhiteNoise(width: sint, height: sint, factor: float) Image; # Generate image: white noise
+extern func GenImagePerlinNoise(width: sint, height: sint, offsetX: sint, offsetY: sint, scale: float) Image; # Generate image: perlin noise
 extern func GenImageCellular(width: sint, height: sint, tileSize: sint) Image; # Generate image: cellular algorithm, bigger tileSize means bigger cells
 extern func GenImageText(width: sint, height: sint, text: *char) Image; # Generate image: grayscale image from text data
 extern func ImageCopy(image: Image) Image; # Create an image duplicate (useful for transformations)
 extern func ImageFromImage(image: Image, rec: Rectangle) Image; # Create an image from another image piece
 extern func ImageText(text: *char, fontSize: sint, color: Color) Image; # Create an image from text (default font)
-extern func ImageTextEx(font: Font, text: *char, fontSize: f32, spacing: f32, tint: Color) Image; # Create an image from text (custom sprite font)
+extern func ImageTextEx(font: Font, text: *char, fontSize: float, spacing: float, tint: Color) Image; # Create an image from text (custom sprite font)
 extern func ImageFormat(image: *Image, newFormat: sint) void; # Convert image data to desired format
 extern func ImageToPOT(image: *Image, fill: Color) void; # Convert image to POT (power-of-two)
 extern func ImageCrop(image: *Image, crop: Rectangle) void; # Crop an image to a defined rectangle
-extern func ImageAlphaCrop(image: *Image, threshold: f32) void; # Crop image depending on alpha value
-extern func ImageAlphaClear(image: *Image, color: Color, threshold: f32) void; # Clear alpha channel to desired color
+extern func ImageAlphaCrop(image: *Image, threshold: float) void; # Crop image depending on alpha value
+extern func ImageAlphaClear(image: *Image, color: Color, threshold: float) void; # Clear alpha channel to desired color
 extern func ImageAlphaMask(image: *Image, alphaMask: Image) void; # Apply alpha mask to image
 extern func ImageAlphaPremultiply(image: *Image) void; # Premultiply alpha channel
 extern func ImageBlurGaussian(image: *Image, blurSize: sint) void; # Apply Gaussian blur using a box blur approximation
@@ -915,14 +915,14 @@ extern func ImageRotateCCW(image: *Image) void; # Rotate image counter-clockwise
 extern func ImageColorTint(image: *Image, color: Color) void; # Modify image color: tint
 extern func ImageColorInvert(image: *Image) void; # Modify image color: invert
 extern func ImageColorGrayscale(image: *Image) void; # Modify image color: grayscale
-extern func ImageColorContrast(image: *Image, contrast: f32) void; # Modify image color: contrast (-100 to 100)
+extern func ImageColorContrast(image: *Image, contrast: float) void; # Modify image color: contrast (-100 to 100)
 extern func ImageColorBrightness(image: *Image, brightness: sint) void; # Modify image color: brightness (-255 to 255)
 extern func ImageColorReplace(image: *Image, color: Color, replace: Color) void; # Modify image color: replace color
 extern func LoadImageColors(image: Image) *Color; # Load color data from image as a Color array (RGBA - 32bit)
 extern func LoadImagePalette(image: Image, maxPaletteSize: sint, colorCount: *sint) *Color; # Load colors palette from image as a Color array (RGBA - 32bit)
 extern func UnloadImageColors(colors: *Color) void; # Unload color data loaded with LoadImageColors()
 extern func UnloadImagePalette(colors: *Color) void; # Unload colors palette loaded with LoadImagePalette()
-extern func GetImageAlphaBorder(image: Image, threshold: f32) Rectangle; # Get image alpha border rectangle
+extern func GetImageAlphaBorder(image: Image, threshold: float) Rectangle; # Get image alpha border rectangle
 extern func GetImageColor(image: Image, x: sint, y: sint) Color; # Get image pixel color at (x, y) position
 extern func ImageClearBackground(dst: *Image, color: Color) void; # Clear image background with given color
 extern func ImageDrawPixel(dst: *Image, posX: sint, posY: sint, color: Color) void; # Draw pixel within an image
@@ -939,7 +939,7 @@ extern func ImageDrawRectangleRec(dst: *Image, rec: Rectangle, color: Color) voi
 extern func ImageDrawRectangleLines(dst: *Image, rec: Rectangle, thick: sint, color: Color) void; # Draw rectangle lines within an image
 extern func ImageDraw(dst: *Image, src: Image, srcRec: Rectangle, dstRec: Rectangle, tint: Color) void; # Draw a source image within a destination image (tint applied to source)
 extern func ImageDrawText(dst: *Image, text: *char, posX: sint, posY: sint, fontSize: sint, color: Color) void; # Draw text (using default font) within an image (destination)
-extern func ImageDrawTextEx(dst: *Image, font: Font, text: *char, position: Vector2, fontSize: f32, spacing: f32, tint: Color) void; # Draw text (custom sprite font) within an image (destination)
+extern func ImageDrawTextEx(dst: *Image, font: Font, text: *char, position: Vector2, fontSize: float, spacing: float, tint: Color) void; # Draw text (custom sprite font) within an image (destination)
 extern func LoadTexture(fileName: *char) Texture2D; # Load texture from file into GPU memory (VRAM)
 extern func LoadTextureFromImage(image: Image) Texture2D; # Load texture from image data
 extern func LoadTextureCubemap(image: Image, layout: sint) TextureCubemap; # Load cubemap from image, multiple image cubemap layouts supported
@@ -955,20 +955,20 @@ extern func SetTextureFilter(texture: Texture2D, filter: sint) void; # Set textu
 extern func SetTextureWrap(texture: Texture2D, wrap: sint) void; # Set texture wrapping mode
 extern func DrawTexture(texture: Texture2D, posX: sint, posY: sint, tint: Color) void; # Draw a Texture2D
 extern func DrawTextureV(texture: Texture2D, position: Vector2, tint: Color) void; # Draw a Texture2D with position defined as Vector2
-extern func DrawTextureEx(texture: Texture2D, position: Vector2, rotation: f32, scale: f32, tint: Color) void; # Draw a Texture2D with extended parameters
+extern func DrawTextureEx(texture: Texture2D, position: Vector2, rotation: float, scale: float, tint: Color) void; # Draw a Texture2D with extended parameters
 extern func DrawTextureRec(texture: Texture2D, source: Rectangle, position: Vector2, tint: Color) void; # Draw a part of a texture defined by a rectangle
-extern func DrawTexturePro(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void; # Draw a part of a texture defined by a rectangle with 'pro' parameters
-extern func DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void; # Draws a texture (or part of it) that stretches or shrinks nicely
-extern func Fade(color: Color, alpha: f32) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
+extern func DrawTexturePro(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: Vector2, rotation: float, tint: Color) void; # Draw a part of a texture defined by a rectangle with 'pro' parameters
+extern func DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangle, origin: Vector2, rotation: float, tint: Color) void; # Draws a texture (or part of it) that stretches or shrinks nicely
+extern func Fade(color: Color, alpha: float) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
 extern func ColorToInt(color: Color) sint; # Get hexadecimal value for a Color
 extern func ColorNormalize(color: Color) Vector4; # Get Color normalized as float [0..1]
 extern func ColorFromNormalized(normalized: Vector4) Color; # Get Color from normalized values [0..1]
 extern func ColorToHSV(color: Color) Vector3; # Get HSV values for a Color, hue [0..360], saturation/value [0..1]
-extern func ColorFromHSV(hue: f32, saturation: f32, value: f32) Color; # Get a Color from HSV values, hue [0..360], saturation/value [0..1]
+extern func ColorFromHSV(hue: float, saturation: float, value: float) Color; # Get a Color from HSV values, hue [0..360], saturation/value [0..1]
 extern func ColorTint(color: Color, tint: Color) Color; # Get color multiplied with another color
-extern func ColorBrightness(color: Color, factor: f32) Color; # Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
-extern func ColorContrast(color: Color, contrast: f32) Color; # Get color with contrast correction, contrast values between -1.0f and 1.0f
-extern func ColorAlpha(color: Color, alpha: f32) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
+extern func ColorBrightness(color: Color, factor: float) Color; # Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
+extern func ColorContrast(color: Color, contrast: float) Color; # Get color with contrast correction, contrast values between -1.0f and 1.0f
+extern func ColorAlpha(color: Color, alpha: float) Color; # Get color with alpha applied, alpha goes from 0.0f to 1.0f
 extern func ColorAlphaBlend(dst: Color, src: Color, tint: Color) Color; # Get src alpha-blended into dst color with tint
 extern func GetColor(hexValue: uint) Color; # Get Color structure from hexadecimal value
 extern func GetPixelColor(srcPtr: *void, format: sint) Color; # Get Color from a source pixel pointer of certain format
@@ -987,12 +987,12 @@ extern func UnloadFont(font: Font) void; # Unload font from GPU memory (VRAM)
 extern func ExportFontAsCode(font: Font, fileName: *char) bool; # Export font as code file, returns true on success
 extern func DrawFPS(posX: sint, posY: sint) void; # Draw current FPS
 extern func DrawText(text: *char, posX: sint, posY: sint, fontSize: sint, color: Color) void; # Draw text (using default font)
-extern func DrawTextEx(font: Font, text: *char, position: Vector2, fontSize: f32, spacing: f32, tint: Color) void; # Draw text using font and additional parameters
-extern func DrawTextPro(font: Font, text: *char, position: Vector2, origin: Vector2, rotation: f32, fontSize: f32, spacing: f32, tint: Color) void; # Draw text using Font and pro parameters (rotation)
-extern func DrawTextCodepoint(font: Font, codepoint: sint, position: Vector2, fontSize: f32, tint: Color) void; # Draw one character (codepoint)
-extern func DrawTextCodepoints(font: Font, codepoints: *sint, count: sint, position: Vector2, fontSize: f32, spacing: f32, tint: Color) void; # Draw multiple character (codepoint)
+extern func DrawTextEx(font: Font, text: *char, position: Vector2, fontSize: float, spacing: float, tint: Color) void; # Draw text using font and additional parameters
+extern func DrawTextPro(font: Font, text: *char, position: Vector2, origin: Vector2, rotation: float, fontSize: float, spacing: float, tint: Color) void; # Draw text using Font and pro parameters (rotation)
+extern func DrawTextCodepoint(font: Font, codepoint: sint, position: Vector2, fontSize: float, tint: Color) void; # Draw one character (codepoint)
+extern func DrawTextCodepoints(font: Font, codepoints: *sint, count: sint, position: Vector2, fontSize: float, spacing: float, tint: Color) void; # Draw multiple character (codepoint)
 extern func MeasureText(text: *char, fontSize: sint) sint; # Measure string width for default font
-extern func MeasureTextEx(font: Font, text: *char, fontSize: f32, spacing: f32) Vector2; # Measure string size for Font
+extern func MeasureTextEx(font: Font, text: *char, fontSize: float, spacing: float) Vector2; # Measure string size for Font
 extern func GetGlyphIndex(font: Font, codepoint: sint) sint; # Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
 extern func GetGlyphInfo(font: Font, codepoint: sint) GlyphInfo; # Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
 extern func GetGlyphAtlasRec(font: Font, codepoint: sint) Rectangle; # Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
@@ -1023,38 +1023,38 @@ extern func TextToPascal(text: *char) *char; # Get Pascal case notation version 
 extern func TextToInteger(text: *char) sint; # Get integer value from text (negative values not supported)
 extern func DrawLine3D(startPos: Vector3, endPos: Vector3, color: Color) void; # Draw a line in 3D world space
 extern func DrawPoint3D(position: Vector3, color: Color) void; # Draw a point in 3D space, actually a small line
-extern func DrawCircle3D(center: Vector3, radius: f32, rotationAxis: Vector3, rotationAngle: f32, color: Color) void; # Draw a circle in 3D world space
+extern func DrawCircle3D(center: Vector3, radius: float, rotationAxis: Vector3, rotationAngle: float, color: Color) void; # Draw a circle in 3D world space
 extern func DrawTriangle3D(v1: Vector3, v2: Vector3, v3: Vector3, color: Color) void; # Draw a color-filled triangle (vertex in counter-clockwise order!)
 extern func DrawTriangleStrip3D(points: *Vector3, pointCount: sint, color: Color) void; # Draw a triangle strip defined by points
-extern func DrawCube(position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube
+extern func DrawCube(position: Vector3, width: float, height: float, length: float, color: Color) void; # Draw cube
 extern func DrawCubeV(position: Vector3, size: Vector3, color: Color) void; # Draw cube (Vector version)
-extern func DrawCubeWires(position: Vector3, width: f32, height: f32, length: f32, color: Color) void; # Draw cube wires
+extern func DrawCubeWires(position: Vector3, width: float, height: float, length: float, color: Color) void; # Draw cube wires
 extern func DrawCubeWiresV(position: Vector3, size: Vector3, color: Color) void; # Draw cube wires (Vector version)
-extern func DrawSphere(centerPos: Vector3, radius: f32, color: Color) void; # Draw sphere
-extern func DrawSphereEx(centerPos: Vector3, radius: f32, rings: sint, slices: sint, color: Color) void; # Draw sphere with extended parameters
-extern func DrawSphereWires(centerPos: Vector3, radius: f32, rings: sint, slices: sint, color: Color) void; # Draw sphere wires
-extern func DrawCylinder(position: Vector3, radiusTop: f32, radiusBottom: f32, height: f32, slices: sint, color: Color) void; # Draw a cylinder/cone
-extern func DrawCylinderEx(startPos: Vector3, endPos: Vector3, startRadius: f32, endRadius: f32, sides: sint, color: Color) void; # Draw a cylinder with base at startPos and top at endPos
-extern func DrawCylinderWires(position: Vector3, radiusTop: f32, radiusBottom: f32, height: f32, slices: sint, color: Color) void; # Draw a cylinder/cone wires
-extern func DrawCylinderWiresEx(startPos: Vector3, endPos: Vector3, startRadius: f32, endRadius: f32, sides: sint, color: Color) void; # Draw a cylinder wires with base at startPos and top at endPos
-extern func DrawCapsule(startPos: Vector3, endPos: Vector3, radius: f32, slices: sint, rings: sint, color: Color) void; # Draw a capsule with the center of its sphere caps at startPos and endPos
-extern func DrawCapsuleWires(startPos: Vector3, endPos: Vector3, radius: f32, slices: sint, rings: sint, color: Color) void; # Draw capsule wireframe with the center of its sphere caps at startPos and endPos
+extern func DrawSphere(centerPos: Vector3, radius: float, color: Color) void; # Draw sphere
+extern func DrawSphereEx(centerPos: Vector3, radius: float, rings: sint, slices: sint, color: Color) void; # Draw sphere with extended parameters
+extern func DrawSphereWires(centerPos: Vector3, radius: float, rings: sint, slices: sint, color: Color) void; # Draw sphere wires
+extern func DrawCylinder(position: Vector3, radiusTop: float, radiusBottom: float, height: float, slices: sint, color: Color) void; # Draw a cylinder/cone
+extern func DrawCylinderEx(startPos: Vector3, endPos: Vector3, startRadius: float, endRadius: float, sides: sint, color: Color) void; # Draw a cylinder with base at startPos and top at endPos
+extern func DrawCylinderWires(position: Vector3, radiusTop: float, radiusBottom: float, height: float, slices: sint, color: Color) void; # Draw a cylinder/cone wires
+extern func DrawCylinderWiresEx(startPos: Vector3, endPos: Vector3, startRadius: float, endRadius: float, sides: sint, color: Color) void; # Draw a cylinder wires with base at startPos and top at endPos
+extern func DrawCapsule(startPos: Vector3, endPos: Vector3, radius: float, slices: sint, rings: sint, color: Color) void; # Draw a capsule with the center of its sphere caps at startPos and endPos
+extern func DrawCapsuleWires(startPos: Vector3, endPos: Vector3, radius: float, slices: sint, rings: sint, color: Color) void; # Draw capsule wireframe with the center of its sphere caps at startPos and endPos
 extern func DrawPlane(centerPos: Vector3, size: Vector2, color: Color) void; # Draw a plane XZ
 extern func DrawRay(ray: Ray, color: Color) void; # Draw a ray line
-extern func DrawGrid(slices: sint, spacing: f32) void; # Draw a grid (centered at (0, 0, 0))
+extern func DrawGrid(slices: sint, spacing: float) void; # Draw a grid (centered at (0, 0, 0))
 extern func LoadModel(fileName: *char) Model; # Load model from files (meshes and materials)
 extern func LoadModelFromMesh(mesh: Mesh) Model; # Load model from generated mesh (default material)
 extern func IsModelReady(model: Model) bool; # Check if a model is ready
 extern func UnloadModel(model: Model) void; # Unload model (including meshes) from memory (RAM and/or VRAM)
 extern func GetModelBoundingBox(model: Model) BoundingBox; # Compute model bounding box limits (considers all meshes)
-extern func DrawModel(model: Model, position: Vector3, scale: f32, tint: Color) void; # Draw a model (with texture if set)
-extern func DrawModelEx(model: Model, position: Vector3, rotationAxis: Vector3, rotationAngle: f32, scale: Vector3, tint: Color) void; # Draw a model with extended parameters
-extern func DrawModelWires(model: Model, position: Vector3, scale: f32, tint: Color) void; # Draw a model wires (with texture if set)
-extern func DrawModelWiresEx(model: Model, position: Vector3, rotationAxis: Vector3, rotationAngle: f32, scale: Vector3, tint: Color) void; # Draw a model wires (with texture if set) with extended parameters
+extern func DrawModel(model: Model, position: Vector3, scale: float, tint: Color) void; # Draw a model (with texture if set)
+extern func DrawModelEx(model: Model, position: Vector3, rotationAxis: Vector3, rotationAngle: float, scale: Vector3, tint: Color) void; # Draw a model with extended parameters
+extern func DrawModelWires(model: Model, position: Vector3, scale: float, tint: Color) void; # Draw a model wires (with texture if set)
+extern func DrawModelWiresEx(model: Model, position: Vector3, rotationAxis: Vector3, rotationAngle: float, scale: Vector3, tint: Color) void; # Draw a model wires (with texture if set) with extended parameters
 extern func DrawBoundingBox(box: BoundingBox, color: Color) void; # Draw bounding box (wires)
-extern func DrawBillboard(camera: Camera, texture: Texture2D, position: Vector3, size: f32, tint: Color) void; # Draw a billboard texture
+extern func DrawBillboard(camera: Camera, texture: Texture2D, position: Vector3, size: float, tint: Color) void; # Draw a billboard texture
 extern func DrawBillboardRec(camera: Camera, texture: Texture2D, source: Rectangle, position: Vector3, size: Vector2, tint: Color) void; # Draw a billboard texture defined by source
-extern func DrawBillboardPro(camera: Camera, texture: Texture2D, source: Rectangle, position: Vector3, up: Vector3, size: Vector2, origin: Vector2, rotation: f32, tint: Color) void; # Draw a billboard texture defined by source and rotation
+extern func DrawBillboardPro(camera: Camera, texture: Texture2D, source: Rectangle, position: Vector3, up: Vector3, size: Vector2, origin: Vector2, rotation: float, tint: Color) void; # Draw a billboard texture defined by source and rotation
 extern func UploadMesh(mesh: *Mesh, dynamic: bool) void; # Upload mesh vertex data in GPU and provide VAO/VBO ids
 extern func UpdateMeshBuffer(mesh: Mesh, index: sint, data: *void, dataSize: sint, offset: sint) void; # Update mesh vertex data in GPU for a specific buffer index
 extern func UnloadMesh(mesh: Mesh) void; # Unload mesh data from CPU and GPU
@@ -1063,15 +1063,15 @@ extern func DrawMeshInstanced(mesh: Mesh, material: Material, transforms: *Matri
 extern func ExportMesh(mesh: Mesh, fileName: *char) bool; # Export mesh data to file, returns true on success
 extern func GetMeshBoundingBox(mesh: Mesh) BoundingBox; # Compute mesh bounding box limits
 extern func GenMeshTangents(mesh: *Mesh) void; # Compute mesh tangents
-extern func GenMeshPoly(sides: sint, radius: f32) Mesh; # Generate polygonal mesh
-extern func GenMeshPlane(width: f32, length: f32, resX: sint, resZ: sint) Mesh; # Generate plane mesh (with subdivisions)
-extern func GenMeshCube(width: f32, height: f32, length: f32) Mesh; # Generate cuboid mesh
-extern func GenMeshSphere(radius: f32, rings: sint, slices: sint) Mesh; # Generate sphere mesh (standard sphere)
-extern func GenMeshHemiSphere(radius: f32, rings: sint, slices: sint) Mesh; # Generate half-sphere mesh (no bottom cap)
-extern func GenMeshCylinder(radius: f32, height: f32, slices: sint) Mesh; # Generate cylinder mesh
-extern func GenMeshCone(radius: f32, height: f32, slices: sint) Mesh; # Generate cone/pyramid mesh
-extern func GenMeshTorus(radius: f32, size: f32, radSeg: sint, sides: sint) Mesh; # Generate torus mesh
-extern func GenMeshKnot(radius: f32, size: f32, radSeg: sint, sides: sint) Mesh; # Generate trefoil knot mesh
+extern func GenMeshPoly(sides: sint, radius: float) Mesh; # Generate polygonal mesh
+extern func GenMeshPlane(width: float, length: float, resX: sint, resZ: sint) Mesh; # Generate plane mesh (with subdivisions)
+extern func GenMeshCube(width: float, height: float, length: float) Mesh; # Generate cuboid mesh
+extern func GenMeshSphere(radius: float, rings: sint, slices: sint) Mesh; # Generate sphere mesh (standard sphere)
+extern func GenMeshHemiSphere(radius: float, rings: sint, slices: sint) Mesh; # Generate half-sphere mesh (no bottom cap)
+extern func GenMeshCylinder(radius: float, height: float, slices: sint) Mesh; # Generate cylinder mesh
+extern func GenMeshCone(radius: float, height: float, slices: sint) Mesh; # Generate cone/pyramid mesh
+extern func GenMeshTorus(radius: float, size: float, radSeg: sint, sides: sint) Mesh; # Generate torus mesh
+extern func GenMeshKnot(radius: float, size: float, radSeg: sint, sides: sint) Mesh; # Generate trefoil knot mesh
 extern func GenMeshHeightmap(heightmap: Image, size: Vector3) Mesh; # Generate heightmap mesh from image data
 extern func GenMeshCubicmap(cubicmap: Image, cubeSize: Vector3) Mesh; # Generate cubes-based map mesh from image data
 extern func LoadMaterials(fileName: *char, materialCount: *sint) *Material; # Load materials from model file
@@ -1085,10 +1085,10 @@ extern func UpdateModelAnimation(model: Model, anim: ModelAnimation, frame: sint
 extern func UnloadModelAnimation(anim: ModelAnimation) void; # Unload animation data
 extern func UnloadModelAnimations(animations: *ModelAnimation, count: uint) void; # Unload animation array data
 extern func IsModelAnimationValid(model: Model, anim: ModelAnimation) bool; # Check model animation skeleton match
-extern func CheckCollisionSpheres(center1: Vector3, radius1: f32, center2: Vector3, radius2: f32) bool; # Check collision between two spheres
+extern func CheckCollisionSpheres(center1: Vector3, radius1: float, center2: Vector3, radius2: float) bool; # Check collision between two spheres
 extern func CheckCollisionBoxes(box1: BoundingBox, box2: BoundingBox) bool; # Check collision between two bounding boxes
-extern func CheckCollisionBoxSphere(box: BoundingBox, center: Vector3, radius: f32) bool; # Check collision between box and sphere
-extern func GetRayCollisionSphere(ray: Ray, center: Vector3, radius: f32) RayCollision; # Get collision info between ray and sphere
+extern func CheckCollisionBoxSphere(box: BoundingBox, center: Vector3, radius: float) bool; # Check collision between box and sphere
+extern func GetRayCollisionSphere(ray: Ray, center: Vector3, radius: float) RayCollision; # Get collision info between ray and sphere
 extern func GetRayCollisionBox(ray: Ray, box: BoundingBox) RayCollision; # Get collision info between ray and box
 extern func GetRayCollisionMesh(ray: Ray, mesh: Mesh, transform: Matrix) RayCollision; # Get collision info between ray and mesh
 extern func GetRayCollisionTriangle(ray: Ray, p1: Vector3, p2: Vector3, p3: Vector3) RayCollision; # Get collision info between ray and triangle
@@ -1096,7 +1096,7 @@ extern func GetRayCollisionQuad(ray: Ray, p1: Vector3, p2: Vector3, p3: Vector3,
 extern func InitAudioDevice() void; # Initialize audio device and context
 extern func CloseAudioDevice() void; # Close the audio device and context
 extern func IsAudioDeviceReady() bool; # Check if audio device has been initialized successfully
-extern func SetMasterVolume(volume: f32) void; # Set master volume (listener)
+extern func SetMasterVolume(volume: float) void; # Set master volume (listener)
 extern func LoadWave(fileName: *char) Wave; # Load wave data from file
 extern func LoadWaveFromMemory(fileType: *char, fileData: *uchar, dataSize: sint) Wave; # Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
 extern func IsWaveReady(wave: Wave) bool; # Checks if wave data is ready
@@ -1113,14 +1113,14 @@ extern func StopSound(sound: Sound) void; # Stop playing a sound
 extern func PauseSound(sound: Sound) void; # Pause a sound
 extern func ResumeSound(sound: Sound) void; # Resume a paused sound
 extern func IsSoundPlaying(sound: Sound) bool; # Check if a sound is currently playing
-extern func SetSoundVolume(sound: Sound, volume: f32) void; # Set volume for a sound (1.0 is max level)
-extern func SetSoundPitch(sound: Sound, pitch: f32) void; # Set pitch for a sound (1.0 is base level)
-extern func SetSoundPan(sound: Sound, pan: f32) void; # Set pan for a sound (0.5 is center)
+extern func SetSoundVolume(sound: Sound, volume: float) void; # Set volume for a sound (1.0 is max level)
+extern func SetSoundPitch(sound: Sound, pitch: float) void; # Set pitch for a sound (1.0 is base level)
+extern func SetSoundPan(sound: Sound, pan: float) void; # Set pan for a sound (0.5 is center)
 extern func WaveCopy(wave: Wave) Wave; # Copy a wave to a new wave
 extern func WaveCrop(wave: *Wave, initSample: sint, finalSample: sint) void; # Crop a wave to defined samples range
 extern func WaveFormat(wave: *Wave, sampleRate: sint, sampleSize: sint, channels: sint) void; # Convert wave data to desired format
-extern func LoadWaveSamples(wave: Wave) *f32; # Load samples data from wave as a 32bit float data array
-extern func UnloadWaveSamples(samples: *f32) void; # Unload samples data loaded with LoadWaveSamples()
+extern func LoadWaveSamples(wave: Wave) *float; # Load samples data from wave as a 32bit float data array
+extern func UnloadWaveSamples(samples: *float) void; # Unload samples data loaded with LoadWaveSamples()
 extern func LoadMusicStream(fileName: *char) Music; # Load music stream from file
 extern func LoadMusicStreamFromMemory(fileType: *char, data: *uchar, dataSize: sint) Music; # Load music stream from data
 extern func IsMusicReady(music: Music) bool; # Checks if a music stream is ready
@@ -1131,12 +1131,12 @@ extern func UpdateMusicStream(music: Music) void; # Updates buffers for music st
 extern func StopMusicStream(music: Music) void; # Stop music playing
 extern func PauseMusicStream(music: Music) void; # Pause music playing
 extern func ResumeMusicStream(music: Music) void; # Resume playing paused music
-extern func SeekMusicStream(music: Music, position: f32) void; # Seek music to a position (in seconds)
-extern func SetMusicVolume(music: Music, volume: f32) void; # Set volume for music (1.0 is max level)
-extern func SetMusicPitch(music: Music, pitch: f32) void; # Set pitch for a music (1.0 is base level)
-extern func SetMusicPan(music: Music, pan: f32) void; # Set pan for a music (0.5 is center)
-extern func GetMusicTimeLength(music: Music) f32; # Get music time length (in seconds)
-extern func GetMusicTimePlayed(music: Music) f32; # Get current music time played (in seconds)
+extern func SeekMusicStream(music: Music, position: float) void; # Seek music to a position (in seconds)
+extern func SetMusicVolume(music: Music, volume: float) void; # Set volume for music (1.0 is max level)
+extern func SetMusicPitch(music: Music, pitch: float) void; # Set pitch for a music (1.0 is base level)
+extern func SetMusicPan(music: Music, pan: float) void; # Set pan for a music (0.5 is center)
+extern func GetMusicTimeLength(music: Music) float; # Get music time length (in seconds)
+extern func GetMusicTimePlayed(music: Music) float; # Get current music time played (in seconds)
 extern func LoadAudioStream(sampleRate: uint, sampleSize: uint, channels: uint) AudioStream; # Load audio stream (to stream raw audio pcm data)
 extern func IsAudioStreamReady(stream: AudioStream) bool; # Checks if an audio stream is ready
 extern func UnloadAudioStream(stream: AudioStream) void; # Unload audio stream and free memory
@@ -1147,9 +1147,9 @@ extern func PauseAudioStream(stream: AudioStream) void; # Pause audio stream
 extern func ResumeAudioStream(stream: AudioStream) void; # Resume audio stream
 extern func IsAudioStreamPlaying(stream: AudioStream) bool; # Check if audio stream is playing
 extern func StopAudioStream(stream: AudioStream) void; # Stop audio stream
-extern func SetAudioStreamVolume(stream: AudioStream, volume: f32) void; # Set volume for audio stream (1.0 is max level)
-extern func SetAudioStreamPitch(stream: AudioStream, pitch: f32) void; # Set pitch for audio stream (1.0 is base level)
-extern func SetAudioStreamPan(stream: AudioStream, pan: f32) void; # Set pan for audio stream (0.5 is centered)
+extern func SetAudioStreamVolume(stream: AudioStream, volume: float) void; # Set volume for audio stream (1.0 is max level)
+extern func SetAudioStreamPitch(stream: AudioStream, pitch: float) void; # Set pitch for audio stream (1.0 is base level)
+extern func SetAudioStreamPan(stream: AudioStream, pan: float) void; # Set pan for audio stream (0.5 is centered)
 extern func SetAudioStreamBufferSizeDefault(size: sint) void; # Default size for new audio streams
 extern func SetAudioStreamCallback(stream: AudioStream, callback: AudioCallback) void; # Audio thread callback to request new data
 extern func AttachAudioStreamProcessor(stream: AudioStream, processor: AudioCallback) void; # Attach audio stream processor to stream

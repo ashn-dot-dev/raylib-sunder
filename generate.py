@@ -28,10 +28,6 @@ def generate_type(s):
         return "slong"
     if s == "long long":
         return "long long"
-    if s == "float":
-        return "f32"
-    if s == "double":
-        return "f64"
     return s.strip()
 
 def generate_version(j):

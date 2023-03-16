@@ -81,7 +81,10 @@ def generate_enum(j):
     lines = list()
     name = j["name"]
     desc = j["description"]
-    lines.append(f"alias {name} = s32; # (enum) {desc}")
+    # XXX: Use uint override for config flags since SetConfigFlags takes
+    # `unsigned int` as its `flags` parameter.
+    type = "uint" if name == "ConfigFlags" else "sint"
+    lines.append(f"alias {name} = {type}; # (enum) {desc}")
     for value in j["values"]:
         value_name = value["name"]
         value_value = value["value"]

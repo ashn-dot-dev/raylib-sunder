@@ -46,7 +46,7 @@ alias LoadFileTextCallback = func(*char) *char; # FileIO: Load text data
 alias SaveFileTextCallback = func(*char, *char) bool; # FileIO: Save text data
 alias AudioCallback = func(*void, uint) void;
 
-alias ConfigFlags = s32; # (enum) System/Window config flags
+alias ConfigFlags = uint; # (enum) System/Window config flags
 let FLAG_VSYNC_HINT: ConfigFlags = 64; # Set to try enabling V-Sync on GPU
 let FLAG_FULLSCREEN_MODE: ConfigFlags = 2; # Set to run program in fullscreen
 let FLAG_WINDOW_RESIZABLE: ConfigFlags = 4; # Set to allow resizable window
@@ -63,7 +63,7 @@ let FLAG_WINDOW_MOUSE_PASSTHROUGH: ConfigFlags = 16384; # Set to support mouse p
 let FLAG_MSAA_4X_HINT: ConfigFlags = 32; # Set to try enabling MSAA 4X
 let FLAG_INTERLACED_HINT: ConfigFlags = 65536; # Set to try enabling interlaced video format (for V3D)
 
-alias TraceLogLevel = s32; # (enum) Trace log level
+alias TraceLogLevel = sint; # (enum) Trace log level
 let LOG_ALL: TraceLogLevel = 0; # Display all logs
 let LOG_TRACE: TraceLogLevel = 1; # Trace logging, intended for internal use only
 let LOG_DEBUG: TraceLogLevel = 2; # Debug logging, used for internal debugging, it should be disabled on release builds
@@ -73,7 +73,7 @@ let LOG_ERROR: TraceLogLevel = 5; # Error logging, used on unrecoverable failure
 let LOG_FATAL: TraceLogLevel = 6; # Fatal logging, used to abort program: exit(EXIT_FAILURE)
 let LOG_NONE: TraceLogLevel = 7; # Disable logging
 
-alias KeyboardKey = s32; # (enum) Keyboard keys (US keyboard layout)
+alias KeyboardKey = sint; # (enum) Keyboard keys (US keyboard layout)
 let KEY_NULL: KeyboardKey = 0; # Key: NULL, used for no key pressed
 let KEY_APOSTROPHE: KeyboardKey = 39; # Key: '
 let KEY_COMMA: KeyboardKey = 44; # Key: ,
@@ -185,7 +185,7 @@ let KEY_MENU: KeyboardKey = 82; # Key: Android menu button
 let KEY_VOLUME_UP: KeyboardKey = 24; # Key: Android volume up button
 let KEY_VOLUME_DOWN: KeyboardKey = 25; # Key: Android volume down button
 
-alias MouseButton = s32; # (enum) Mouse buttons
+alias MouseButton = sint; # (enum) Mouse buttons
 let MOUSE_BUTTON_LEFT: MouseButton = 0; # Mouse button left
 let MOUSE_BUTTON_RIGHT: MouseButton = 1; # Mouse button right
 let MOUSE_BUTTON_MIDDLE: MouseButton = 2; # Mouse button middle (pressed wheel)
@@ -194,7 +194,7 @@ let MOUSE_BUTTON_EXTRA: MouseButton = 4; # Mouse button extra (advanced mouse de
 let MOUSE_BUTTON_FORWARD: MouseButton = 5; # Mouse button forward (advanced mouse device)
 let MOUSE_BUTTON_BACK: MouseButton = 6; # Mouse button back (advanced mouse device)
 
-alias MouseCursor = s32; # (enum) Mouse cursor
+alias MouseCursor = sint; # (enum) Mouse cursor
 let MOUSE_CURSOR_DEFAULT: MouseCursor = 0; # Default pointer shape
 let MOUSE_CURSOR_ARROW: MouseCursor = 1; # Arrow shape
 let MOUSE_CURSOR_IBEAM: MouseCursor = 2; # Text writing cursor shape
@@ -207,7 +207,7 @@ let MOUSE_CURSOR_RESIZE_NESW: MouseCursor = 8; # The top-right to bottom-left di
 let MOUSE_CURSOR_RESIZE_ALL: MouseCursor = 9; # The omnidirectional resize/move cursor shape
 let MOUSE_CURSOR_NOT_ALLOWED: MouseCursor = 10; # The operation-not-allowed shape
 
-alias GamepadButton = s32; # (enum) Gamepad buttons
+alias GamepadButton = sint; # (enum) Gamepad buttons
 let GAMEPAD_BUTTON_UNKNOWN: GamepadButton = 0; # Unknown button, just for error checking
 let GAMEPAD_BUTTON_LEFT_FACE_UP: GamepadButton = 1; # Gamepad left DPAD up button
 let GAMEPAD_BUTTON_LEFT_FACE_RIGHT: GamepadButton = 2; # Gamepad left DPAD right button
@@ -227,7 +227,7 @@ let GAMEPAD_BUTTON_MIDDLE_RIGHT: GamepadButton = 15; # Gamepad center buttons, r
 let GAMEPAD_BUTTON_LEFT_THUMB: GamepadButton = 16; # Gamepad joystick pressed button left
 let GAMEPAD_BUTTON_RIGHT_THUMB: GamepadButton = 17; # Gamepad joystick pressed button right
 
-alias GamepadAxis = s32; # (enum) Gamepad axis
+alias GamepadAxis = sint; # (enum) Gamepad axis
 let GAMEPAD_AXIS_LEFT_X: GamepadAxis = 0; # Gamepad left stick X axis
 let GAMEPAD_AXIS_LEFT_Y: GamepadAxis = 1; # Gamepad left stick Y axis
 let GAMEPAD_AXIS_RIGHT_X: GamepadAxis = 2; # Gamepad right stick X axis
@@ -235,7 +235,7 @@ let GAMEPAD_AXIS_RIGHT_Y: GamepadAxis = 3; # Gamepad right stick Y axis
 let GAMEPAD_AXIS_LEFT_TRIGGER: GamepadAxis = 4; # Gamepad back trigger left, pressure level: [1..-1]
 let GAMEPAD_AXIS_RIGHT_TRIGGER: GamepadAxis = 5; # Gamepad back trigger right, pressure level: [1..-1]
 
-alias MaterialMapIndex = s32; # (enum) Material map index
+alias MaterialMapIndex = sint; # (enum) Material map index
 let MATERIAL_MAP_ALBEDO: MaterialMapIndex = 0; # Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 let MATERIAL_MAP_METALNESS: MaterialMapIndex = 1; # Metalness material (same as: MATERIAL_MAP_SPECULAR)
 let MATERIAL_MAP_NORMAL: MaterialMapIndex = 2; # Normal material
@@ -248,7 +248,7 @@ let MATERIAL_MAP_IRRADIANCE: MaterialMapIndex = 8; # Irradiance material (NOTE: 
 let MATERIAL_MAP_PREFILTER: MaterialMapIndex = 9; # Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
 let MATERIAL_MAP_BRDF: MaterialMapIndex = 10; # Brdf material
 
-alias ShaderLocationIndex = s32; # (enum) Shader location index
+alias ShaderLocationIndex = sint; # (enum) Shader location index
 let SHADER_LOC_VERTEX_POSITION: ShaderLocationIndex = 0; # Shader location: vertex attribute: position
 let SHADER_LOC_VERTEX_TEXCOORD01: ShaderLocationIndex = 1; # Shader location: vertex attribute: texcoord01
 let SHADER_LOC_VERTEX_TEXCOORD02: ShaderLocationIndex = 2; # Shader location: vertex attribute: texcoord02
@@ -276,7 +276,7 @@ let SHADER_LOC_MAP_IRRADIANCE: ShaderLocationIndex = 23; # Shader location: samp
 let SHADER_LOC_MAP_PREFILTER: ShaderLocationIndex = 24; # Shader location: samplerCube texture: prefilter
 let SHADER_LOC_MAP_BRDF: ShaderLocationIndex = 25; # Shader location: sampler2d texture: brdf
 
-alias ShaderUniformDataType = s32; # (enum) Shader uniform data type
+alias ShaderUniformDataType = sint; # (enum) Shader uniform data type
 let SHADER_UNIFORM_FLOAT: ShaderUniformDataType = 0; # Shader uniform type: float
 let SHADER_UNIFORM_VEC2: ShaderUniformDataType = 1; # Shader uniform type: vec2 (2 float)
 let SHADER_UNIFORM_VEC3: ShaderUniformDataType = 2; # Shader uniform type: vec3 (3 float)
@@ -287,13 +287,13 @@ let SHADER_UNIFORM_IVEC3: ShaderUniformDataType = 6; # Shader uniform type: ivec
 let SHADER_UNIFORM_IVEC4: ShaderUniformDataType = 7; # Shader uniform type: ivec4 (4 int)
 let SHADER_UNIFORM_SAMPLER2D: ShaderUniformDataType = 8; # Shader uniform type: sampler2d
 
-alias ShaderAttributeDataType = s32; # (enum) Shader attribute data types
+alias ShaderAttributeDataType = sint; # (enum) Shader attribute data types
 let SHADER_ATTRIB_FLOAT: ShaderAttributeDataType = 0; # Shader attribute type: float
 let SHADER_ATTRIB_VEC2: ShaderAttributeDataType = 1; # Shader attribute type: vec2 (2 float)
 let SHADER_ATTRIB_VEC3: ShaderAttributeDataType = 2; # Shader attribute type: vec3 (3 float)
 let SHADER_ATTRIB_VEC4: ShaderAttributeDataType = 3; # Shader attribute type: vec4 (4 float)
 
-alias PixelFormat = s32; # (enum) Pixel formats
+alias PixelFormat = sint; # (enum) Pixel formats
 let PIXELFORMAT_UNCOMPRESSED_GRAYSCALE: PixelFormat = 1; # 8 bit per pixel (no alpha)
 let PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA: PixelFormat = 2; # 8*2 bpp (2 channels)
 let PIXELFORMAT_UNCOMPRESSED_R5G6B5: PixelFormat = 3; # 16 bpp
@@ -316,7 +316,7 @@ let PIXELFORMAT_COMPRESSED_PVRT_RGBA: PixelFormat = 19; # 4 bpp
 let PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA: PixelFormat = 20; # 8 bpp
 let PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA: PixelFormat = 21; # 2 bpp
 
-alias TextureFilter = s32; # (enum) Texture parameters: filter mode
+alias TextureFilter = sint; # (enum) Texture parameters: filter mode
 let TEXTURE_FILTER_POINT: TextureFilter = 0; # No filter, just pixel approximation
 let TEXTURE_FILTER_BILINEAR: TextureFilter = 1; # Linear filtering
 let TEXTURE_FILTER_TRILINEAR: TextureFilter = 2; # Trilinear filtering (linear with mipmaps)
@@ -324,13 +324,13 @@ let TEXTURE_FILTER_ANISOTROPIC_4X: TextureFilter = 3; # Anisotropic filtering 4x
 let TEXTURE_FILTER_ANISOTROPIC_8X: TextureFilter = 4; # Anisotropic filtering 8x
 let TEXTURE_FILTER_ANISOTROPIC_16X: TextureFilter = 5; # Anisotropic filtering 16x
 
-alias TextureWrap = s32; # (enum) Texture parameters: wrap mode
+alias TextureWrap = sint; # (enum) Texture parameters: wrap mode
 let TEXTURE_WRAP_REPEAT: TextureWrap = 0; # Repeats texture in tiled mode
 let TEXTURE_WRAP_CLAMP: TextureWrap = 1; # Clamps texture to edge pixel in tiled mode
 let TEXTURE_WRAP_MIRROR_REPEAT: TextureWrap = 2; # Mirrors and repeats the texture in tiled mode
 let TEXTURE_WRAP_MIRROR_CLAMP: TextureWrap = 3; # Mirrors and clamps to border the texture in tiled mode
 
-alias CubemapLayout = s32; # (enum) Cubemap layouts
+alias CubemapLayout = sint; # (enum) Cubemap layouts
 let CUBEMAP_LAYOUT_AUTO_DETECT: CubemapLayout = 0; # Automatically detect layout type
 let CUBEMAP_LAYOUT_LINE_VERTICAL: CubemapLayout = 1; # Layout is defined by a vertical line with faces
 let CUBEMAP_LAYOUT_LINE_HORIZONTAL: CubemapLayout = 2; # Layout is defined by a horizontal line with faces
@@ -338,12 +338,12 @@ let CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR: CubemapLayout = 3; # Layout is defined b
 let CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE: CubemapLayout = 4; # Layout is defined by a 4x3 cross with cubemap faces
 let CUBEMAP_LAYOUT_PANORAMA: CubemapLayout = 5; # Layout is defined by a panorama image (equirrectangular map)
 
-alias FontType = s32; # (enum) Font type, defines generation method
+alias FontType = sint; # (enum) Font type, defines generation method
 let FONT_DEFAULT: FontType = 0; # Default font generation, anti-aliased
 let FONT_BITMAP: FontType = 1; # Bitmap font generation, no anti-aliasing
 let FONT_SDF: FontType = 2; # SDF font generation, requires external shader
 
-alias BlendMode = s32; # (enum) Color blending modes (pre-defined)
+alias BlendMode = sint; # (enum) Color blending modes (pre-defined)
 let BLEND_ALPHA: BlendMode = 0; # Blend textures considering alpha (default)
 let BLEND_ADDITIVE: BlendMode = 1; # Blend textures adding colors
 let BLEND_MULTIPLIED: BlendMode = 2; # Blend textures multiplying colors
@@ -353,7 +353,7 @@ let BLEND_ALPHA_PREMULTIPLY: BlendMode = 5; # Blend premultiplied textures consi
 let BLEND_CUSTOM: BlendMode = 6; # Blend textures using custom src/dst factors (use rlSetBlendFactors())
 let BLEND_CUSTOM_SEPARATE: BlendMode = 7; # Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
 
-alias Gesture = s32; # (enum) Gesture
+alias Gesture = sint; # (enum) Gesture
 let GESTURE_NONE: Gesture = 0; # No gesture
 let GESTURE_TAP: Gesture = 1; # Tap gesture
 let GESTURE_DOUBLETAP: Gesture = 2; # Double tap gesture
@@ -366,18 +366,18 @@ let GESTURE_SWIPE_DOWN: Gesture = 128; # Swipe down gesture
 let GESTURE_PINCH_IN: Gesture = 256; # Pinch in gesture
 let GESTURE_PINCH_OUT: Gesture = 512; # Pinch out gesture
 
-alias CameraMode = s32; # (enum) Camera system modes
+alias CameraMode = sint; # (enum) Camera system modes
 let CAMERA_CUSTOM: CameraMode = 0; # Custom camera
 let CAMERA_FREE: CameraMode = 1; # Free camera
 let CAMERA_ORBITAL: CameraMode = 2; # Orbital camera
 let CAMERA_FIRST_PERSON: CameraMode = 3; # First person camera
 let CAMERA_THIRD_PERSON: CameraMode = 4; # Third person camera
 
-alias CameraProjection = s32; # (enum) Camera projection
+alias CameraProjection = sint; # (enum) Camera projection
 let CAMERA_PERSPECTIVE: CameraProjection = 0; # Perspective projection
 let CAMERA_ORTHOGRAPHIC: CameraProjection = 1; # Orthographic projection
 
-alias NPatchLayout = s32; # (enum) N-patch layout
+alias NPatchLayout = sint; # (enum) N-patch layout
 let NPATCH_NINE_PATCH: NPatchLayout = 0; # Npatch layout: 3x3 tiles
 let NPATCH_THREE_PATCH_VERTICAL: NPatchLayout = 1; # Npatch layout: 1x3 tiles
 let NPATCH_THREE_PATCH_HORIZONTAL: NPatchLayout = 2; # Npatch layout: 3x1 tiles

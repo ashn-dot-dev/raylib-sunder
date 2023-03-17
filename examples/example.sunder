@@ -1,5 +1,5 @@
 import "c";
-import "raylib.sunder";
+import "../raylib.sunder";
 
 func main() void {
     InitWindow(640, 480, startof("EXAMPLE"));

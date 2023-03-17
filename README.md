@@ -26,18 +26,18 @@ $ python3 generate.py raylib/parser/raylib_api.json > raylib.sunder
 ```
 
 ## Building the Example Program
-For some C program (in this case `example.c`) built with the commands:
+For some C program (in this case `examples/example.c`) built with the commands:
 
 ```sh
 $ (cd raylib/src && make PLATFORM=PLATFORM_DESKTOP)
-$ clang -Iraylib/src -Lraylib/src -o example example.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+$ clang -Iraylib/src -Lraylib/src -o example examples/example.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 ```
 
-the equivalent Sunder program (in this case `example.sunder`) would be built with:
+the equivalent Sunder program (in this case `examples/example.sunder`) would be built with:
 
 ```sh
 $ (cd raylib/src/ && make PLATFORM=PLATFORM_DESKTOP)
-$ SUNDER_BACKEND=C sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 example.sunder
+$ SUNDER_BACKEND=C sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 examples/example.sunder
 ```
 
 ## License

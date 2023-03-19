@@ -11,6 +11,13 @@
 $ sudo apt install libasound2-dev mesa-common-dev libx11-dev libxrandr-dev libxi-dev xorg-dev libgl1-mesa-dev libglu1-mesa-dev
 ```
 
+### Arch/Manjaro
+[Wiki entry](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#arch-linux).
+
+```sh
+$ sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
+```
+
 ## Generating Bindings
 Clone the raylib sources ([wiki entry](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux#build-raylib-using-make)):
 
@@ -38,6 +45,15 @@ the equivalent Sunder program (in this case `examples/example.sunder`) would be 
 ```sh
 $ (cd raylib/src/ && make PLATFORM=PLATFORM_DESKTOP)
 $ SUNDER_BACKEND=C sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 examples/example.sunder
+```
+
+## Additional Notes
+When developing on the Pinebook Pro (or similar platforms) raylib may fail
+initialize the OpenGL context due to a `GLXBadFBConfig` error. If this occurs,
+set `LIBGL_ALWAYS_SOFTWARE=true` to force software rendering.
+
+```sh
+LIBGL_ALWAYS_SOFTWARE=true ./raylib-application
 ```
 
 ## License

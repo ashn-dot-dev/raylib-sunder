@@ -48,7 +48,7 @@ $ SUNDER_BACKEND=C sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpt
 ```
 
 ## Additional Notes
-When developing on the Pinebook Pro (or similar platforms) raylib may fail
+When developing on the Pinebook Pro (or similar platforms), raylib may fail
 initialize the OpenGL context due to a `GLXBadFBConfig` error. If this occurs,
 set `LIBGL_ALWAYS_SOFTWARE=true` to force software rendering.
 

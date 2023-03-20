@@ -25,7 +25,13 @@ Clone the raylib sources ([wiki entry](https://github.com/raysan5/raylib/wiki/Wo
 $ git clone https://github.com/raysan5/raylib.git raylib
 ```
 
-and run the Sunder code generation script over the raylib API JSON:
+Checkout the target release (in this case `4.5.0`):
+
+```sh
+$ (cd raylib && git pull && git checkout 4.5.0)
+```
+
+Run the Sunder code generation script over the raylib API JSON:
 
 ```sh
 $ (cd raylib/parser && make clean raylib_api.json FORMAT=JSON EXTENSION=json)

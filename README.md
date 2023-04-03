@@ -38,19 +38,46 @@ $ (cd raylib/parser && make clean raylib_api.json FORMAT=JSON EXTENSION=json)
 $ python3 generate.py raylib/parser/raylib_api.json > raylib.sunder
 ```
 
-## Building the Example Program
+## Building the Example Program (Linux)
 For some C program (in this case `examples/example.c`) built with the commands:
 
 ```sh
-$ (cd raylib/src && make PLATFORM=PLATFORM_DESKTOP)
+$ (cd raylib/src && make clean all PLATFORM=PLATFORM_DESKTOP)
 $ clang -Iraylib/src -Lraylib/src -o example examples/example.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 ```
 
 the equivalent Sunder program (in this case `examples/example.sunder`) would be built with:
 
 ```sh
-$ (cd raylib/src/ && make PLATFORM=PLATFORM_DESKTOP)
+$ (cd raylib/src/ && make clean all PLATFORM=PLATFORM_DESKTOP)
 $ SUNDER_BACKEND=C sunder-compile -o example -Lraylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 examples/example.sunder
+```
+
+## Building the Example Program (HTML 5)
+Compiling for the web (HTML 5) requires the Emscripten toolchain, as well as a
+custom version of raylib built for `PLATFORM_WEB`
+([wiki entry](https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5))).
+The example shown here is built with Emscripten's
+[`ASYNCIFY`](https://emscripten.org/docs/porting/asyncify.html) enabled.
+
+```sh
+$ git clone https://github.com/emscripten-core/emsdk.git
+$ cd emsdk
+emsdk$ ./emsdk install latest
+emsdk$ ./emsdk activate latest
+emsdk$ source ./emsdk_env.sh
+emsdk$ cd ../raylib/src
+raylib/src$ make clean
+raylib/src$ emcc -c rcore.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
+raylib/src$ emcc -c rshapes.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
+raylib/src$ emcc -c rtextures.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
+raylib/src$ emcc -c rtext.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
+raylib/src$ emcc -c rmodels.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
+raylib/src$ emcc -c utils.c -Os -Wall -DPLATFORM_WEB
+raylib/src$ emcc -c raudio.c -Os -Wall -DPLATFORM_WEB
+raylib/src$ emar rcs libraylib.a rcore.o rshapes.o rtextures.o rtext.o rmodels.o utils.o raudio.o
+raylib/src$ cd ..
+$ SUNDER_BACKEND=C SUNDER_CC=emcc SUNDER_CFLAGS='-Os -sASSERTIONS -sUSE_GLFW=3 -sASYNCIFY --shell-file examples/example-shell.html' sunder-compile -o example -Lraylib/src -lraylib examples/example.sunder
 ```
 
 ## Additional Notes

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Sunder Generated Code</title>
+<style>
+  body {
+    font-size: 18px;
+    font-family: sans-serif;
+    padding: 0;
+    margin: 0;
+  }
+  input {
+    display: block;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  canvas {
+    display: block;
+    border: 1px solid;
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  textarea {
+    display: block;
+    font-family: monospace;
+    width: 80ch;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+</head>
+
+<body>
+<div>
+  <input type="button" value="FULLSCREEN" onclick="Module.requestFullscreen(false, false)">
+</div>
+
+<div>
+  <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+</div>
+
+<textarea id="stdout" rows="8" readonly></textarea>
+
+<script type="text/javascript">
+  var Module = {
+    preRun: [],
+    postRun: [],
+    print: (function() {
+      const element = document.getElementById("stdout");
+      if (element) element.value = ""; // clear browser cache
+      return function(text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(" ");
+        console.log(text);
+        if (element) {
+          element.value += text + "\n";
+          element.scrollTop = element.scrollHeight; // focus on bottom
+        }
+      };
+    })(),
+    printErr: (function() {
+      const element = document.getElementById("stderr");
+      if (element) element.value = ""; // clear browser cache
+      return function(text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(" ");
+        console.error(text);
+        if (element) {
+          element.value += text + "\n";
+          element.scrollTop = element.scrollHeight; // focus on bottom
+        }
+      };
+    })(),
+    canvas: (function() {
+      const canvas = document.querySelector("#canvas");
+      // As a default initial behavior, pop up an alert when webgl context is lost.
+      // To make your application robust, you may want to override this behavior before shipping!
+      // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+      canvas.addEventListener("webglcontextlost", function(e) { alert("WebGL context lost. You will need to reload the page."); e.preventDefault(); }, false);
+      return canvas;
+    })()
+  };
+</script>
+{{{ SCRIPT }}}
+</body>
+
+</html>

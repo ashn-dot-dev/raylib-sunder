@@ -62,22 +62,11 @@ The example shown here is built with Emscripten's
 
 ```sh
 $ git clone https://github.com/emscripten-core/emsdk.git
-$ cd emsdk
-emsdk$ ./emsdk install latest
-emsdk$ ./emsdk activate latest
-emsdk$ source ./emsdk_env.sh
-emsdk$ cd ../raylib/src
-raylib/src$ make clean
-raylib/src$ emcc -c rcore.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
-raylib/src$ emcc -c rshapes.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
-raylib/src$ emcc -c rtextures.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
-raylib/src$ emcc -c rtext.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
-raylib/src$ emcc -c rmodels.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
-raylib/src$ emcc -c utils.c -Os -Wall -DPLATFORM_WEB
-raylib/src$ emcc -c raudio.c -Os -Wall -DPLATFORM_WEB
-raylib/src$ emar rcs libraylib.a rcore.o rshapes.o rtextures.o rtext.o rmodels.o utils.o raudio.o
-raylib/src$ cd ..
-$ SUNDER_BACKEND=C SUNDER_CC=emcc SUNDER_CFLAGS='-Os -sASSERTIONS -sUSE_GLFW=3 -sASYNCIFY --shell-file examples/example-shell.html' sunder-compile -o example -Lraylib/src -lraylib examples/example.sunder
+$ (cd emsdk && ./emsdk install latest)
+$ (cd emsdk && ./emsdk activate latest)
+$ source emsdk/emsdk_env.sh
+$ sh build-platform-web.sh
+$ SUNDER_ARCH=wasm32 SUNDER_HOST=emscripten SUNDER_BACKEND=C SUNDER_CC=emcc SUNDER_CFLAGS='-g0 -Os -sASSERTIONS -sASYNCIFY -sSINGLE_FILE=1 -sUSE_GLFW=3 --shell-file examples/example-shell.html' sunder-compile -o example.html -Lraylib/src -lraylib examples/example.sunder
 ```
 
 ## Additional Notes

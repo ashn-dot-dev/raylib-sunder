@@ -66,7 +66,7 @@ $ (cd emsdk && ./emsdk install latest)
 $ (cd emsdk && ./emsdk activate latest)
 $ source emsdk/emsdk_env.sh
 $ sh build-platform-web.sh
-$ SUNDER_ARCH=wasm32 SUNDER_HOST=emscripten SUNDER_BACKEND=C SUNDER_CC=emcc SUNDER_CFLAGS='-g0 -Os -sASSERTIONS -sASYNCIFY -sSINGLE_FILE=1 -sUSE_GLFW=3 --shell-file examples/example-shell.html' sunder-compile -o example.html -Lraylib/src -lraylib examples/example.sunder
+$ SUNDER_ARCH=wasm32 SUNDER_HOST=emscripten SUNDER_BACKEND=C SUNDER_CC=emcc SUNDER_CFLAGS='-Os -sASSERTIONS -sASYNCIFY -sSINGLE_FILE=1 -sUSE_GLFW=3 --shell-file examples/example-shell.html' sunder-compile -o example.html -Lraylib/src -lraylib-web examples/example.sunder
 ```
 
 ## Additional Notes

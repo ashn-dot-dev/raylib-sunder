@@ -1,5 +1,4 @@
 #!/bin/sh
-
 set -eux
 
 (cd raylib/src && make clean)
@@ -10,4 +9,5 @@ set -eux
 (cd raylib/src && emcc -c rmodels.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2)
 (cd raylib/src && emcc -c utils.c -Os -Wall -DPLATFORM_WEB)
 (cd raylib/src && emcc -c raudio.c -Os -Wall -DPLATFORM_WEB)
-(cd raylib/src && emar rcs libraylib.a rcore.o rshapes.o rtextures.o rtext.o rmodels.o utils.o raudio.o)
+(cd raylib/src && emar rcs libraylib-web.a rcore.o rshapes.o rtextures.o rtext.o rmodels.o utils.o raudio.o)
+(mkdir -p build && cp raylib/src/libraylib-web.a build)

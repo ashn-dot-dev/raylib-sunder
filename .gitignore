@@ -1,6 +1,7 @@
-raylib
 example
 example.html
 example.wasm
 
+build/
 emsdk/
+raylib/

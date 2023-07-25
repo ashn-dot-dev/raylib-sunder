@@ -26,4 +26,5 @@ uninstall:
 	rm -rf "$(SUNDER_HOME)/lib/raylib"
 
 clean:
+	(cd raylib/src && make clean)
 	(cd raylib/parser && make clean)

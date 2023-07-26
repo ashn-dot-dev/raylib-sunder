@@ -35,8 +35,8 @@ alias TextureCubemap = Texture; # TextureCubemap, same as Texture
 alias RenderTexture2D = RenderTexture; # RenderTexture2D, same as RenderTexture
 alias Camera = Camera3D; # Camera type fallback, defaults to Camera3D
 
-alias rAudioBuffer = any; # opaque struct
-alias rAudioProcessor = any; # opaque struct
+struct rAudioBuffer { var __opaque__: any; } # opaque struct
+struct rAudioProcessor { var __opaque__: any; } # opaque struct
 
 # [SKIPPED] TraceLogCallback: Callback of type `func(sint, *char, va_list) void` is variadic.
 alias TraceLogCallback = *any; # Logging: Redirect trace log messages

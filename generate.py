@@ -133,8 +133,8 @@ def main(args):
     aliases = list(map(generate_alias, api["aliases"]))
     # XXX: Opaque types discovered by a Sunder parse error.
     opaque = [
-        "alias rAudioBuffer = any; # opaque struct",
-        "alias rAudioProcessor = any; # opaque struct",
+        "struct rAudioBuffer { var __opaque__: any; } # opaque struct",
+        "struct rAudioProcessor { var __opaque__: any; } # opaque struct",
     ]
     callbacks = list(map(generate_callback, api["callbacks"]))
     enums = list(map(generate_enum, api["enums"]))

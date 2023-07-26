@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>EXAMPLE</title>
+<title>title</title>
 <style>
   body {
     font-size: 18px;
@@ -49,34 +49,27 @@
   <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
 </div>
 
-<textarea id="stdout" rows="8" readonly></textarea>
-
 <script type="text/javascript">
-const MakePrintFunction = (element, method) => {
-  if (element) element.value = ""; // clear browser cache
+const MakePrintFunction = (method) => {
   return function(text) {
     if (arguments.length > 1) {
       text = Array.prototype.slice.call(arguments).join(" ");
     }
     method(text);
-    if (element) {
-      element.value += text + "\n";
-      element.scrollTop = element.scrollHeight; // focus on bottom
-    }
   };
 };
 
 var Module = {
   preRun: [],
   postRun: [],
-  print: MakePrintFunction(document.getElementById("stdout"), console.log),
-  printErr: MakePrintFunction(document.getElementById("stderr"), console.error),
-  canvas: (function() {
+  print: MakePrintFunction(console.log),
+  printErr: MakePrintFunction(console.error),
+  canvas: (() => {
     const canvas = document.querySelector("#canvas");
-    // As a default initial behavior, pop up an alert when webgl context is lost.
-    // To make your application robust, you may want to override this behavior before shipping!
-    // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
-    canvas.addEventListener("webglcontextlost", function(e) { alert("WebGL context lost. You will need to reload the page."); e.preventDefault(); }, false);
+    canvas.addEventListener("webglcontextlost", function(e) {
+      alert("WebGL context lost. You will need to reload the page.");
+      e.preventDefault();
+    }, false);
     return canvas;
   })()
 };

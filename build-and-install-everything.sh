@@ -10,3 +10,4 @@ make raylib.sunder
 
 make install
 cp build/* "${SUNDER_HOME}/lib/raylib"
+cp raylib-config "${SUNDER_HOME}/lib/raylib"

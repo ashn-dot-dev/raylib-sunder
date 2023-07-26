@@ -1,0 +1,48 @@
+#!/bin/sh
+set -eu
+
+PROGNAME=$(basename "$0")
+usage() {
+    cat <<EOF
+Usage: ${PROGNAME} [desktop|web] [--libs]
+EOF
+}
+
+if [ "$#" -eq 0 ]; then
+    usage 1>&2
+    exit 1
+fi
+
+PLATFORM=
+if [ "$1" = 'desktop' ]; then
+    PLATFORM='desktop'
+elif [ "$1" = 'web' ]; then
+    PLATFORM='web'
+else
+    echo "unknown platform: $1" 1>&2
+    exit 1
+fi
+shift
+
+for arg in "$@"; do
+case "${arg}" in
+    -h|--help)
+        usage
+        exit 0
+        ;;
+    --libs)
+        if [ "$PLATFORM" = 'desktop' ]; then
+            echo "-L$(realpath $(dirname $0)) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11"
+        fi
+        if [ "$PLATFORM" = 'web' ]; then
+            echo "-L$(realpath $(dirname $0)) -lraylib-web"
+        fi
+        shift
+        ;;
+    *)
+        echo "unknown option: ${arg}" 2>&1
+        exit 1
+        ;;
+esac
+done
+

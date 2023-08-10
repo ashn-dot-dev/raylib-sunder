@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eux
 
+rm -rf build
+
 make raylib.sunder
 [ -e build/libraylib.a ] || (sh build-platform-desktop.sh)
 [ -e build/libraylib-web.a ] || (sh build-platform-web.sh)

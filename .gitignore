@@ -2,6 +2,7 @@ example
 example.html
 example.wasm
 
-build/
-emsdk/
+libraylib.a
+libraylib-web.a
+
 raylib/

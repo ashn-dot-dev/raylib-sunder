@@ -30,6 +30,12 @@ case "${arg}" in
         usage
         exit 0
         ;;
+    --cflags)
+        if [ "$PLATFORM" = 'web' ]; then
+            echo "-sASSERTIONS -sASYNCIFY -sUSE_GLFW=3"
+        fi
+        shift
+        ;;
     --libs)
         if [ "$PLATFORM" = 'desktop' ]; then
             echo "-L$(realpath $(dirname $0)) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11"

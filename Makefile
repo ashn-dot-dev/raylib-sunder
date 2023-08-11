@@ -34,7 +34,7 @@ install: raylib.sunder libraylib.a libraylib-web.a
 	cp raylib.sunder "$(SUNDER_HOME)/lib/raylib"
 	cp libraylib.a "$(SUNDER_HOME)/lib/raylib"
 	cp libraylib-web.a "$(SUNDER_HOME)/lib/raylib"
-	cp raylib-config "${SUNDER_HOME}/lib/raylib"
+	cp raylib-config "$(SUNDER_HOME)/lib/raylib"
 	cp emscripten-shell.html "${SUNDER_HOME}/lib/raylib"
 
 uninstall:

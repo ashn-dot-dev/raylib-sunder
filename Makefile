@@ -15,7 +15,6 @@ raylib:
 	git clone --single-branch --branch "$(RAYLIB_VERSION)" "$(RAYLIB_REPOURL)"
 
 raylib/parser/raylib_api.json: raylib
-	(cd raylib && git pull && git checkout "$(RAYLIB_VERSION)")
 	(cd raylib/parser && make clean raylib_api.json FORMAT=JSON EXTENSION=json)
 
 raylib.sunder: raylib/parser/raylib_api.json generate.py

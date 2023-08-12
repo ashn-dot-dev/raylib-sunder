@@ -7,7 +7,7 @@
 	clean
 
 RAYLIB_REPOURL=https://github.com/raysan5/raylib.git
-RAYLIB_VERSION=4.5.0
+RAYLIB_VERSION=master
 
 all: raylib.sunder libraylib.a libraylib-web.a
 

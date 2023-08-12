@@ -1,6 +1,6 @@
 # raylib-sunder
 
-[Sunder](https://github.com/ashn-dot-dev/sunder) bindings for [raylib](https://github.com/raysan5/raylib) v4.5.0.
+[Sunder](https://github.com/ashn-dot-dev/sunder) bindings for [raylib](https://github.com/raysan5/raylib).
 
 ## Dependencies
 ### Debian/Ubuntu

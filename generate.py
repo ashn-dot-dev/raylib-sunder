@@ -9,6 +9,13 @@ RE_TYPE_UXX = re.compile(r"unsigned (.+)")
 
 RE_DEFINE_COLOR = re.compile(r"CLITERAL\(Color\){ (\d+), (\d+), (\d+), (\d+) }")
 
+def identifier(s):
+    # Set of Sunder keywords to be substituted. Update as necessary.
+    KEYWORDS = {"alias"}
+    # Substitute `<identifier>` for `<identifier>_` if the identifier would be
+    # a reserved keyword.
+    return f"{s}_" if s in KEYWORDS else s
+
 def generate_type(s):
     s = s.replace("const", "").strip()
     match = RE_TYPE_ARR.match(s)
@@ -27,7 +34,7 @@ def generate_type(s):
     if s == "long":
         return "slong"
     if s == "long long":
-        return "long long"
+        return "slonglong"
     return s.strip()
 
 def generate_version(j):
@@ -48,7 +55,6 @@ def generate_color(j):
     match = RE_DEFINE_COLOR.match(value)
     return f"let {name} = (:Color){{.r={match[1]}, .g={match[2]}, .b={match[3]}, .a={match[4]}}}; # {desc}"
     return None
-
 
 def generate_alias(j):
     name = j["name"]
@@ -114,7 +120,7 @@ def generate_function(j):
         for param in j["params"]:
             if param["type"] == "..." or param["type"] == "va_list":
                 is_variadic = True
-            param_name = param["name"]
+            param_name = identifier(param["name"])
             param_type = generate_type(param["type"])
             func_params.append(f"{param_name}: {param_type}")
     func_return = generate_type(j["returnType"])

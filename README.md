@@ -58,7 +58,7 @@ $ SUNDER_ARCH=wasm32 SUNDER_HOST=emscripten SUNDER_CC=emcc SUNDER_CFLAGS="$(${SU
 ```
 
 ## Additional Notes
-When developing on the Pinebook Pro (or similar platforms), raylib may fail
+When developing on the Pinebook Pro (or similar platforms), raylib may fail to
 initialize the OpenGL context due to a `GLXBadFBConfig` error. If this occurs,
 set `LIBGL_ALWAYS_SOFTWARE=true` to force software rendering.
 

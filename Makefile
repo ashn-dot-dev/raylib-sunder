@@ -8,6 +8,7 @@
 
 RAYLIB_REPOURL=https://github.com/raysan5/raylib.git
 RAYLIB_VERSION=master
+RAYLIB_MAKEFLAGS=
 
 all: raylib.sunder libraylib.a libraylib-web.a
 
@@ -21,11 +22,11 @@ raylib.sunder: raylib/parser/raylib_api.json generate.py
 	python3 generate.py raylib/parser/raylib_api.json > raylib.sunder
 
 libraylib.a: raylib
-	(cd raylib/src && make clean all PLATFORM=PLATFORM_DESKTOP)
+	(cd raylib/src && make clean all PLATFORM=PLATFORM_DESKTOP $(RAYLIB_MAKEFLAGS))
 	cp raylib/src/libraylib.a libraylib.a
 
 libraylib-web.a: raylib
-	(cd raylib/src && make clean all PLATFORM=PLATFORM_WEB)
+	(cd raylib/src && make clean all PLATFORM=PLATFORM_WEB $(RAYLIB_MAKEFLAGS))
 	cp raylib/src/libraylib.a libraylib-web.a
 
 install: raylib.sunder libraylib.a libraylib-web.a

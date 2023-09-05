@@ -59,11 +59,19 @@ $ SUNDER_ARCH=wasm32 SUNDER_HOST=emscripten SUNDER_CC=emcc SUNDER_CFLAGS="$(${SU
 
 ## Additional Notes
 When developing on the Pinebook Pro (or similar platforms), raylib may fail to
-initialize the OpenGL context due to a `GLXBadFBConfig` error. If this occurs,
-set `LIBGL_ALWAYS_SOFTWARE=true` to force software rendering.
+initialize the OpenGL context with a `GLXBadFBConfig` error due to OpenGL 3.3+
+not being supported. If this occurs, set `LIBGL_ALWAYS_SOFTWARE=true` to force
+software rendering.
 
 ```sh
-LIBGL_ALWAYS_SOFTWARE=true ./raylib-application
+$ LIBGL_ALWAYS_SOFTWARE=true ./raylib-application
+```
+
+Alternatively, build with `RAYLIB_MAKEFLAGS='GRAPHICS=GRAPHICS_API_OPENGL_ES2'`
+to use OpenGL ES2 for both desktop and web builds.
+
+```sh
+$ make all RAYLIB_MAKEFLAGS='GRAPHICS=GRAPHICS_API_OPENGL_ES2'
 ```
 
 ## License

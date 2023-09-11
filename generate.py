@@ -87,9 +87,18 @@ def generate_enum(j):
     lines = list()
     name = j["name"]
     desc = j["description"]
-    # XXX: Use uint override for config flags since SetConfigFlags takes
-    # `unsigned int` as its `flags` parameter.
-    type = "uint" if name == "ConfigFlags" else "sint"
+
+    # Although Sunder supports enums, raylib funtions taking enum arguments use
+    # int or unsigned int for the corresponding function parameter type and/or
+    # struct member type. Enums are generated as either sint or uint values in
+    # order to avoid a requiring cast on an enum value every use.
+    USE_UINT = {
+        # SetConfigFlags takes `unsigned int` for its `flags` parameter.
+        "ConfigFlags",
+    }
+    type = "uint" if name in USE_UINT else "sint"
+
+    lines.append(f"# {desc}")
     lines.append(f"alias {name} = {type}; # (enum) {desc}")
     for value in j["values"]:
         value_name = value["name"]
@@ -102,6 +111,7 @@ def generate_struct(j):
     lines = list()
     name = j["name"]
     desc = j["description"]
+    lines.append(f"# {desc}")
     lines.append(f"struct {name} {{")
     for field in j["fields"]:
         field_name = field["name"]

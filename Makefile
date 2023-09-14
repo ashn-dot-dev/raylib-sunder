@@ -7,27 +7,28 @@
 	clean
 
 RAYLIB_REPOURL=https://github.com/raysan5/raylib.git
+RAYLIB_REPODIR=raylib
 RAYLIB_VERSION=master
 RAYLIB_MAKEFLAGS=
 
 all: raylib.sunder libraylib.a libraylib-web.a
 
-raylib:
-	git clone --single-branch --branch "$(RAYLIB_VERSION)" "$(RAYLIB_REPOURL)"
+$(RAYLIB_REPODIR):
+	git clone --single-branch --branch "$(RAYLIB_VERSION)" "$(RAYLIB_REPOURL)" "$(RAYLIB_REPODIR)"
 
-raylib/parser/raylib_api.json: raylib
-	(cd raylib/parser && make clean raylib_api.json FORMAT=JSON EXTENSION=json)
+$(RAYLIB_REPODIR)/parser/raylib_api.json: $(RAYLIB_REPODIR)
+	(cd $(RAYLIB_REPODIR)/parser && make clean raylib_api.json FORMAT=JSON EXTENSION=json)
 
-raylib.sunder: raylib/parser/raylib_api.json generate.py
-	python3 generate.py raylib/parser/raylib_api.json > raylib.sunder
+raylib.sunder: $(RAYLIB_REPODIR)/parser/raylib_api.json generate.py
+	python3 generate.py $(RAYLIB_REPODIR)/parser/raylib_api.json >raylib.sunder
 
-libraylib.a: raylib
-	(cd raylib/src && make clean all PLATFORM=PLATFORM_DESKTOP $(RAYLIB_MAKEFLAGS))
-	cp raylib/src/libraylib.a libraylib.a
+libraylib.a: $(RAYLIB_REPODIR)
+	(cd $(RAYLIB_REPODIR)/src && make clean all PLATFORM=PLATFORM_DESKTOP $(RAYLIB_MAKEFLAGS))
+	(cp $(RAYLIB_REPODIR)/src/libraylib.a libraylib.a)
 
-libraylib-web.a: raylib
-	(cd raylib/src && make clean all PLATFORM=PLATFORM_WEB $(RAYLIB_MAKEFLAGS))
-	cp raylib/src/libraylib.a libraylib-web.a
+libraylib-web.a: $(RAYLIB_REPODIR)
+	(cd $(RAYLIB_REPODIR)/src && make clean all PLATFORM=PLATFORM_WEB $(RAYLIB_MAKEFLAGS))
+	(cp $(RAYLIB_REPODIR)/src/libraylib.a libraylib-web.a)
 
 install: raylib.sunder libraylib.a libraylib-web.a
 	mkdir -p "$(SUNDER_HOME)/lib/raylib"

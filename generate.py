@@ -17,7 +17,7 @@ def identifier(s):
     return f"{s}_" if s in KEYWORDS else s
 
 def generate_type(s):
-    s = s.replace("const", "").strip()
+    s = s.replace("const ", "").strip()
     match = RE_TYPE_ARR.match(s)
     if match:
         return f"[{match[2]}]{generate_type(match[1])}"
@@ -149,8 +149,8 @@ def main(args):
     aliases = list(map(generate_alias, api["aliases"]))
     # XXX: Opaque types discovered by a Sunder parse error.
     opaque = [
-        "struct rAudioBuffer { var __opaque__: any; } # opaque struct",
-        "struct rAudioProcessor { var __opaque__: any; } # opaque struct",
+        "alias rAudioBuffer = any; # opaque struct",
+        "alias rAudioProcessor = any; # opaque struct",
     ]
     callbacks = list(map(generate_callback, api["callbacks"]))
     enums = list(map(generate_enum, api["enums"]))

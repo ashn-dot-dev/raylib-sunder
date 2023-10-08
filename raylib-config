@@ -31,6 +31,11 @@ case "${arg}" in
         exit 0
         ;;
     --cflags)
+        if [ "$PLATFORM" = 'desktop' ]; then
+            if [ $(uname -s) = 'Darwin' ]; then
+                echo "-framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
+            fi
+        fi
         if [ "$PLATFORM" = 'web' ]; then
             echo "-sASSERTIONS -sASYNCIFY -sUSE_GLFW=3"
         fi
@@ -38,7 +43,11 @@ case "${arg}" in
         ;;
     --libs)
         if [ "$PLATFORM" = 'desktop' ]; then
-            echo "-L$(realpath $(dirname $0)) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11"
+            if [ $(uname -s) = 'Darwin' ]; then
+                echo "-L$(realpath $(dirname $0)) -lraylib"
+            else
+                echo "-L$(realpath $(dirname $0)) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11"
+            fi
         fi
         if [ "$PLATFORM" = 'web' ]; then
             echo "-L$(realpath $(dirname $0)) -lraylib-web"

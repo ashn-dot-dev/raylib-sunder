@@ -43,5 +43,5 @@ uninstall:
 
 clean:
 	rm -f raylib.sunder libraylib.a libraylib-web.a
-	(cd raylib/src && make clean)
-	(cd raylib/parser && make clean)
+	(cd $(RAYLIB_REPODIR)/src && make clean)
+	(cd $(RAYLIB_REPODIR)/parser && make clean)

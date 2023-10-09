@@ -33,6 +33,8 @@ case "${arg}" in
     --cflags)
         if [ "$PLATFORM" = 'desktop' ]; then
             if [ $(uname -s) = 'Darwin' ]; then
+                # Frameworks are added as CFLAGS since sunder-compile does not
+                # support `-framework` as a command line argument.
                 echo "-framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL"
             fi
         fi

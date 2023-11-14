@@ -33,6 +33,7 @@ libraylib-web.a: $(RAYLIB_REPODIR)
 install: raylib.sunder libraylib.a libraylib-web.a
 	mkdir -p "$(SUNDER_HOME)/lib/raylib"
 	cp raylib.sunder "$(SUNDER_HOME)/lib/raylib"
+	cp $(RAYLIB_REPODIR)/src/raylib.h "$(SUNDER_HOME)/lib/raylib"
 	cp libraylib.a "$(SUNDER_HOME)/lib/raylib"
 	cp libraylib-web.a "$(SUNDER_HOME)/lib/raylib"
 	cp raylib-config "$(SUNDER_HOME)/lib/raylib"

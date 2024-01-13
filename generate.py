@@ -11,7 +11,7 @@ RE_DEFINE_COLOR = re.compile(r"CLITERAL\(Color\){ (\d+), (\d+), (\d+), (\d+) }")
 
 def identifier(s):
     # Set of Sunder keywords to be substituted. Update as necessary.
-    KEYWORDS = {"alias"}
+    KEYWORDS = {"type"}
     # Substitute `<identifier>` for `<identifier>_` if the identifier would be
     # a reserved keyword.
     return f"{s}_" if s in KEYWORDS else s
@@ -60,7 +60,7 @@ def generate_alias(j):
     name = j["name"]
     type = generate_type(j["type"])
     desc = j["description"]
-    return f"alias {name} = {type}; # {desc}"
+    return f"type {name} = {type}; # {desc}"
 
 def generate_callback(j):
     is_variadic = False
@@ -76,12 +76,12 @@ def generate_callback(j):
     if is_variadic:
         return "\n".join([
             f"# [SKIPPED] {name}: Callback of type `func({', '.join(func_params)}) {func_return}` is variadic.",
-            f"alias {name} = *any; # {desc}"
+            f"type {name} = *any; # {desc}"
         ])
 
     if len(desc) == 0:
-        return f"alias {name} = func({', '.join(func_params)}) {func_return};"
-    return f"alias {name} = func({', '.join(func_params)}) {func_return}; # {desc}"
+        return f"type {name} = func({', '.join(func_params)}) {func_return};"
+    return f"type {name} = func({', '.join(func_params)}) {func_return}; # {desc}"
 
 def generate_enum(j):
     lines = list()
@@ -99,7 +99,7 @@ def generate_enum(j):
     type = "uint" if name in USE_UINT else "sint"
 
     lines.append(f"# {desc}")
-    lines.append(f"alias {name} = {type}; # (enum) {desc}")
+    lines.append(f"type {name} = {type}; # (enum) {desc}")
     for value in j["values"]:
         value_name = value["name"]
         value_value = value["value"]
@@ -117,7 +117,7 @@ def generate_struct(j):
         field_name = field["name"]
         field_type = generate_type(field["type"])
         field_desc = field["description"]
-        lines.append(f"    var {field_name}: {field_type}; # {field_desc}")
+        lines.append(f"    var {identifier(field_name)}: {field_type}; # {field_desc}")
     lines.append(f"}}")
     return "\n".join(lines)
 
@@ -137,7 +137,7 @@ def generate_function(j):
     if is_variadic:
         return "\n".join([
             f"# [SKIPPED] {name}: Function of type `func({', '.join(func_params)}) {func_return}` is variadic.",
-            f"alias {name} = *any; # {desc}"
+            f"type {name} = *any; # {desc}"
         ])
     return f"extern func {name}({', '.join(func_params)}) {func_return}; # {desc}"
 
@@ -149,8 +149,8 @@ def main(args):
     aliases = list(map(generate_alias, api["aliases"]))
     # XXX: Opaque types discovered by a Sunder parse error.
     opaque = [
-        "alias rAudioBuffer = any; # opaque struct",
-        "alias rAudioProcessor = any; # opaque struct",
+        "extern type rAudioBuffer; # opaque struct",
+        "extern type rAudioProcessor; # opaque struct",
     ]
     callbacks = list(map(generate_callback, api["callbacks"]))
     enums = list(map(generate_enum, api["enums"]))

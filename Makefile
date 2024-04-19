@@ -24,11 +24,11 @@ raylib.sunder: $(RAYLIB_REPODIR)/parser/raylib_api.json generate.py
 	python3 generate.py $(RAYLIB_REPODIR)/parser/raylib_api.json >raylib.sunder
 
 libraylib.a: $(RAYLIB_REPODIR)
-	(cd $(RAYLIB_REPODIR)/src && $(MAKE) clean all PLATFORM=PLATFORM_DESKTOP $(RAYLIB_MAKEFLAGS))
+	(cd $(RAYLIB_REPODIR)/src && $(MAKE) clean && $(MAKE) PLATFORM=PLATFORM_DESKTOP $(RAYLIB_MAKEFLAGS))
 	(cp $(RAYLIB_REPODIR)/src/libraylib.a libraylib.a)
 
 libraylib-web.a: $(RAYLIB_REPODIR)
-	(cd $(RAYLIB_REPODIR)/src && $(MAKE) clean all PLATFORM=PLATFORM_WEB $(RAYLIB_MAKEFLAGS))
+	(cd $(RAYLIB_REPODIR)/src && $(MAKE) clean && $(MAKE) PLATFORM=PLATFORM_WEB $(RAYLIB_MAKEFLAGS))
 	(cp $(RAYLIB_REPODIR)/src/libraylib.a libraylib-web.a)
 
 install: raylib.sunder libraylib.a

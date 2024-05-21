@@ -19,16 +19,16 @@ $ sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
 ```
 
 ## Build and Install
-Build the `raylib.sunder` bindings as well as the `PLATFORM=PLATFORM_DESKTOP`
-library (`libraylib.a`) and the `PLATFORM=PLATFORM_WEB` library
-(`libraylib-web.a`):
+Build the `raylib.sunder` and `raymath.sunder` bindings as well as the
+`PLATFORM=PLATFORM_DESKTOP` library (`libraylib.a`) and the
+`PLATFORM=PLATFORM_WEB` library (`libraylib-web.a`):
 
 ```sh
 $ make build build-web
 ```
 
-Install the `raylib.sunder` bindings, `libraylib*.a` libraries, and the
-`raylib-config` utility to `$(SUNDER_HOME)/lib/raylib`:
+Install the raylib sunder bindings, raylib libraries, and the `raylib-config`
+utility to `$(SUNDER_HOME)/lib/raylib`:
 
 ```sh
 $ make install install-web

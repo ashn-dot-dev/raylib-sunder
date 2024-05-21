@@ -24,14 +24,14 @@ library (`libraylib.a`) and the `PLATFORM=PLATFORM_WEB` library
 (`libraylib-web.a`):
 
 ```sh
-$ make
+$ make build build-web
 ```
 
 Install the `raylib.sunder` bindings, `libraylib*.a` libraries, and the
 `raylib-config` utility to `$(SUNDER_HOME)/lib/raylib`:
 
 ```sh
-$ make install
+$ make install install-web
 ```
 
 ## Building the Example Program (Linux)

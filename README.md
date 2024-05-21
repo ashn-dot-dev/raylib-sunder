@@ -44,7 +44,8 @@ $ cc -o example examples/example.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 the equivalent Sunder program (in this case `examples/example.sunder`) would be built with:
 
 ```sh
-$ sunder-compile -o example $(${SUNDER_HOME}/lib/raylib/raylib-config desktop --libs) examples/example.sunder
+$ SUNDER_CFLAGS=$(${SUNDER_HOME}/lib/raylib/raylib-config desktop --cflags) \
+    sunder-compile -o example $(${SUNDER_HOME}/lib/raylib/raylib-config desktop --libs) examples/example.sunder
 ```
 
 ## Building the Example Program (HTML 5)

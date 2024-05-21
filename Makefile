@@ -2,6 +2,8 @@
 .SUFFIXES:
 .PHONY: \
 	all \
+	build \
+	build-web \
 	install \
 	install-web \
 	uninstall \
@@ -31,14 +33,18 @@ libraylib-web.a: $(RAYLIB_REPODIR)
 	(cd $(RAYLIB_REPODIR)/src && $(MAKE) clean && $(MAKE) PLATFORM=PLATFORM_WEB $(RAYLIB_MAKEFLAGS))
 	(cp $(RAYLIB_REPODIR)/src/libraylib.a libraylib-web.a)
 
-install: raylib.sunder libraylib.a
+build: raylib.sunder libraylib.a
+
+build-web: raylib.sunder libraylib-web.a
+
+install: build
 	mkdir -p "$(SUNDER_HOME)/lib/raylib"
 	cp raylib.sunder "$(SUNDER_HOME)/lib/raylib"
 	cp $(RAYLIB_REPODIR)/src/raylib.h "$(SUNDER_HOME)/lib/raylib"
 	cp raylib-config "$(SUNDER_HOME)/lib/raylib"
 	cp libraylib.a "$(SUNDER_HOME)/lib/raylib"
 
-install-web: raylib.sunder libraylib-web.a
+install-web: build-web
 	mkdir -p "$(SUNDER_HOME)/lib/raylib"
 	cp raylib.sunder "$(SUNDER_HOME)/lib/raylib"
 	cp $(RAYLIB_REPODIR)/src/raylib.h "$(SUNDER_HOME)/lib/raylib"

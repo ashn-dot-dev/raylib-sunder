@@ -14,25 +14,27 @@ RAYLIB_MAKEFLAGS=
 
 all: raylib.sunder raymath.sunder libraylib.a libraylib-web.a
 
-$(RAYLIB_DIRECTORY)/parser/raylib_api.json: $(RAYLIB_DIRECTORY)
+raylib_api.json: $(RAYLIB_DIRECTORY)
 	(cd $(RAYLIB_DIRECTORY)/parser && $(MAKE) clean raylib_api.json FORMAT=JSON EXTENSION=json)
+	cp $(RAYLIB_DIRECTORY)/parser/raylib_api.json $@
 
-$(RAYLIB_DIRECTORY)/parser/raymath_api.json: $(RAYLIB_DIRECTORY)
+raymath_api.json: $(RAYLIB_DIRECTORY)
 	(cd $(RAYLIB_DIRECTORY)/parser && $(MAKE) clean raymath_api.json FORMAT=JSON EXTENSION=json)
+	cp $(RAYLIB_DIRECTORY)/parser/raymath_api.json $@
 
-raylib.sunder: $(RAYLIB_DIRECTORY)/parser/raylib_api.json generate.py
-	python3 generate.py raylib $(RAYLIB_DIRECTORY)/parser/raylib_api.json >raylib.sunder
+raylib.sunder: raylib_api.json generate.py
+	python3 generate.py raylib raylib_api.json >raylib.sunder
 
-raymath.sunder: $(RAYLIB_DIRECTORY)/parser/raymath_api.json generate.py
-	python3 generate.py raymath $(RAYLIB_DIRECTORY)/parser/raymath_api.json >raymath.sunder
+raymath.sunder: raymath_api.json generate.py
+	python3 generate.py raymath raymath_api.json >raymath.sunder
 
 libraylib.a: $(RAYLIB_DIRECTORY)
 	(cd $(RAYLIB_DIRECTORY)/src && $(MAKE) clean && $(MAKE) PLATFORM=PLATFORM_DESKTOP $(RAYLIB_MAKEFLAGS))
-	(cp $(RAYLIB_DIRECTORY)/src/libraylib.a libraylib.a)
+	cp $(RAYLIB_DIRECTORY)/src/libraylib.a $@
 
 libraylib-web.a: $(RAYLIB_DIRECTORY)
 	(cd $(RAYLIB_DIRECTORY)/src && $(MAKE) clean && $(MAKE) PLATFORM=PLATFORM_WEB $(RAYLIB_MAKEFLAGS))
-	(cp $(RAYLIB_DIRECTORY)/src/libraylib.a libraylib-web.a)
+	cp $(RAYLIB_DIRECTORY)/src/libraylib.a $@
 
 build: raylib.sunder raymath.sunder libraylib.a
 
@@ -65,6 +67,7 @@ clean:
 		raylib.sunder \
 		raymath.sunder \
 		libraylib.a \
-		libraylib-web.a
+		libraylib-web.a \
+		*.json
 	(if [ -e $(RAYLIB_DIRECTORY) ]; then (cd $(RAYLIB_DIRECTORY)/src && make -i clean); fi)
 	(if [ -e $(RAYLIB_DIRECTORY) ]; then (cd $(RAYLIB_DIRECTORY)/parser && make -i clean); fi)

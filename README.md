@@ -4,10 +4,12 @@
 
 ## Build and Install
 Clone the [raylib repository](https://github.com/raysan5/raylib) into the
-directory of your choice (in this case `~/sources/raylib`):
+directory of your choice (in this case `~/sources/raylib`), and checkout the
+release version that you would like to build and install bindings for:
 
 ```sh
 git clone https://github.com/raysan5/raylib.git ~/sources/raylib
+(cd ~/sources/raylib && git checkout 5.5)
 ```
 
 Set `RAYLIB_DIRECTORY=/your/path/to/raylib` and run `make build build-web` to
